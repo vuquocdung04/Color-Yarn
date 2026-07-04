@@ -11,12 +11,12 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
     public float growDuration = 0.35f;
     public Ease  growEase = Ease.OutBack;
 
-    private CubePhaseController _controller;
+    private YarnPhaseController _controller;
     private Transform Root
     {
         get
         {
-            if (_controller == null) _controller = GetComponentInParent<CubePhaseController>();
+            if (_controller == null) _controller = GetComponentInParent<YarnPhaseController>();
             return _controller != null ? _controller.Root : null;
         }
     }

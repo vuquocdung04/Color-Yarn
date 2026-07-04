@@ -17,9 +17,10 @@ public class AudioManager : MonoBehaviour
     private Dictionary<string, float> lastPlayTimes = new();
     private float currentSfxVolume = 1f;
 
+    public void InitInstance() => Instance = this;
+
     public void Init()
     {
-        Instance = this;
         audioDataBases = DataRepo.Instance.audioDataList;
         BuildAudioLookup();
         ApplyMusicVolume();

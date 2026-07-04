@@ -13,8 +13,12 @@ public enum GameState
     Tutorial = 5
 }
 
-public partial class GameFlow : StaffSingleton<GameFlow>
+public partial class GameFlow : MonoBehaviour
 {
+    public static GameFlow Instance { get; private set; }
+
+    public void InitInstance() => Instance = this;
+
     public GameState CurrentState { get; private set; }
     public event Action<GameState> OnStateEntered;
     public event Action<GameState> OnStateExited;
@@ -22,7 +26,7 @@ public partial class GameFlow : StaffSingleton<GameFlow>
     private int pauseRequest;
 
     private Transform popupHolder;
-    public override void Init()
+    public void Init()
     {
         popupHolder = GameScene.GetPopupHolder();
         OnStateEntered += HandleStateEntered;
@@ -32,9 +36,9 @@ public partial class GameFlow : StaffSingleton<GameFlow>
         this.RegisterListener(EventID.POPUP_OPENED, OnPopupOpened);
         this.RegisterListener(EventID.POPUP_CLOSED, OnPopupClosed);
     }
-    protected override void OnDestroy()
+    private void OnDestroy()
     {
-        base.OnDestroy();
+        if (Instance == this) Instance = null;
         OnStateEntered -= HandleStateEntered;
         OnStateExited -= HandleStateExited;
 

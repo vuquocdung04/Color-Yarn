@@ -1,32 +1,33 @@
-
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameScene : StaffSingleton<GameScene>
+public class GameScene : MonoBehaviour
 {
+    public static GameScene Instance { get; private set; }
+
+    public void InitInstance()
+    {
+        Instance = this;
+        boosterController.InitInstance();
+        topBar.InitInstance();
+    }
+
     public Transform popupHolder;
     public Image darkPanel;
 
-    public TextMeshProUGUI txtLevelDisplay;
+    [Header("Booster")]
+    public BoosterController boosterController;
 
-    [Header("Button")]
-    public Button btnSetting;
-    public Button btnCoin;
-    public override void Init()
+    [Header("Top Bar")]
+    public TopBar topBar;
+
+    public void Init()
     {
-        btnSetting.OnClicked(delegate
-        {
-            _ = SettingGameBox.Setup(popupHolder, box => box.Show());
-        });
-
-        btnCoin.OnClicked(delegate
-        {
-            _ = ShopBox.Setup(popupHolder, box => box.Show());
-        });
-        txtLevelDisplay.text = $"Level {UseProfile.Level.Value}";
+        boosterController.Init();
+        topBar.Init();
     }
+
     public static void EnableDarkPanel(bool state)
     {
         Instance.darkPanel.DOKill();
@@ -48,6 +49,7 @@ public class GameScene : StaffSingleton<GameScene>
             Instance.darkPanel.gameObject.SetActive(false);
         }
     }
-    public static Transform GetCoinBar() => Instance.btnCoin.transform;
+
+    public static Transform GetCoinBar() => Instance.topBar.GetCoinBar();
     public static Transform GetPopupHolder() => Instance.popupHolder;
 }

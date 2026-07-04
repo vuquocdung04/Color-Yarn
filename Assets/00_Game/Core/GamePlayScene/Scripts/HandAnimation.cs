@@ -2,8 +2,12 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HandAnimation : StaffSingleton<HandAnimation>
+public class HandAnimation : MonoBehaviour
 {
+    public static HandAnimation Instance { get; private set; }
+
+    public void InitInstance() => Instance = this;
+
     public Camera mainCam;
     public Transform handObj;
     public Transform handUI;
@@ -12,7 +16,7 @@ public class HandAnimation : StaffSingleton<HandAnimation>
     private Tween uiTween;
     private Tween objTween;
     private Vector3 defaultScale;
-    public override void Init()
+    public void Init()
     {
         handObj.gameObject.SetActive(false);
         handUI.gameObject.SetActive(false);

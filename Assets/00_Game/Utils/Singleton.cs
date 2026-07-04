@@ -1,51 +1,30 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-// --- INTERFACE CHUNG ---
-public interface IStaff { void BindInstance(); }
-public interface ILeader { void ForceBindAllStaffs(); }
-
-
-public abstract class ManagerSingleton<T> : MonoBehaviour where T : MonoBehaviour
+public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     public static T Instance { get; private set; }
+
+    public bool dontDestroyOnLoad;
+
     protected virtual void Awake()
     {
-        if (Instance == null) { Instance = this as T; DontDestroyOnLoad(gameObject); }
-        else if (this != Instance) Destroy(gameObject);
-        OnAwake();
-    }
-    protected virtual void OnAwake() { }
-}
-
-public abstract class LeaderSingleton<T> : MonoBehaviour, ILeader where T : MonoBehaviour
-{
-    public static T Instance { get; private set; }
-    protected virtual void Awake()
-    {
-        if (Instance == null) Instance = this as T;
-        else if (this != Instance) { Destroy(gameObject); return; }
-
-        ForceBindAllStaffs();
+        if (Instance == null)
+        {
+            Instance = this as T;
+            if (dontDestroyOnLoad) DontDestroyOnLoad(gameObject);
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         OnAwake();
     }
 
-    public void ForceBindAllStaffs()
-    {
-        var staffs = GetComponentsInChildren<IStaff>(true);
-        foreach (var s in staffs) s.BindInstance();
-    }
     protected virtual void OnAwake() { }
-}
 
-public abstract class StaffSingleton<T> : MonoBehaviour, IStaff where T : MonoBehaviour
-{
-    public static T Instance { get; private set; }
-
-    public void BindInstance()
+    protected virtual void OnDestroy()
     {
-        if (Instance == null) Instance = this as T;
+        if (Instance == this) Instance = null;
     }
-
-    protected virtual void OnDestroy() { if (Instance == this) Instance = null; }
-    public abstract void Init();
 }

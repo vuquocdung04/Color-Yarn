@@ -9,8 +9,9 @@ public class DataRepo : MonoBehaviour
     public LocalizationDataBase localizationDataBase;
     public List<AudioDataBase> audioDataList;
     public AvatarDataBase avatarData;
+    public void InitInstance() => Instance = this;
+
     public void Init()
     {
-        Instance = this;
     }
 }

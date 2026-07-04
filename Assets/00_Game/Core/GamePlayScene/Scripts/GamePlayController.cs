@@ -3,12 +3,11 @@ using Cysharp.Threading.Tasks;
 using EventDispatcher;
 using UnityEngine;
 
-public class GamePlayController : LeaderSingleton<GamePlayController>
+public class GamePlayController : Singleton<GamePlayController>
 {
     public Camera cameraUI;
     public Camera cameraGameplay;
     public GameScene gameScene;
-    public BoosterController boosterController;
     public HandAnimation handAnimation;
     public GameFlow gameFlow;
     public InputController inputController;
@@ -21,19 +20,33 @@ public class GamePlayController : LeaderSingleton<GamePlayController>
 
     private async UniTaskVoid Init()
     {
-        gameScene.Init();
-        handAnimation.Init();
-        boosterController.Init();
-        inputController.Init();
-        gameFlow.Init();
+        InitInstance();
+        InitManagers();
         gameFlow.RequestPause();
 
-        AudioManager.Instance.PlayMusic("Normal Level Music (Cover) 1");
+        AudioManager.Instance?.PlayMusic("Normal Level Music (Cover) 1");
 
         await UniTask.WaitForEndOfFrame(this);
         await UniTask.Delay(500);
-        FXManager.Instance.isNextSceneReady = true;
+        if (FXManager.Instance)
+            FXManager.Instance.isNextSceneReady = true;
         await UniTask.Delay(500);
         gameFlow.RequestResume();
+    }
+
+    private void InitInstance()
+    {
+        gameScene.InitInstance();
+        handAnimation.InitInstance();
+        inputController.InitInstance();
+        gameFlow.InitInstance();
+    }
+
+    private void InitManagers()
+    {
+        gameScene.Init();
+        handAnimation.Init();
+        inputController.Init();
+        gameFlow.Init();
     }
 }

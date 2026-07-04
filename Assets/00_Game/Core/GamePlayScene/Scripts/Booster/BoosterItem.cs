@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 using EventDispatcher;
 using TMPro;
 using UnityEngine;
@@ -12,6 +11,7 @@ public class BoosterItem : MonoBehaviour
     public BoosterType Type => type;
     public Sprite IconSprite => iconBooster.sprite;
     public BoosterState CurrentState { get; private set; } = BoosterState.Locked;
+    public int Quantity { get; private set; }
 
     public Button btnMain;
     public Image iconBooster;
@@ -29,12 +29,13 @@ public class BoosterItem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI unlockLevelText;
 
     private static readonly Dictionary<BoosterState, BoosterState[]> _transitions = new()
-{
-    { BoosterState.Locked,    new[] { BoosterState.Available } },
-    { BoosterState.Available, new[] { BoosterState.InUse, BoosterState.Empty, BoosterState.Locked } },
-    { BoosterState.Empty,     new[] { BoosterState.Available } },
-    { BoosterState.InUse,     new[] { BoosterState.Available } },
-};
+    {
+        { BoosterState.Locked,    new[] { BoosterState.Available } },
+        { BoosterState.Available, new[] { BoosterState.InUse, BoosterState.Empty, BoosterState.Locked } },
+        { BoosterState.Empty,     new[] { BoosterState.Available } },
+        { BoosterState.InUse,     new[] { BoosterState.Available } },
+    };
+
     private void Start() => btnMain.OnClicked(OnButtonClicked);
     public void SetSize(float size) => iconBooster.FitToTargetHeight(size);
 
@@ -60,6 +61,7 @@ public class BoosterItem : MonoBehaviour
         addIconOverlay.SetActive(s == BoosterState.Empty);
         inUseHighlight.SetActive(s == BoosterState.InUse);
     }
+
     private void OnButtonClicked()
     {
         switch (CurrentState)
@@ -68,41 +70,27 @@ public class BoosterItem : MonoBehaviour
                 this.PostEvent(EventID.BOOSTER_USE_REQUEST, type);
                 break;
             case BoosterState.InUse:
-            
                 break;
             case BoosterState.Empty:
                 this.PostEvent(EventID.BOOSTER_BUY_REQUEST, type);
                 break;
         }
     }
-    public int GetQuantity()
+
+    // Nhan du lieu tu BoosterController
+    public void SetData(int qty)
     {
-        return type switch
-        {
-            BoosterType.Booster0 => UseProfile.Booster0.Value,
-            BoosterType.Booster1 => UseProfile.Booster1.Value,
-            BoosterType.Booster2 => UseProfile.Booster2.Value,
-            _ => 0
-        };
-    }
-    public void SubQuantity()
-    {
-        switch (type)
-        {
-            case BoosterType.Booster0: UseProfile.Booster0.Value = Mathf.Max(0, UseProfile.Booster0.Value - 1); break;
-            case BoosterType.Booster1: UseProfile.Booster1.Value = Mathf.Max(0, UseProfile.Booster1.Value - 1); break;
-            case BoosterType.Booster2: UseProfile.Booster2.Value = Mathf.Max(0, UseProfile.Booster2.Value - 1); break;
-        }
-        RefreshFromQuantity();
-    }
-    public void RefreshFromQuantity()
-    {
-        int qty = GetQuantity();
+        Quantity = qty;
         if (quantityText != null) quantityText.text = qty.ToString();
 
         if (CurrentState == BoosterState.Available && qty <= 0)
             ChangeState(BoosterState.Empty);
         else if (CurrentState == BoosterState.Empty && qty > 0)
             ChangeState(BoosterState.Available);
+    }
+
+    public void SetUnlockLevel(int level)
+    {
+        if (unlockLevelText != null) unlockLevelText.text = level.ToString();
     }
 }

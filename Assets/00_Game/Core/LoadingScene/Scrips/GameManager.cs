@@ -1,15 +1,15 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class GameManager : ManagerSingleton<GameManager>
+public class GameManager : Singleton<GameManager>
 {
-    [SerializeField] private DataRepo dataRepo;
-    [SerializeField] private FXManager fxManager;
-    [SerializeField] private AudioManager audioManager;
+    public DataRepo dataRepo;
+    public FXManager fxManager;
+    public AudioManager audioManager;
     public LocalizationManager localizationManager;
     public HeartManager heartManager;
     public CurrencyManager currencyManager;
-    [SerializeField] private LoadingBox loadingBox;
+    public LoadingBox loadingBox;
     public ToastManager toastManager;
 
     public bool isSkipOutPhase;
@@ -26,15 +26,13 @@ public class GameManager : ManagerSingleton<GameManager>
         loadingBox.Init();
         var load50Task = loadingBox.LoadingAsync(0.5f, loadingStepDuration);
         await GamePrefs.Init();
+
+        InitInstance();
+
         Test();
         //firebaseSetup.Init();
         //await UniTask.WaitUntil(() => firebaseSetup.IsActiveRemote);
-        dataRepo.Init();
-        fxManager.Init();
-        audioManager.Init();
-        heartManager.Init();
-        currencyManager.Init();
-        toastManager.Init();
+        InitManagers();
         await load50Task;
         await loadingBox.LoadingAsync(1f, loadingStepDuration);
         fxManager.PrepareWipeClosed();
@@ -42,6 +40,26 @@ public class GameManager : ManagerSingleton<GameManager>
 
         //Init final
         fxManager.LoadSceneWithIrisWipe(SceneName.GAME_PLAY, isSkipOutPhase);
+    }
+
+    private void InitInstance()
+    {
+        dataRepo.InitInstance();
+        fxManager.InitInstance();
+        audioManager.InitInstance();
+        heartManager.InitInstance();
+        currencyManager.InitInstance();
+        toastManager.InitInstance();
+    }
+
+    private void InitManagers()
+    {
+        dataRepo.Init();
+        fxManager.Init();
+        audioManager.Init();
+        heartManager.Init();
+        currencyManager.Init();
+        toastManager.Init();
     }
 
     private void Test()

@@ -20,9 +20,10 @@ public class ToastManager : MonoBehaviour
     private Dictionary<TextMeshProUGUI, (CanvasGroup cg, Tween tween)> _activeTweens = new();
     private List<CanvasGroup> _canvasGroups = new();
 
+    public void InitInstance() => Instance = this;
+
     public void Init()
     {
-        Instance = this;
         foreach (var txt in toastTexts)
         {
             var cg = txt.GetComponent<CanvasGroup>();

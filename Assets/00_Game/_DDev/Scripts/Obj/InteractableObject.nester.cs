@@ -1,7 +1,7 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-public partial class InteractableObject : MonoBehaviour
+public partial class InteractableObject
 {
     [Header("Nesting")]
     [SerializeField, Min(0)] public int totalCube = 2;

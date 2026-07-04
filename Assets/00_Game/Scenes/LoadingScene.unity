@@ -738,6 +738,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6da00a257c64d3748800365169cc6b47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 1
   dataRepo: {fileID: 956426249}
   fxManager: {fileID: 2062787737}
   audioManager: {fileID: 1730948399}

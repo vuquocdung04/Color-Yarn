@@ -1,8 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputController : StaffSingleton<InputController>
+public class InputController : MonoBehaviour
 {
+    public static InputController Instance { get; private set; }
+
+    public void InitInstance() => Instance = this;
+
     private Camera cam;
     private InputMode _currentMode;
     private InputMode _normalMode;
@@ -10,7 +14,7 @@ public class InputController : StaffSingleton<InputController>
     private InputMode _booster2Mode;
     private InputMode _disabledMode;
 
-    public override void Init()
+    public void Init()
     {
         cam = GamePlayController.Instance.cameraGameplay;
 
@@ -24,9 +28,9 @@ public class InputController : StaffSingleton<InputController>
         GameFlow.Instance.OnStateEntered += OnGameStateChanged;
     }
 
-    protected override void OnDestroy()
+    private void OnDestroy()
     {
-        base.OnDestroy();
+        if (Instance == this) Instance = null;
         GameFlow.Instance.OnStateEntered -= OnGameStateChanged;
     }
 

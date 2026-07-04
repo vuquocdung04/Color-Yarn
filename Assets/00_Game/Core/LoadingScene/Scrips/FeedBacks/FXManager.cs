@@ -9,10 +9,10 @@ public partial class FXManager : MonoBehaviour
     public int coinCount = 10;
     public float spawnInterval = 0.05f;
     public float spreadRadius = 0.5f;
+    public void InitInstance() => Instance = this;
+
     public void Init()
     {
-        Instance = this;
-
         if (wipeCanvas.gameObject.activeInHierarchy) wipeCanvas.gameObject.SetActive(false);
     }
 

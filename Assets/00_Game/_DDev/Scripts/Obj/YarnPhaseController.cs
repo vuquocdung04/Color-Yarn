@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CubePhaseController : MonoBehaviour
+public class YarnPhaseController : MonoBehaviour
 {
     [Header("Root cho cac loi tach ra")]
     [SerializeField] private Transform root;

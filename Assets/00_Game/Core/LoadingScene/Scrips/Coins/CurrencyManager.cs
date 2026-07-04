@@ -23,9 +23,10 @@ public class CurrencyManager : MonoBehaviour
 {
     public static CurrencyManager Instance { get; private set; }
 
+    public void InitInstance() => Instance = this;
+
     public void Init()
     {
-        Instance = this;
     }
 
     public int Get(CurrencyType type) => GetPref(type).Value;

@@ -24,10 +24,10 @@ public class HeartManager : MonoBehaviour
 
     private CancellationTokenSource cts;
 
+    public void InitInstance() => Instance = this;
+
     public void Init()
     {
-        Instance = this;
-
         MaxHearts = 5;
         RefillMinutes = 30;
         RefillSeconds = RefillMinutes * 60;
