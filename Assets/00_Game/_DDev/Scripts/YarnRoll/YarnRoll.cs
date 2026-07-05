@@ -1,14 +1,14 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-[RequireComponent(typeof(LineRenderer))]
-public class YarnThread : MonoBehaviour
+public partial class YarnRoll : MonoBehaviour
 {
     public enum Axis { X, Y, Z }
 
     [Header("A (goc cuon)")]
     [SerializeField] private Transform aTop;
     [SerializeField] private Transform aBottom;
+    [SerializeField] private Renderer  aRenderer;
 
     [Header("B (cube)")]
     [SerializeField] private Transform bObject;
@@ -20,6 +20,7 @@ public class YarnThread : MonoBehaviour
     [SerializeField] private float inset = 0f;
 
     [Header("Line")]
+    [SerializeField] private LineRenderer line;
     [SerializeField, Min(2)] private int subdivisions = 24;
 
     [Header("Anim")]
@@ -27,13 +28,11 @@ public class YarnThread : MonoBehaviour
     [SerializeField, Range(0.05f, 0.6f)] private float reachEnd = 0.35f;
     [SerializeField, Range(0.6f, 0.97f)] private float pullStart = 0.85f;
 
-    private LineRenderer line;
     private float elapsed;
     private bool  running;
 
     void Awake()
     {
-        line = GetComponent<LineRenderer>();
         EnsureRefs();
         UpdateLine(0f);
     }
@@ -73,6 +72,8 @@ public class YarnThread : MonoBehaviour
         }
 
         SetStraightLine(headA, headB);
+        UpdateDissolveB(t);
+        UpdateDissolveA(t);
     }
 
     void SetStraightLine(Vector3 from, Vector3 to)
@@ -85,20 +86,53 @@ public class YarnThread : MonoBehaviour
         }
     }
 
+    static readonly RaycastHit[] _hitBuf = new RaycastHit[32];
+
     Vector3 GetPointOnBound(float t)
     {
         Bounds bnd = bRenderer.bounds;
-        float minX = bnd.min.x + inset, maxX = bnd.max.x - inset;
-        float minZ = bnd.min.z + inset, maxZ = bnd.max.z - inset;
+        Vector3 center = bnd.center;
 
-        Vector3 top = AxisExtreme(bnd, bAxis, true);
-        Vector3 bot = AxisExtreme(bnd, bAxis, false);
-        float y = Mathf.Lerp(top.y, bot.y, t);
+        float yTop = AxisExtreme(bnd, bAxis, true).y;
+        float yBot = AxisExtreme(bnd, bAxis, false).y;
+        float y = Mathf.Lerp(yTop, yBot, t);
 
-        float u = (t * turns) % 1f;
-        Vector3 xz = PerimeterPoint(u, minX, maxX, minZ, maxZ);
+        float u   = (t * turns) % 1f;
+        float ang = u * Mathf.PI * 2f;
+        Vector3 dir = new Vector3(Mathf.Cos(ang), 0f, Mathf.Sin(ang));
 
+        float maxR = Mathf.Max(bnd.extents.x, bnd.extents.z) * 2f + 0.01f;
+        Vector3 axisP  = new Vector3(center.x, y, center.z);
+        Vector3 origin = axisP + dir * maxR;
+
+        // ban tia tu ngoai vao truc -> be mat ngoai cung cua B
+        if (RaycastSurface(origin, -dir, maxR, out Vector3 surf, out Vector3 nrm))
+            return surf - nrm * inset; // inset > 0: lun vao trong chut
+
+        // fallback: chu vi AABB neu tia truot
+        Vector3 xz = PerimeterPoint(u, bnd.min.x, bnd.max.x, bnd.min.z, bnd.max.z);
         return new Vector3(xz.x, y, xz.z);
+    }
+
+    bool RaycastSurface(Vector3 origin, Vector3 dir, float dist, out Vector3 point, out Vector3 normal)
+    {
+        point = default; normal = Vector3.up;
+        int n = Physics.RaycastNonAlloc(origin, dir, _hitBuf, dist);
+        float best = float.MaxValue;
+        bool found = false;
+        for (int i = 0; i < n; i++)
+        {
+            var h = _hitBuf[i];
+            if (bObject != null && !h.collider.transform.IsChildOf(bObject)) continue;
+            if (h.distance < best)
+            {
+                best = h.distance;
+                point = h.point;
+                normal = h.normal;
+                found = true;
+            }
+        }
+        return found;
     }
 
     Vector3 PerimeterPoint(float u, float minX, float maxX, float minZ, float maxZ)
@@ -130,7 +164,6 @@ public class YarnThread : MonoBehaviour
 
     void EnsureRefs()
     {
-        if (line == null) line = GetComponent<LineRenderer>();
         if (bRenderer == null && bObject != null)
             bRenderer = bObject.GetComponentInChildren<Renderer>();
     }

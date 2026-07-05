@@ -15,8 +15,11 @@ public class CoinView : MonoBehaviour
     {
         this.RegisterListener(EventID.CHANGE_COIN, OnCoinChanged);
 
-        _displayed = CurrencyManager.Instance.Get(CurrencyType.Coin);
-        txtCoin.text = NumberFormatter.Format(_displayed); 
+        if (CurrencyManager.Instance)
+            _displayed = CurrencyManager.Instance.Get(CurrencyType.Coin);
+        else
+            _displayed = 2026;
+        txtCoin.text = NumberFormatter.Format(_displayed);
     }
 
     private void OnDisable()
@@ -27,14 +30,18 @@ public class CoinView : MonoBehaviour
 
     private void OnCoinChanged(object _)
     {
-        int target = CurrencyManager.Instance.Get(CurrencyType.Coin);
+        int target;
+        if (CurrencyManager.Instance)
+            target = CurrencyManager.Instance.Get(CurrencyType.Coin);
+        else
+            target = 2026;
         if (target == _displayed) return;
 
         CancelCurrent();
         _cts = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
 
         int from = _displayed;
-        _displayed = target;         
+        _displayed = target;
 
         txtCoin.CountTo(target, from: from, format: NumberFormatter.Format, token: _cts.Token).Forget();
     }
