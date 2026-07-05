@@ -73,14 +73,39 @@ public class BoxSlot : MonoBehaviour
 
         await UniTask.Delay(System.TimeSpan.FromSeconds(1f), cancellationToken: token);
 
-        OnBoxReset();
-
-        if (spriteCoverRenderer != null) spriteCoverRenderer.gameObject.SetActive(false);
         currentYarnRoll = 0;
+        if (spriteCoverRenderer != null) spriteCoverRenderer.gameObject.SetActive(false);
+
+        OnBoxReset();
     }
 
     public void OnBoxReset()
     {
         SetColor("White");
+        PullFromHoles();
+    }
+
+    private void PullFromHoles()
+    {
+        if (HolesTemp.Instance == null) return;
+
+        int empty = maxCapacity - currentYarnRoll;
+        if (empty <= 0) return;
+
+        var rolls = HolesTemp.Instance.TakeMatching(colorKey, empty);
+        foreach (var r in rolls)
+        {
+            if (r == null || currentYarnRoll >= slots.Count) continue;
+            Transform slot = slots[currentYarnRoll];
+            r.transform.SetParent(slot);
+            r.transform.localPosition = Vector3.zero;
+            r.transform.localRotation = Quaternion.identity;
+            r.transform.localScale = Vector3.one;
+            spawnedRolls.Add(r);
+            currentYarnRoll++;
+        }
+
+        if (currentYarnRoll >= maxCapacity)
+            CloseAndResetAsync(this.GetCancellationTokenOnDestroy()).Forget();
     }
 }

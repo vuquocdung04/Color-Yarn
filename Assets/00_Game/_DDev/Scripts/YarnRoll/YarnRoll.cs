@@ -28,11 +28,14 @@ public partial class YarnRoll : MonoBehaviour
     private float elapsed;
     private bool  running;
 
+    public string ColorKey { get; private set; }
+
     // ================= PUBLIC API =================
     public void Setup(Renderer targetB, string colorKey)
     {
         bRenderer = targetB;
         bObject   = targetB != null ? targetB.transform : null;
+        ColorKey  = colorKey;
 
         var entry = ColorRepo.Instance != null ? ColorRepo.Instance.GetSet(colorKey) : null;
         if (entry != null) SetColor(GetColorFromMaterial(entry.material));
@@ -63,7 +66,6 @@ public partial class YarnRoll : MonoBehaviour
         {
             line.startColor = c;
             line.endColor   = c;
-            ApplyColor(line.material, c);
         }
 
         if (aRenderer != null)

@@ -6,33 +6,32 @@ using UnityEngine;
 [RequireComponent(typeof(Renderer))]
 public partial class InteractableObject : MonoBehaviour, IInteractable
 {
-    [Header("Dissolve / Grow")]
     private float duration = 0.5f;
-    public float growDuration = 0.35f;
-    public Ease  growEase = Ease.OutBack;
+    private float growDuration;
+    private Ease  growEase;
 
-    private YarnPhaseController _controller;
-    private Transform Root
+    private YarnObj _controller;
+    private YarnObj Owner
     {
         get
         {
-            if (_controller == null) _controller = GetComponentInParent<YarnPhaseController>();
-            return _controller != null ? _controller.Root : null;
+            if (_controller == null) _controller = GetComponentInParent<YarnObj>();
+            return _controller;
         }
     }
+    private Transform Root => Owner != null ? Owner.Root : null;
 
     private Renderer _renderer;
     private Material _mat;
     private int _dissolveAmountPropId;
+    private Vector3 savedScale;
 
     [SerializeField] private string colorKey;
     public string ColorKey => colorKey;
 
     public bool IsBusy { get; private set; }
 
-    private void Awake() => Init();
-
-    private void Init()
+    public void Init()
     {
         if (_mat != null) return;
         _renderer = GetComponent<Renderer>();
@@ -44,6 +43,15 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
         _dissolveAmountPropId = Shader.PropertyToID("_DissolveAmount");
         if (_mat.HasProperty(_dissolveAmountPropId))
             _mat.SetFloat(_dissolveAmountPropId, 0f);
+
+        if (Owner != null)
+        {
+            growDuration = Owner.GrowDuration;
+            growEase = Owner.GrowEase;
+        }
+
+        var parentObj = transform.parent != null ? transform.parent.GetComponentInParent<InteractableObject>() : null;
+        savedScale = parentObj != null ? parentObj.savedScale : transform.localScale;
     }
 
     private static string CleanMaterialName(string matName)
@@ -70,9 +78,14 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
 
         GameObject coreGo = core;
 
+        Owner?.RemoveLen(this);
+
         // 1) tach loi ra Root, giu nguyen world position/scale
         if (coreGo != null)
+        {
+            Owner?.AddLen(coreGo.GetComponent<InteractableObject>());
             coreGo.transform.SetParent(Root, true);
+        }
 
         // 2) dissolve vo minh (chung duration voi YarnRoll qua HolesTemp)
         Init();
@@ -88,7 +101,7 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
 
         // 3) loi phinh ve 1 ngay tai cho (loi cung la InteractableObject, tu co nest cua no)
         if (coreGo != null)
-            _ = coreGo.transform.DOScale(Vector3.one, growDuration).SetEase(growEase);
+            _ = coreGo.transform.DOScale(savedScale, growDuration).SetEase(growEase);
 
         // 4) huy vo
         Destroy(gameObject);

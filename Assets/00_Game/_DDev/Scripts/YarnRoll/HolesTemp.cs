@@ -14,10 +14,10 @@ public class HolesTemp : MonoBehaviour
     public float Duration => duration;
 
     private int _index;
+    private readonly List<YarnRoll> parked = new();
 
     public void Init() => _index = 0;
 
-    // Sinh 1 YarnRoll tai hole ke tiep (0 -> cuoi list), nham target lam B
     public void Spawn(InteractableObject target)
     {
         if (target == null || yarnRollPrefab == null || holes == null || holes.Count == 0) return;
@@ -28,5 +28,23 @@ public class HolesTemp : MonoBehaviour
         YarnRoll yr = Instantiate(yarnRollPrefab, hole.position, hole.rotation, hole);
         yr.Setup(target.GetComponent<Renderer>(), target.ColorKey);
         yr.Play(duration);
+
+        parked.Add(yr);
+    }
+
+    public List<YarnRoll> TakeMatching(string key, int max)
+    {
+        var result = new List<YarnRoll>();
+        for (int i = parked.Count - 1; i >= 0 && result.Count < max; i--)
+        {
+            var r = parked[i];
+            if (r == null) { parked.RemoveAt(i); continue; }
+            if (r.ColorKey == key)
+            {
+                result.Add(r);
+                parked.RemoveAt(i);
+            }
+        }
+        return result;
     }
 }

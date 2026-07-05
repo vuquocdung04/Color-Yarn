@@ -136,8 +136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14caf8965ae859a49bb14bf014a498cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  growDuration: 0.35
-  growEase: 27
   colorKey: 
   totalCube: 2
   scaleRatio: 0.7
@@ -16430,6 +16428,26 @@ MonoBehaviour:
   m_Script: {fileID: -1691460924, guid: c6e0548b115defe4a846c4a1e55d2008, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &599911458 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1137287842814432, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
+  m_PrefabInstance: {fileID: 1743042033}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &599911463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 599911458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14caf8965ae859a49bb14bf014a498cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
+  colorKey: 
+  totalCube: 2
+  scaleRatio: 0.7
 --- !u!1 &601729100
 GameObject:
   m_ObjectHideFlags: 0
@@ -34727,6 +34745,26 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1226311082 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1701157325079565, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
+  m_PrefabInstance: {fileID: 1743042033}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1226311087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226311082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14caf8965ae859a49bb14bf014a498cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
+  colorKey: 
+  totalCube: 2
+  scaleRatio: 0.7
 --- !u!1 &1247550516
 GameObject:
   m_ObjectHideFlags: 0
@@ -34988,8 +35026,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14caf8965ae859a49bb14bf014a498cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  growDuration: 0.35
-  growEase: 27
   colorKey: 
   totalCube: 2
   scaleRatio: 0.7
@@ -35331,6 +35367,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1318786818}
   m_Mesh: {fileID: 0}
+--- !u!1 &1319142445 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1813014237518556, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
+  m_PrefabInstance: {fileID: 1743042033}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1319142450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319142445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14caf8965ae859a49bb14bf014a498cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
+  colorKey: 
+  totalCube: 2
+  scaleRatio: 0.7
 --- !u!1 &1363003778
 GameObject:
   m_ObjectHideFlags: 0
@@ -55567,18 +55623,27 @@ PrefabInstance:
     - {fileID: 114160707071253111, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
     - {fileID: 114247953644038898, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
     - {fileID: 114186525890083750, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
+    - {fileID: 114061264810364332, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
+    - {fileID: 114237563569200988, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
+    - {fileID: 114939534804452681, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
+    - {fileID: 114841034146146227, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
+    - {fileID: 114383791452933008, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
+    - {fileID: 114027299671980490, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1368241619666872, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1743042036}
-    - targetCorrespondingSourceObject: {fileID: 1368241619666872, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1743042042}
+    - targetCorrespondingSourceObject: {fileID: 1137287842814432, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 599911463}
     - targetCorrespondingSourceObject: {fileID: 1004021776460135, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1283855237}
+    - targetCorrespondingSourceObject: {fileID: 1701157325079565, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1226311087}
     - targetCorrespondingSourceObject: {fileID: 1853981911269304, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1743042037}
@@ -55594,6 +55659,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1629284027563084, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 18251114}
+    - targetCorrespondingSourceObject: {fileID: 1813014237518556, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1319142450}
   m_SourcePrefab: {fileID: 100100000, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
 --- !u!1 &1743042034 stripped
 GameObject:
@@ -55605,18 +55673,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1368241619666872, guid: a8a69455a9172c74eaf53f14d03c794e, type: 3}
   m_PrefabInstance: {fileID: 1743042033}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1743042036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1743042035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a35365a8cefcf54c8abcfa70f4f4e09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ObjectRotator
 --- !u!114 &1743042037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55629,8 +55685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14caf8965ae859a49bb14bf014a498cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  growDuration: 0.35
-  growEase: 27
   colorKey: 
   totalCube: 2
   scaleRatio: 0.7
@@ -55651,8 +55705,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14caf8965ae859a49bb14bf014a498cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  growDuration: 0.35
-  growEase: 27
   colorKey: 
   totalCube: 2
   scaleRatio: 0.7
@@ -55667,8 +55719,12 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e6dab1707e5ef64cbdbdaca19b77586, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::YarnPhaseController
+  m_EditorClassIdentifier: Assembly-CSharp::YarnObj
   root: {fileID: 99938315}
+  minCube: 0
+  maxCube: 3
+  growDuration: 0.35
+  growEase: 27
 --- !u!1 &1752761683
 GameObject:
   m_ObjectHideFlags: 0
@@ -58394,8 +58450,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14caf8965ae859a49bb14bf014a498cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  growDuration: 0.35
-  growEase: 27
   colorKey: 
   totalCube: 2
   scaleRatio: 0.7
@@ -62729,8 +62783,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14caf8965ae859a49bb14bf014a498cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  growDuration: 0.35
-  growEase: 27
   colorKey: 
   totalCube: 2
   scaleRatio: 0.7
@@ -62856,11 +62908,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2066942791}
-  - component: {fileID: 2066942796}
-  - component: {fileID: 2066942795}
-  - component: {fileID: 2066942794}
-  - component: {fileID: 2066942793}
-  - component: {fileID: 2066942792}
   - component: {fileID: 2066942797}
   m_Layer: 5
   m_Name: HolesTemp
@@ -62887,66 +62934,6 @@ Transform:
   - {fileID: 2025162634}
   m_Father: {fileID: 632333449}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
---- !u!114 &2066942792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2066942790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1766348967, guid: c6e0548b115defe4a846c4a1e55d2008, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2066942793
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2066942790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -2134989416, guid: c6e0548b115defe4a846c4a1e55d2008, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2066942794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2066942790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 57046574, guid: b0d1deef8fc558a1722e6a4352432b9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2066942795
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2066942790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 57046574, guid: b0d1deef8fc558a1722e6a4352432b9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2066942796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2066942790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1244162510, guid: c6e0548b115defe4a846c4a1e55d2008, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2066942797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62963,6 +62950,8 @@ MonoBehaviour:
   - {fileID: 343470898}
   - {fileID: 161069347}
   - {fileID: 1830352517}
+  - {fileID: 180277604}
+  - {fileID: 1087584738}
   yarnRollPrefab: {fileID: 1509516457}
   duration: 1
 --- !u!1 &2070741455
