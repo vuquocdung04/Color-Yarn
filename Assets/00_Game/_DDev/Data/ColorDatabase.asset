@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ed6fb9f2893cba24614b708245aa81, type: 3}
+  m_Name: ColorDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::ColorDatabase
+  entries:
+  - key: Crimson
+    material: {fileID: 2100000, guid: 97bc440c5a5c9e141996ce54bff72f5c, type: 2}
+    spriteBox: {fileID: -1318324677, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -549261539, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: Chestnut
+    material: {fileID: 2100000, guid: f241ee618e9b4774abd8a08024bde241, type: 2}
+    spriteBox: {fileID: 932503753, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -990291910, guid: cdbec6d299f67df4897d26b56f88ceb3, type: 3}
+  - key: RoyalBlue
+    material: {fileID: 2100000, guid: 66b385641664b594f8ec9a8789edd085, type: 2}
+    spriteBox: {fileID: -1451267756, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -328570367, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: Pink
+    material: {fileID: 2100000, guid: 76a6c858d2b2d9747bcbe182bf3bfcef, type: 2}
+    spriteBox: {fileID: 875407763, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: 1582816176, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: Orange
+    material: {fileID: 2100000, guid: 57c736dd4ff64904790650b2e3bfd23c, type: 2}
+    spriteBox: {fileID: 1722430747, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -1553038502, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: Yellow
+    material: {fileID: 2100000, guid: 497611163791b384fac69703b5d3eea1, type: 2}
+    spriteBox: {fileID: 1001107839, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -136657682, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: SkyBlue
+    material: {fileID: 2100000, guid: 457b35fa271d0d84fa0bdeadf461d2fd, type: 2}
+    spriteBox: {fileID: 652454147, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -1359299006, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: Green
+    material: {fileID: 2100000, guid: 8655ed5aff0f7844d9b4b7ec4c7fce0a, type: 2}
+    spriteBox: {fileID: 1917713666, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: 71287751, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: Amber
+    material: {fileID: 2100000, guid: 31b61a1289728614a92dc5b8b35d32d3, type: 2}
+    spriteBox: {fileID: 1337981969, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -1765093750, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: Indigo
+    material: {fileID: 2100000, guid: 8d9c87b85e6326445b1f555981226526, type: 2}
+    spriteBox: {fileID: 1394784036, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: 1678177371, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: Violet
+    material: {fileID: 2100000, guid: 9bad90e74b792c842ac4f6df13560e7e, type: 2}
+    spriteBox: {fileID: -832709344, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: 297611631, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: Magenta
+    material: {fileID: 2100000, guid: 7249928455fbfd74bb76c271305a8c9d, type: 2}
+    spriteBox: {fileID: -1598210857, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -1078221047, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: SeaGreen
+    material: {fileID: 2100000, guid: ed193143cc8a7554c8f5632008d6a419, type: 2}
+    spriteBox: {fileID: -64519327, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -878721180, guid: cdbec6d299f67df4897d26b56f88ceb3, type: 3}
+  - key: HotPink
+    material: {fileID: 2100000, guid: 60be6cb238df52244bd72a941d8d2b40, type: 2}
+    spriteBox: {fileID: 339305359, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -1011865055, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: Lime
+    material: {fileID: 2100000, guid: cb215e129bccba34d8737e469f28d9dd, type: 2}
+    spriteBox: {fileID: 1473107931, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -1770204104, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: Turquoise
+    material: {fileID: 2100000, guid: fb423e6033b7bd6428254d718343adb6, type: 2}
+    spriteBox: {fileID: -1128983775, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -857886148, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: White
+    material: {fileID: 2100000, guid: ba8f79a678fd3704689831155419793f, type: 2}
+    spriteBox: {fileID: 1313010780, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -1354149517, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: Purple
+    material: {fileID: 2100000, guid: f1361ec56cde4504484142b11eeb4095, type: 2}
+    spriteBox: {fileID: -39565912, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: 1499614823, guid: cdbec6d299f67df4897d26b56f88ceb3, type: 3}
+  - key: Slate
+    material: {fileID: 2100000, guid: 8ce806481ea5b7942877fd2dbe8e7edb, type: 2}
+    spriteBox: {fileID: 1035926215, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -829719214, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: Tangerine
+    material: {fileID: 2100000, guid: ee89932e6c7fc6048a3e1a79ed0de884, type: 2}
+    spriteBox: {fileID: -1894705304, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -2033377603, guid: cdbec6d299f67df4897d26b56f88ceb3, type: 3}
+  - key: CornflowerBlue
+    material: {fileID: 2100000, guid: 11135f068c0eb13419c3e00621563cc2, type: 2}
+    spriteBox: {fileID: -1410330040, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -1359299006, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  - key: Ivory
+    material: {fileID: 2100000, guid: b03903234a3d76b4e9eea84cce43763c, type: 2}
+    spriteBox: {fileID: 1842090757, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+    spriteCover: {fileID: -1769090962, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
