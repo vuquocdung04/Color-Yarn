@@ -13,4 +13,6 @@ public class ColorRepo : MonoBehaviour
     }
 
     public ColorEntry GetSet(string key) => database.GetSet(key);
+
+    public ColorEntry GetRandom() => database.GetRandom();
 }

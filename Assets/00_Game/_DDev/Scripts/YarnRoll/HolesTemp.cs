@@ -25,20 +25,8 @@ public class HolesTemp : MonoBehaviour
         Transform hole = holes[_index];
         _index = (_index + 1) % holes.Count;
 
-        var rend = target.GetComponent<Renderer>();
-        Color color = GetColor(rend);
-
         YarnRoll yr = Instantiate(yarnRollPrefab, hole.position, hole.rotation, hole);
-        yr.Setup(rend, color);
+        yr.Setup(target.GetComponent<Renderer>(), target.ColorKey);
         yr.Play(duration);
-    }
-
-    private static Color GetColor(Renderer r)
-    {
-        if (r == null) return Color.white;
-        var m = r.sharedMaterial;
-        if (m == null) return Color.white;
-        if (m.HasProperty("_BaseColor")) return m.GetColor("_BaseColor");
-        return m.color;
     }
 }

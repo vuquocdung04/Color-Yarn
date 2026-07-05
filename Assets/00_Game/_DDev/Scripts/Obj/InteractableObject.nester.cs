@@ -7,10 +7,6 @@ public partial class InteractableObject
     [SerializeField, Min(0)] public int totalCube = 2;
     [SerializeField, Range(0.1f, 0.95f)] public float scaleRatio = 0.7f;
 
-    [Header("Material")]
-    [SerializeField] public Material opaqueMat;
-    [SerializeField] public Material transparentMat;
-
     private GameObject core;
     private bool seeThrough;
 
@@ -36,8 +32,7 @@ public partial class InteractableObject
         var child = core.GetComponent<InteractableObject>();
         child.totalCube = totalCube - 1;
         child.scaleRatio = scaleRatio;
-        child.opaqueMat = opaqueMat;
-        child.transparentMat = transparentMat;
+        child.ApplyRandomColor();
 
         child.BuildCore();
     }
@@ -66,11 +61,26 @@ public partial class InteractableObject
         Init();
         if (on)
         {
-            if (transparentMat != null) _renderer.material = transparentMat;
+            var mat = ObjectInteractionManager.Instance != null ? ObjectInteractionManager.Instance.transparentMat : null;
+            if (mat != null) _renderer.material = mat;
         }
         else
         {
             _renderer.material = _mat;
         }
+    }
+
+    public void ApplyRandomColor()
+    {
+        var entry = ColorRepo.Instance != null ? ColorRepo.Instance.GetRandom() : null;
+        if (entry == null) return;
+
+        Init();
+        if (entry.material != null)
+        {
+            _renderer.material = entry.material;
+            _mat = _renderer.material;
+        }
+        colorKey = entry.key;
     }
 }

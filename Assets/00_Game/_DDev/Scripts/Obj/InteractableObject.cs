@@ -25,6 +25,9 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
     private Material _mat;
     private int _dissolveAmountPropId;
 
+    [SerializeField] private string colorKey;
+    public string ColorKey => colorKey;
+
     public bool IsBusy { get; private set; }
 
     private void Awake() => Init();
@@ -33,16 +36,27 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
     {
         if (_mat != null) return;
         _renderer = GetComponent<Renderer>();
+
+        if (string.IsNullOrEmpty(colorKey))
+            colorKey = CleanMaterialName(_renderer.sharedMaterial.name);
+
         _mat = _renderer.material;
         _dissolveAmountPropId = Shader.PropertyToID("_DissolveAmount");
         if (_mat.HasProperty(_dissolveAmountPropId))
             _mat.SetFloat(_dissolveAmountPropId, 0f);
     }
 
+    private static string CleanMaterialName(string matName)
+    {
+        if (string.IsNullOrEmpty(matName)) return matName;
+        int idx = matName.IndexOf(" (Instance)");
+        return idx >= 0 ? matName.Substring(0, idx) : matName;
+    }
+
     public void OnTap()
     {
         if (IsBusy) return;
-        HolesTemp.Instance?.Spawn(this);
+        BoxCreator.Instance?.Spawn(this);
         DissolveSequence(this.GetCancellationTokenOnDestroy()).Forget();
     }
 

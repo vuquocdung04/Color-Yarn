@@ -13,6 +13,7 @@ public class GamePlayController : Singleton<GamePlayController>
     public InputController inputController;
     public HolesTemp holesTemp;
     public ColorRepo colorRepo;
+    public BoxCreator boxCreator;
 
     protected override void OnAwake()
     {
@@ -44,6 +45,7 @@ public class GamePlayController : Singleton<GamePlayController>
         gameFlow.InitInstance();
         holesTemp.InitInstance();
         colorRepo.InitInstance();
+        boxCreator.InitInstance();
     }
 
     private void InitManagers()
@@ -54,5 +56,6 @@ public class GamePlayController : Singleton<GamePlayController>
         gameFlow.Init();
         holesTemp.Init();
         colorRepo.Init();
+        boxCreator.Init();
     }
 }

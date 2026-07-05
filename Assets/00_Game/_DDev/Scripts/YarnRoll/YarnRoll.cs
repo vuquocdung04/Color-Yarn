@@ -29,11 +29,20 @@ public partial class YarnRoll : MonoBehaviour
     private bool  running;
 
     // ================= PUBLIC API =================
-    public void Setup(Renderer targetB, Color lineColor)
+    public void Setup(Renderer targetB, string colorKey)
     {
         bRenderer = targetB;
         bObject   = targetB != null ? targetB.transform : null;
-        SetLineColor(lineColor);
+
+        var entry = ColorRepo.Instance != null ? ColorRepo.Instance.GetSet(colorKey) : null;
+        if (entry != null) SetColor(GetColorFromMaterial(entry.material));
+    }
+
+    private static Color GetColorFromMaterial(Material m)
+    {
+        if (m == null) return Color.white;
+        if (m.HasProperty("_BaseColor")) return m.GetColor("_BaseColor");
+        return m.color;
     }
 
     public void Play(float dur)
@@ -48,17 +57,28 @@ public partial class YarnRoll : MonoBehaviour
         if (line != null) line.material = m;
     }
 
-    public void SetLineColor(Color c)
+    public void SetColor(Color c)
     {
-        if (line == null) return;
-        line.startColor = c;
-        line.endColor   = c;
+        if (line != null)
+        {
+            line.startColor = c;
+            line.endColor   = c;
+            ApplyColor(line.material, c);
+        }
+
+        if (aRenderer != null)
+            ApplyColor(aRenderer.material, c);
     }
 
-    // hook khi anim xong (de trong, noi su kien sau)
-    public void OnFinished()
+    private static void ApplyColor(Material m, Color c)
     {
+        if (m == null) return;
+        if (m.HasProperty("_BaseColor")) m.SetColor("_BaseColor", c);
+        else if (m.HasProperty("_Color")) m.SetColor("_Color", c);
+        else m.color = c;
     }
+
+    public event System.Action Finished;
 
     // ================= LOOP =================
     void Awake() => UpdateLine(0f);
@@ -72,7 +92,7 @@ public partial class YarnRoll : MonoBehaviour
         if (t >= 1f)
         {
             running = false;
-            OnFinished();
+            Finished?.Invoke();
         }
     }
 

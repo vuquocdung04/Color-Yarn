@@ -32,4 +32,6 @@ public class ColorDatabase : ScriptableObject
     }
 
     public ColorEntry GetSet(string key) => entries.Find(e => e.key == key);
+
+    public ColorEntry GetRandom() => entries.Count > 0 ? entries[Random.Range(0, entries.Count)] : null;
 }
