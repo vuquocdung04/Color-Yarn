@@ -7,7 +7,7 @@ using UnityEngine;
 public partial class InteractableObject : MonoBehaviour, IInteractable
 {
     [Header("Dissolve / Grow")]
-    public float duration = 0.5f;
+    private float duration = 0.5f;
     public float growDuration = 0.35f;
     public Ease  growEase = Ease.OutBack;
 
@@ -42,6 +42,7 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
     public void OnTap()
     {
         if (IsBusy) return;
+        HolesTemp.Instance?.Spawn(this);
         DissolveSequence(this.GetCancellationTokenOnDestroy()).Forget();
     }
 
@@ -59,13 +60,14 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
         if (coreGo != null)
             coreGo.transform.SetParent(Root, true);
 
-        // 2) dissolve vo minh
+        // 2) dissolve vo minh (chung duration voi YarnRoll qua HolesTemp)
         Init();
+        float dur = HolesTemp.Instance != null ? HolesTemp.Instance.Duration : duration;
         float t = 0f;
-        while (t < duration)
+        while (t < dur)
         {
             t += Time.deltaTime;
-            _mat.SetFloat(_dissolveAmountPropId, Mathf.Clamp01(t / duration));
+            _mat.SetFloat(_dissolveAmountPropId, Mathf.Clamp01(t / dur));
             await UniTask.Yield(PlayerLoopTiming.Update, token);
         }
         _mat.SetFloat(_dissolveAmountPropId, 1f);

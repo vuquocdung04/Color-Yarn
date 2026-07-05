@@ -11,6 +11,7 @@ public class GamePlayController : Singleton<GamePlayController>
     public HandAnimation handAnimation;
     public GameFlow gameFlow;
     public InputController inputController;
+    public HolesTemp holesTemp;
 
     protected override void OnAwake()
     {
@@ -40,6 +41,7 @@ public class GamePlayController : Singleton<GamePlayController>
         handAnimation.InitInstance();
         inputController.InitInstance();
         gameFlow.InitInstance();
+        holesTemp.InitInstance();
     }
 
     private void InitManagers()
@@ -48,5 +50,6 @@ public class GamePlayController : Singleton<GamePlayController>
         handAnimation.Init();
         inputController.Init();
         gameFlow.Init();
+        holesTemp.Init();
     }
 }

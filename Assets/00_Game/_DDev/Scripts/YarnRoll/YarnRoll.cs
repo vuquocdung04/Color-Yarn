@@ -3,17 +3,10 @@ using Sirenix.OdinInspector;
 
 public partial class YarnRoll : MonoBehaviour
 {
-    public enum Axis { X, Y, Z }
-
     [Header("A (goc cuon)")]
     [SerializeField] private Transform aTop;
     [SerializeField] private Transform aBottom;
     [SerializeField] private Renderer  aRenderer;
-
-    [Header("B (cube)")]
-    [SerializeField] private Transform bObject;
-    [SerializeField] private Renderer  bRenderer;
-    [SerializeField] private Axis       bAxis = Axis.Y;
 
     [Header("Quan")]
     [SerializeField] private float turns = 3f;
@@ -24,18 +17,51 @@ public partial class YarnRoll : MonoBehaviour
     [SerializeField, Min(2)] private int subdivisions = 24;
 
     [Header("Anim")]
-    [SerializeField] private float duration = 2f;
+    private float duration = 2f;
     [SerializeField, Range(0.05f, 0.6f)] private float reachEnd = 0.35f;
     [SerializeField, Range(0.6f, 0.97f)] private float pullStart = 0.85f;
+
+    // B set luc runtime qua Setup (khong keo tay), chi dung de raycast bam soi
+    private Transform bObject;
+    private Renderer  bRenderer;
 
     private float elapsed;
     private bool  running;
 
-    void Awake()
+    // ================= PUBLIC API =================
+    public void Setup(Renderer targetB, Color lineColor)
     {
-        EnsureRefs();
-        UpdateLine(0f);
+        bRenderer = targetB;
+        bObject   = targetB != null ? targetB.transform : null;
+        SetLineColor(lineColor);
     }
+
+    public void Play(float dur)
+    {
+        duration = dur;
+        elapsed = 0f;
+        running = true;
+    }
+
+    public void SetLineMaterial(Material m)
+    {
+        if (line != null) line.material = m;
+    }
+
+    public void SetLineColor(Color c)
+    {
+        if (line == null) return;
+        line.startColor = c;
+        line.endColor   = c;
+    }
+
+    // hook khi anim xong (de trong, noi su kien sau)
+    public void OnFinished()
+    {
+    }
+
+    // ================= LOOP =================
+    void Awake() => UpdateLine(0f);
 
     void Update()
     {
@@ -43,7 +69,11 @@ public partial class YarnRoll : MonoBehaviour
         elapsed += Time.deltaTime;
         float t = Mathf.Clamp01(elapsed / duration);
         UpdateLine(t);
-        if (t >= 1f) running = false;
+        if (t >= 1f)
+        {
+            running = false;
+            OnFinished();
+        }
     }
 
     void UpdateLine(float t)
@@ -72,12 +102,12 @@ public partial class YarnRoll : MonoBehaviour
         }
 
         SetStraightLine(headA, headB);
-        UpdateDissolveB(t);
         UpdateDissolveA(t);
     }
 
     void SetStraightLine(Vector3 from, Vector3 to)
     {
+        if (line == null) return;
         line.positionCount = subdivisions;
         for (int i = 0; i < subdivisions; i++)
         {
@@ -88,14 +118,18 @@ public partial class YarnRoll : MonoBehaviour
 
     static readonly RaycastHit[] _hitBuf = new RaycastHit[32];
 
+    Vector3 _lastBPoint;
+    bool    _hasLastB;
+
     Vector3 GetPointOnBound(float t)
     {
+        // B da bi destroy -> giu diem cuoi cung, khong nhay ve aTop
+        if (bRenderer == null)
+            return _hasLastB ? _lastBPoint : (aTop != null ? aTop.position : transform.position);
+
         Bounds bnd = bRenderer.bounds;
         Vector3 center = bnd.center;
-
-        float yTop = AxisExtreme(bnd, bAxis, true).y;
-        float yBot = AxisExtreme(bnd, bAxis, false).y;
-        float y = Mathf.Lerp(yTop, yBot, t);
+        float y = Mathf.Lerp(bnd.max.y, bnd.min.y, t);
 
         float u   = (t * turns) % 1f;
         float ang = u * Mathf.PI * 2f;
@@ -105,13 +139,20 @@ public partial class YarnRoll : MonoBehaviour
         Vector3 axisP  = new Vector3(center.x, y, center.z);
         Vector3 origin = axisP + dir * maxR;
 
+        Vector3 result;
         // ban tia tu ngoai vao truc -> be mat ngoai cung cua B
         if (RaycastSurface(origin, -dir, maxR, out Vector3 surf, out Vector3 nrm))
-            return surf - nrm * inset; // inset > 0: lun vao trong chut
+            result = surf - nrm * inset; // inset > 0: lun vao trong chut
+        else
+        {
+            // fallback: chu vi AABB neu tia truot
+            Vector3 xz = PerimeterPoint(u, bnd.min.x, bnd.max.x, bnd.min.z, bnd.max.z);
+            result = new Vector3(xz.x, y, xz.z);
+        }
 
-        // fallback: chu vi AABB neu tia truot
-        Vector3 xz = PerimeterPoint(u, bnd.min.x, bnd.max.x, bnd.min.z, bnd.max.z);
-        return new Vector3(xz.x, y, xz.z);
+        _lastBPoint = result;
+        _hasLastB = true;
+        return result;
     }
 
     bool RaycastSurface(Vector3 origin, Vector3 dir, float dist, out Vector3 point, out Vector3 normal)
@@ -150,28 +191,10 @@ public partial class YarnRoll : MonoBehaviour
         }
     }
 
-    Vector3 AxisExtreme(Bounds b, Axis axis, bool max)
-    {
-        Vector3 p = b.center;
-        switch (axis)
-        {
-            case Axis.X: p.x = max ? b.max.x : b.min.x; break;
-            case Axis.Y: p.y = max ? b.max.y : b.min.y; break;
-            case Axis.Z: p.z = max ? b.max.z : b.min.z; break;
-        }
-        return p;
-    }
-
-    void EnsureRefs()
-    {
-        if (bRenderer == null && bObject != null)
-            bRenderer = bObject.GetComponentInChildren<Renderer>();
-    }
-
+    // ================= EDITOR TEST =================
     [Button("Play Wrap", ButtonSizes.Large), GUIColor(0.4f, 1f, 0.5f)]
     void Btn_Play()
     {
-        EnsureRefs();
         elapsed = 0f;
         running = true;
     }
@@ -187,9 +210,5 @@ public partial class YarnRoll : MonoBehaviour
     [PropertyRange(0f, 1f), OnValueChanged(nameof(Scrub)), ShowInInspector]
     private float scrub = 0f;
 
-    void Scrub()
-    {
-        EnsureRefs();
-        UpdateLine(scrub);
-    }
+    void Scrub() => UpdateLine(scrub);
 }
