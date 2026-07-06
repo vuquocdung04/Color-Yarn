@@ -1,0 +1,33 @@
+using System.Collections.Generic;
+using Sirenix.OdinInspector;
+using UnityEngine;
+
+public enum LevelDifficulty
+{
+    Easy,
+    Hard
+}
+
+[System.Serializable]
+public class DataLevel
+{
+    public string levelName;
+
+    public LevelDifficulty difficulty;
+
+    public float minZoomCamera;
+    public float maxZoomCamera;
+    public int requiredLen;
+
+    [HorizontalGroup("Preview"), PreviewField(70), HideLabel]
+    public GameObject levelPrefab;
+
+    [HorizontalGroup("Preview"), PreviewField(70), HideLabel]
+    public Sprite levelSprite;
+}
+
+[CreateAssetMenu(fileName = "LevelDatabase", menuName = "Data/Level Database")]
+public class LevelDatabase : ScriptableObject
+{
+    [SerializeField] private List<DataLevel> levels;
+}
