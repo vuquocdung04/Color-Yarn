@@ -99,6 +99,12 @@ public partial class GameFlow : MonoBehaviour
 
     void OnLevelComplete(object _) => ChangeState(GameState.Win);
     public void TriggerLose() => ChangeState(GameState.Lose);
+
+    public void CheckLose()
+    {
+        if (HolesTemp.Instance.IsFull)
+            TriggerLose();
+    }
     public void EnterBooster() => ChangeState(GameState.BoosterActive);
     public void ExitBooster() => ChangeState(GameState.Playing);
     public void EnterTutorial() => ChangeState(GameState.Tutorial);

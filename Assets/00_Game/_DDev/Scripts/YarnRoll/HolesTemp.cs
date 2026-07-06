@@ -13,36 +13,58 @@ public class HolesTemp : MonoBehaviour
 
     public float Duration => duration;
 
-    private int _index;
-    private readonly List<YarnRoll> parked = new();
+    private YarnRoll[] occupants;
 
-    public void Init() => _index = 0;
-
-    public void Spawn(InteractableObject target)
+    public bool IsFull
     {
-        if (target == null || yarnRollPrefab == null || holes == null || holes.Count == 0) return;
+        get
+        {
+            foreach (var o in occupants) if (o == null) return false;
+            return true;
+        }
+    }
 
-        Transform hole = holes[_index];
-        _index = (_index + 1) % holes.Count;
+    public void Init()
+    {
+        occupants = new YarnRoll[holes != null ? holes.Count : 0];
+    }
 
+    public bool TrySpawn(InteractableObject target)
+    {
+        if (target == null || yarnRollPrefab == null || holes == null || holes.Count == 0) return false;
+
+        int idx = FindEmptySlot();
+        if (idx < 0) return false;
+
+        Transform hole = holes[idx];
         YarnRoll yr = Instantiate(yarnRollPrefab, hole.position, hole.rotation, hole);
         yr.Setup(target.GetComponent<Renderer>(), target.ColorKey);
         yr.Play(duration);
 
-        parked.Add(yr);
+        occupants[idx] = yr;
+
+        GameFlow.Instance?.CheckLose();
+        return true;
+    }
+
+    private int FindEmptySlot()
+    {
+        for (int i = 0; i < occupants.Length; i++)
+            if (occupants[i] == null) return i;
+        return -1;
     }
 
     public List<YarnRoll> TakeMatching(string key, int max)
     {
         var result = new List<YarnRoll>();
-        for (int i = parked.Count - 1; i >= 0 && result.Count < max; i--)
+        for (int i = 0; i < occupants.Length && result.Count < max; i++)
         {
-            var r = parked[i];
-            if (r == null) { parked.RemoveAt(i); continue; }
+            var r = occupants[i];
+            if (r == null) continue;
             if (r.ColorKey == key)
             {
                 result.Add(r);
-                parked.RemoveAt(i);
+                occupants[i] = null;
             }
         }
         return result;

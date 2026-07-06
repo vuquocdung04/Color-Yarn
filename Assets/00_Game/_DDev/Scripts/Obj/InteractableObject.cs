@@ -64,7 +64,7 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
     public void OnTap()
     {
         if (IsBusy) return;
-        BoxCreator.Instance?.Spawn(this);
+        if (BoxCreator.Instance == null || !BoxCreator.Instance.TrySpawn(this)) return;
         DissolveSequence(this.GetCancellationTokenOnDestroy()).Forget();
     }
 

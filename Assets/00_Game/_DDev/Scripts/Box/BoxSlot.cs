@@ -32,10 +32,16 @@ public class BoxSlot : MonoBehaviour
     public void SetColor(string key)
     {
         colorKey = key;
+        ApplySprites();
+    }
 
-        var entry = ColorRepo.Instance != null ? ColorRepo.Instance.GetSet(key) : null;
+    private void ApplySprites()
+    {
+        var entry = ColorRepo.Instance != null ? ColorRepo.Instance.GetSet(colorKey) : null;
         if (entry != null) SetSprites(entry.spriteBox, entry.spriteCover);
     }
+
+    private string NextColorKey() => "White";
 
     public void Spawn(InteractableObject target, float duration)
     {
@@ -50,7 +56,10 @@ public class BoxSlot : MonoBehaviour
         currentYarnRoll++;
 
         if (currentYarnRoll >= maxCapacity)
+        {
+            colorKey = NextColorKey();
             yr.Finished += OnLastRollFinished;
+        }
     }
 
     private void OnLastRollFinished()
@@ -76,12 +85,7 @@ public class BoxSlot : MonoBehaviour
         currentYarnRoll = 0;
         if (spriteCoverRenderer != null) spriteCoverRenderer.gameObject.SetActive(false);
 
-        OnBoxReset();
-    }
-
-    public void OnBoxReset()
-    {
-        SetColor("White");
+        ApplySprites();
         PullFromHoles();
     }
 
@@ -106,6 +110,9 @@ public class BoxSlot : MonoBehaviour
         }
 
         if (currentYarnRoll >= maxCapacity)
+        {
+            colorKey = NextColorKey();
             CloseAndResetAsync(this.GetCancellationTokenOnDestroy()).Forget();
+        }
     }
 }

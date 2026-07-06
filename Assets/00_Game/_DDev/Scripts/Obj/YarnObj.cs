@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class YarnObj : MonoBehaviour
 {
+    public static YarnObj Instance { get; private set; }
+
     [SerializeField] private Transform root;
     [SerializeField] private int minCube = 1;
     [SerializeField] private int maxCube = 3;
@@ -25,6 +27,7 @@ public class YarnObj : MonoBehaviour
 
     private void Init()
     {
+        Instance = this;
         interactableObjects = new List<InteractableObject>(GetComponentsInChildren<InteractableObject>());
         GenerateChildRuntime();
     }

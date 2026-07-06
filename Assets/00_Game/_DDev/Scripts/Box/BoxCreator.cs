@@ -14,7 +14,7 @@ public class BoxCreator : MonoBehaviour
         if (boxSlots.Count > 0) boxSlots[0].SetColor("Crimson");
     }
 
-    public void Spawn(InteractableObject target)
+    public bool TrySpawn(InteractableObject target)
     {
         string key = target.ColorKey;
         float duration = HolesTemp.Instance != null ? HolesTemp.Instance.Duration : 2f;
@@ -24,10 +24,10 @@ public class BoxCreator : MonoBehaviour
             if (box.CanAccept(key))
             {
                 box.Spawn(target, duration);
-                return;
+                return true;
             }
         }
 
-        HolesTemp.Instance?.Spawn(target);
+        return HolesTemp.Instance != null && HolesTemp.Instance.TrySpawn(target);
     }
 }
