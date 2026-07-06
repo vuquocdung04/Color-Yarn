@@ -8,6 +8,7 @@ public class InputController : MonoBehaviour
     public void InitInstance() => Instance = this;
 
     private Camera cam;
+    private Camera camUI;
     private InputMode _currentMode;
     private InputMode _normalMode;
     private InputMode _booster0Mode;
@@ -17,6 +18,7 @@ public class InputController : MonoBehaviour
     public void Init()
     {
         cam = GamePlayController.Instance.cameraGameplay;
+        camUI = GamePlayController.Instance.cameraUI;
 
         _normalMode = new NormalInputMode();
         _booster0Mode = new Booster0InputMode();
@@ -71,8 +73,15 @@ public class InputController : MonoBehaviour
         Vector2 screenPos = Pointer.current.position.ReadValue();
         Ray ray = cam.ScreenPointToRay(screenPos);
 
-        if (!Physics.Raycast(ray, out RaycastHit hit)) return;
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            _currentMode.HandleClick(hit);
+            return;
+        }
 
-        _currentMode.HandleClick(hit);
+        Ray rayUI = camUI.ScreenPointToRay(screenPos);
+        RaycastHit2D hit2D = Physics2D.Raycast(rayUI.origin, rayUI.direction);
+        if (hit2D.collider != null)
+            _currentMode.HandleClick2D(hit2D);
     }
 }

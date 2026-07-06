@@ -8,6 +8,23 @@ public class BoxCreator : MonoBehaviour
     public void InitInstance() => Instance = this;
 
     [SerializeField] private List<BoxSlot> boxSlots;
+    [SerializeField] private YarnRoll yarnRollPrefab;
+
+    [SerializeField] private float coverUpOffset = 6f;
+    [SerializeField] private float boxHopOffset = 7f;
+    [SerializeField] private float boxAnimDuration = 0.3f;
+
+    [SerializeField] private float boxDipOffset = 0.5f;
+    [SerializeField] private float boxDipDuration = 0.1f;
+    [SerializeField] private float boxHoldDuration = 0.1f;
+
+    public float CoverUpOffset => coverUpOffset;
+    public float BoxHopOffset => boxHopOffset;
+    public float BoxAnimDuration => boxAnimDuration;
+
+    public float BoxDipOffset => boxDipOffset;
+    public float BoxDipDuration => boxDipDuration;
+    public float BoxHoldDuration => boxHoldDuration;
 
     public void Init()
     {
@@ -23,7 +40,7 @@ public class BoxCreator : MonoBehaviour
         {
             if (box.CanAccept(key))
             {
-                box.Spawn(target, duration);
+                box.Spawn(target, yarnRollPrefab, duration);
                 return true;
             }
         }

@@ -14,4 +14,5 @@ public abstract class InputMode
     }
 
     public abstract void HandleClick(RaycastHit hit);
+    public abstract void HandleClick2D(RaycastHit2D hit);
 }

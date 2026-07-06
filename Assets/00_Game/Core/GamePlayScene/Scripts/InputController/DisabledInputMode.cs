@@ -4,6 +4,9 @@ public class DisabledInputMode : InputMode
 {
     public override void HandleClick(RaycastHit hit)
     {
-        // Do nothing
+    }
+
+    public override void HandleClick2D(RaycastHit2D hit)
+    {
     }
 }

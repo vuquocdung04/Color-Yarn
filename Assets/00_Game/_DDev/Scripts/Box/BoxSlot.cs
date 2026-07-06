@@ -1,26 +1,47 @@
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 
 public class BoxSlot : MonoBehaviour
 {
+    private const int MaxCapacity = 3;
+
     [SerializeField] private string colorKey;
     [SerializeField] private List<Transform> slots;
     [SerializeField] private SpriteRenderer spriteBoxRenderer;
     [SerializeField] private SpriteRenderer spriteCoverRenderer;
-    [SerializeField] private YarnRoll yarnRollPrefab;
-    [SerializeField] private int maxCapacity = 3;
+
+    [SerializeField] private bool isLocked;
+    [SerializeField] private GameObject lockObject;
+
+    [SerializeField] private ParticleSystem particleSystem;
 
     private readonly List<YarnRoll> spawnedRolls = new();
     private int currentYarnRoll;
 
     public string ColorKey => colorKey;
-    public bool CanAccept(string key) => colorKey == key && currentYarnRoll < maxCapacity;
+    public bool CanAccept(string key) => !isLocked && colorKey == key && currentYarnRoll < MaxCapacity;
 
     private void Awake()
     {
         if (spriteCoverRenderer != null) spriteCoverRenderer.gameObject.SetActive(false);
+        if (lockObject != null) lockObject.SetActive(isLocked);
+    }
+
+    public void OnTapped()
+    {
+        if (!isLocked) return;
+        Debug.Log($"[BoxSlot] tapped locked box {name} - popup here later");
+        Unlock();
+    }
+
+    private void Unlock()
+    {
+        isLocked = false;
+        SetColor(NextColorKey());
+        if (lockObject != null) lockObject.SetActive(false);
     }
 
     public void SetSprites(Sprite box, Sprite cover)
@@ -37,25 +58,29 @@ public class BoxSlot : MonoBehaviour
 
     private void ApplySprites()
     {
-        var entry = ColorRepo.Instance != null ? ColorRepo.Instance.GetSet(colorKey) : null;
+        var entry = ColorRepo.Instance.GetSet(colorKey);
         if (entry != null) SetSprites(entry.spriteBox, entry.spriteCover);
     }
 
-    private string NextColorKey() => "White";
-
-    public void Spawn(InteractableObject target, float duration)
+    private string NextColorKey()
     {
-        if (currentYarnRoll >= maxCapacity || currentYarnRoll >= slots.Count) return;
+        var entry = ColorRepo.Instance.GetRandom();
+        return entry != null ? entry.key : colorKey;
+    }
+
+    public void Spawn(InteractableObject target, YarnRoll prefab, float duration)
+    {
+        if (currentYarnRoll >= MaxCapacity || currentYarnRoll >= slots.Count) return;
 
         Transform slot = slots[currentYarnRoll];
-        YarnRoll yr = Instantiate(yarnRollPrefab, slot.position, slot.rotation, slot);
+        YarnRoll yr = Instantiate(prefab, slot.position, slot.rotation, slot);
         yr.Setup(target.GetComponent<Renderer>(), target.ColorKey);
         yr.Play(duration);
 
         spawnedRolls.Add(yr);
         currentYarnRoll++;
 
-        if (currentYarnRoll >= maxCapacity)
+        if (currentYarnRoll >= MaxCapacity)
         {
             colorKey = NextColorKey();
             yr.Finished += OnLastRollFinished;
@@ -67,33 +92,54 @@ public class BoxSlot : MonoBehaviour
         CloseAndResetAsync(this.GetCancellationTokenOnDestroy()).Forget();
     }
 
-    private void CloseLid()
-    {
-        if (spriteCoverRenderer != null) spriteCoverRenderer.gameObject.SetActive(true);
-    }
-
     private async UniTaskVoid CloseAndResetAsync(CancellationToken token)
     {
-        CloseLid();
+        float duration = BoxCreator.Instance.BoxAnimDuration;
+        Vector3 boxRestPos = transform.position;
+
+        if (spriteCoverRenderer != null)
+        {
+            Transform coverT = spriteCoverRenderer.transform;
+            Vector3 coverRestPos = coverT.position;
+            coverT.position = coverRestPos + Vector3.up * BoxCreator.Instance.CoverUpOffset;
+            spriteCoverRenderer.gameObject.SetActive(true);
+
+            await coverT.DOMove(coverRestPos, duration).SetEase(Ease.Linear).AsyncWaitForCompletion();
+
+            if (particleSystem != null) particleSystem.Play();
+        }
+
+        if (token.IsCancellationRequested) return;
+
+        Sequence boxSeq = DOTween.Sequence();
+        boxSeq.Append(transform.DOMoveY(boxRestPos.y - BoxCreator.Instance.BoxDipOffset, BoxCreator.Instance.BoxDipDuration).SetEase(Ease.InOutQuad));
+        boxSeq.AppendInterval(BoxCreator.Instance.BoxHoldDuration);
+        boxSeq.Append(transform.DOMoveY(boxRestPos.y + BoxCreator.Instance.BoxHopOffset, duration).SetEase(Ease.InOutQuad));
+
+        await boxSeq.AsyncWaitForCompletion();
+
+        if (token.IsCancellationRequested) return;
 
         foreach (var yr in spawnedRolls)
             if (yr != null) Destroy(yr.gameObject);
         spawnedRolls.Clear();
 
-        await UniTask.Delay(System.TimeSpan.FromSeconds(1f), cancellationToken: token);
-
         currentYarnRoll = 0;
         if (spriteCoverRenderer != null) spriteCoverRenderer.gameObject.SetActive(false);
 
         ApplySprites();
+
+        await transform.DOMoveY(boxRestPos.y, duration)
+            .SetEase(Ease.OutCubic).AsyncWaitForCompletion();
+
+        if (token.IsCancellationRequested) return;
+
         PullFromHoles();
     }
 
     private void PullFromHoles()
     {
-        if (HolesTemp.Instance == null) return;
-
-        int empty = maxCapacity - currentYarnRoll;
+        int empty = MaxCapacity - currentYarnRoll;
         if (empty <= 0) return;
 
         var rolls = HolesTemp.Instance.TakeMatching(colorKey, empty);
@@ -109,7 +155,7 @@ public class BoxSlot : MonoBehaviour
             currentYarnRoll++;
         }
 
-        if (currentYarnRoll >= maxCapacity)
+        if (currentYarnRoll >= MaxCapacity)
         {
             colorKey = NextColorKey();
             CloseAndResetAsync(this.GetCancellationTokenOnDestroy()).Forget();
