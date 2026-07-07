@@ -7448,7 +7448,6 @@ GameObject:
   m_Component:
   - component: {fileID: 388787326}
   - component: {fileID: 388787328}
-  - component: {fileID: 388787327}
   m_Layer: 5
   m_Name: bar_progress_level
   m_TagString: Untagged
@@ -7471,23 +7470,11 @@ RectTransform:
   - {fileID: 742935258}
   m_Father: {fileID: 301819363}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -132}
-  m_SizeDelta: {x: 0, y: 90.719}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -207}
+  m_SizeDelta: {x: 1440, y: 164}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &388787327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 388787325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ebcd9ad3b65aa3a9f20f7db0623a24e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!222 &388787328
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -31132,6 +31119,7 @@ GameObject:
   - component: {fileID: 1316276019}
   - component: {fileID: 1316276021}
   - component: {fileID: 1316276020}
+  - component: {fileID: 1316276022}
   m_Layer: 0
   m_Name: GamePlayController
   m_TagString: Untagged
@@ -31180,6 +31168,7 @@ MonoBehaviour:
   holesTemp: {fileID: 2066942797}
   colorRepo: {fileID: 667111711}
   boxCreator: {fileID: 542122482}
+  gameAlgorithm: {fileID: 1316276022}
 --- !u!114 &1316276020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31204,6 +31193,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5b2901681615ce4f882072805546ca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputController
+--- !u!114 &1316276022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316276017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c8f742e9a211360f099670aee6f0bc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameAlgorithm
+  targetDifficultyMin: 3
+  targetDifficultyMax: 6
 --- !u!1 &1318786818
 GameObject:
   m_ObjectHideFlags: 0
@@ -49517,8 +49520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::YarnObj
   root: {fileID: 99938315}
-  minCube: 0
-  maxCube: 3
+  requiredYarn: 18
   growDuration: 0.35
   growEase: 27
 --- !u!1 &1752761683

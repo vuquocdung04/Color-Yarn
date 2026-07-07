@@ -32,7 +32,6 @@ public partial class InteractableObject
         var child = core.GetComponent<InteractableObject>();
         child.totalCube = totalCube - 1;
         child.scaleRatio = scaleRatio;
-        child.ApplyRandomColor();
 
         child.BuildCore();
     }
@@ -70,9 +69,9 @@ public partial class InteractableObject
         }
     }
 
-    public void ApplyRandomColor()
+    public void ApplyColor(string key)
     {
-        var entry = ColorRepo.Instance != null ? ColorRepo.Instance.GetRandom() : null;
+        var entry = ColorRepo.Instance.GetSet(key);
         if (entry == null) return;
 
         Init();
@@ -81,6 +80,6 @@ public partial class InteractableObject
             _renderer.material = entry.material;
             _mat = _renderer.material;
         }
-        colorKey = entry.key;
+        colorKey = key;
     }
 }

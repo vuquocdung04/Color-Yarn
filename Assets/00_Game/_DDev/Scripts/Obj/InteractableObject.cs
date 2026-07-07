@@ -29,6 +29,13 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
     [SerializeField] private string colorKey;
     public string ColorKey => colorKey;
 
+    public int Layer { get; private set; }
+
+    public void DecrementLayer()
+    {
+        if (Layer > 1) Layer--;
+    }
+
     public bool IsBusy { get; private set; }
 
     public void Init()
@@ -52,6 +59,7 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
 
         var parentObj = transform.parent != null ? transform.parent.GetComponentInParent<InteractableObject>() : null;
         savedScale = parentObj != null ? parentObj.savedScale : transform.localScale;
+        Layer = parentObj != null ? parentObj.Layer + 1 : 1;
     }
 
     private static string CleanMaterialName(string matName)
@@ -85,6 +93,9 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
         {
             Owner?.AddLen(coreGo.GetComponent<InteractableObject>());
             coreGo.transform.SetParent(Root, true);
+
+            foreach (var obj in coreGo.GetComponentsInChildren<InteractableObject>())
+                if (obj != null) obj.DecrementLayer();
         }
 
         // 2) dissolve vo minh (chung duration voi YarnRoll qua HolesTemp)

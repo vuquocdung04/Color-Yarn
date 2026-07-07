@@ -28,7 +28,30 @@ public class BoxCreator : MonoBehaviour
 
     public void Init()
     {
-        if (boxSlots.Count > 0) boxSlots[0].SetColor("Crimson");
+    }
+
+    public void SetInitialColors()
+    {
+        var rootColors = YarnObj.Instance.GetRootColorKeys();
+        var used = new HashSet<string>();
+
+        for (int i = 0; i < boxSlots.Count && i < 2; i++)
+        {
+            string key = FindUnused(rootColors, used);
+            if (key == null) key = FindUnused(YarnObj.Instance.TotalByColor.Keys, used);
+
+            if (key == null) continue;
+            used.Add(key);
+            GameAlgorithm.Instance.Reserve(key);
+            boxSlots[i].SetColor(key);
+        }
+    }
+
+    private static string FindUnused(IEnumerable<string> candidates, HashSet<string> used)
+    {
+        foreach (var c in candidates)
+            if (!used.Contains(c)) return c;
+        return null;
     }
 
     public bool TrySpawn(InteractableObject target)

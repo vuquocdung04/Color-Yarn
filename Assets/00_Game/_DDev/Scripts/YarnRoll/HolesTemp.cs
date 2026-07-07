@@ -54,6 +54,17 @@ public class HolesTemp : MonoBehaviour
         return -1;
     }
 
+    public Dictionary<string, int> GetParkedColorCounts()
+    {
+        var result = new Dictionary<string, int>();
+        foreach (var o in occupants)
+        {
+            if (o == null || string.IsNullOrEmpty(o.ColorKey)) continue;
+            result[o.ColorKey] = result.TryGetValue(o.ColorKey, out int c) ? c + 1 : 1;
+        }
+        return result;
+    }
+
     public List<YarnRoll> TakeMatching(string key, int max)
     {
         var result = new List<YarnRoll>();

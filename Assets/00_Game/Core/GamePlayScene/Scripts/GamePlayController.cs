@@ -14,6 +14,7 @@ public class GamePlayController : Singleton<GamePlayController>
     public HolesTemp holesTemp;
     public ColorRepo colorRepo;
     public BoxCreator boxCreator;
+    public GameAlgorithm gameAlgorithm;
 
     protected override void OnAwake()
     {
@@ -30,6 +31,7 @@ public class GamePlayController : Singleton<GamePlayController>
         AudioManager.Instance?.PlayMusic("Normal Level Music (Cover) 1");
 
         await UniTask.WaitForEndOfFrame(this);
+        boxCreator.SetInitialColors();
         await UniTask.Delay(500);
         if (FXManager.Instance)
             FXManager.Instance.isNextSceneReady = true;
@@ -46,6 +48,7 @@ public class GamePlayController : Singleton<GamePlayController>
         holesTemp.InitInstance();
         colorRepo.InitInstance();
         boxCreator.InitInstance();
+        gameAlgorithm.InitInstance();
     }
 
     private void InitManagers()
@@ -57,5 +60,6 @@ public class GamePlayController : Singleton<GamePlayController>
         holesTemp.Init();
         colorRepo.Init();
         boxCreator.Init();
+        gameAlgorithm.Init();
     }
 }

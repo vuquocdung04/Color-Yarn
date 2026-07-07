@@ -20,6 +20,7 @@ public class BoxSlot : MonoBehaviour
 
     private readonly List<YarnRoll> spawnedRolls = new();
     private int currentYarnRoll;
+    private bool hasNextColor;
 
     public string ColorKey => colorKey;
     public bool CanAccept(string key) => !isLocked && colorKey == key && currentYarnRoll < MaxCapacity;
@@ -39,9 +40,17 @@ public class BoxSlot : MonoBehaviour
 
     private void Unlock()
     {
+        string key = GameAlgorithm.Instance.PickRescueColor();
+        if (string.IsNullOrEmpty(key))
+        {
+            Debug.LogError($"[BoxSlot] {name} unlock nhung khong con mau nao de chon");
+            return;
+        }
+
         isLocked = false;
-        SetColor(NextColorKey());
+        SetColor(key);
         if (lockObject != null) lockObject.SetActive(false);
+        PullFromHoles();
     }
 
     public void SetSprites(Sprite box, Sprite cover)
@@ -62,11 +71,7 @@ public class BoxSlot : MonoBehaviour
         if (entry != null) SetSprites(entry.spriteBox, entry.spriteCover);
     }
 
-    private string NextColorKey()
-    {
-        var entry = ColorRepo.Instance.GetRandom();
-        return entry != null ? entry.key : colorKey;
-    }
+    private string NextColorKey() => GameAlgorithm.Instance.PickNextColor();
 
     public void Spawn(InteractableObject target, YarnRoll prefab, float duration)
     {
@@ -82,7 +87,9 @@ public class BoxSlot : MonoBehaviour
 
         if (currentYarnRoll >= MaxCapacity)
         {
-            colorKey = NextColorKey();
+            string next = NextColorKey();
+            hasNextColor = !string.IsNullOrEmpty(next);
+            if (hasNextColor) colorKey = next;
             yr.Finished += OnLastRollFinished;
         }
     }
@@ -111,14 +118,16 @@ public class BoxSlot : MonoBehaviour
 
         if (token.IsCancellationRequested) return;
 
+        float targetY = hasNextColor ? boxRestPos.y + BoxCreator.Instance.BoxHopOffset : boxRestPos.y;
+
         Sequence boxSeq = DOTween.Sequence();
         boxSeq.Append(transform.DOMoveY(boxRestPos.y - BoxCreator.Instance.BoxDipOffset, BoxCreator.Instance.BoxDipDuration).SetEase(Ease.InOutQuad));
         boxSeq.AppendInterval(BoxCreator.Instance.BoxHoldDuration);
-        boxSeq.Append(transform.DOMoveY(boxRestPos.y + BoxCreator.Instance.BoxHopOffset, duration).SetEase(Ease.InOutQuad));
+        boxSeq.Append(transform.DOMoveY(targetY, duration).SetEase(Ease.InOutQuad));
 
         await boxSeq.AsyncWaitForCompletion();
 
-        if (token.IsCancellationRequested) return;
+        if (token.IsCancellationRequested || !hasNextColor) return;
 
         foreach (var yr in spawnedRolls)
             if (yr != null) Destroy(yr.gameObject);
@@ -157,7 +166,9 @@ public class BoxSlot : MonoBehaviour
 
         if (currentYarnRoll >= MaxCapacity)
         {
-            colorKey = NextColorKey();
+            string next = NextColorKey();
+            hasNextColor = !string.IsNullOrEmpty(next);
+            if (hasNextColor) colorKey = next;
             CloseAndResetAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
     }
