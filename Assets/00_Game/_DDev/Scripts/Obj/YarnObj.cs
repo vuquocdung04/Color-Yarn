@@ -8,6 +8,7 @@ public class YarnObj : MonoBehaviour
 
     [SerializeField] private Transform root;
     [SerializeField] private int requiredYarn = 20;
+    [SerializeField, Range(0f, 10f)] private float yarnDepthSpread = 0f;
 
     [Header("Grow")]
     [SerializeField] private float growDuration = 0.35f;
@@ -42,13 +43,7 @@ public class YarnObj : MonoBehaviour
             if (obj != null) obj.totalCube = 0;
 
         int extra = requiredYarn - interactableObjects.Count;
-        while (extra > 0 && interactableObjects.Count > 0)
-        {
-            var obj = interactableObjects[Random.Range(0, interactableObjects.Count)];
-            if (obj == null) continue;
-            obj.totalCube++;
-            extra--;
-        }
+        DistributeExtraCubes(extra);
 
         TotalLen = 0;
         foreach (var obj in interactableObjects)
@@ -60,6 +55,41 @@ public class YarnObj : MonoBehaviour
         }
 
         AssignColorsInGroups();
+    }
+
+    private void DistributeExtraCubes(int extra)
+    {
+        int n = interactableObjects.Count;
+        if (n == 0 || extra <= 0) return;
+
+        var weights = new float[n];
+        float totalWeight = 0f;
+        for (int i = 0; i < n; i++)
+        {
+            weights[i] = Mathf.Pow(Random.value, yarnDepthSpread);
+            totalWeight += weights[i];
+        }
+
+        var shares = new float[n];
+        var alloc = new int[n];
+        int allocatedSum = 0;
+        for (int i = 0; i < n; i++)
+        {
+            shares[i] = totalWeight > 0f ? weights[i] / totalWeight * extra : extra / (float)n;
+            alloc[i] = Mathf.FloorToInt(shares[i]);
+            allocatedSum += alloc[i];
+        }
+
+        var order = new List<int>();
+        for (int i = 0; i < n; i++) order.Add(i);
+        order.Sort((a, b) => (shares[b] - alloc[b]).CompareTo(shares[a] - alloc[a]));
+
+        int remainder = Mathf.Min(extra - allocatedSum, n);
+        for (int i = 0; i < remainder; i++)
+            alloc[order[i]]++;
+
+        for (int i = 0; i < n; i++)
+            if (interactableObjects[i] != null) interactableObjects[i].totalCube = alloc[i];
     }
 
     private void AssignColorsInGroups()

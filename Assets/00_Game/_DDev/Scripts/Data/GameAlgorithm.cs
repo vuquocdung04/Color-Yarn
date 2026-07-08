@@ -7,8 +7,7 @@ public class GameAlgorithm : MonoBehaviour
 
     public void InitInstance() => Instance = this;
 
-    [SerializeField] private int targetDifficultyMin = 3;
-    [SerializeField] private int targetDifficultyMax = 6;
+    [SerializeField, Range(0f, 1f)] private float boxDifficulty = 0.5f;
 
     private readonly Dictionary<string, int> remainingByColor = new();
 
@@ -38,18 +37,32 @@ public class GameAlgorithm : MonoBehaviour
         var candidates = new List<string>(remainingByColor.Keys);
         Shuffle(candidates);
 
-        string best = null;
-        int bestDiff = int.MaxValue;
+        var costs = new Dictionary<string, int>();
+        int minCost = int.MaxValue;
+        int maxCost = int.MinValue;
 
         foreach (var color in candidates)
         {
             if (remainingByColor[color] < 3) continue;
 
             int cost = ComputeColorCost(color, layersByColor, parkedByColor);
-            int diff = cost < targetDifficultyMin ? targetDifficultyMin - cost
-                     : cost > targetDifficultyMax ? cost - targetDifficultyMax
-                     : 0;
+            costs[color] = cost;
+            if (cost < minCost) minCost = cost;
+            if (cost > maxCost) maxCost = cost;
+        }
 
+        if (costs.Count == 0) return null;
+
+        float target = Mathf.Lerp(minCost, maxCost, boxDifficulty);
+
+        string best = null;
+        float bestDiff = float.MaxValue;
+
+        foreach (var color in candidates)
+        {
+            if (!costs.TryGetValue(color, out int cost)) continue;
+
+            float diff = Mathf.Abs(cost - target);
             if (diff < bestDiff)
             {
                 bestDiff = diff;
@@ -57,7 +70,7 @@ public class GameAlgorithm : MonoBehaviour
             }
         }
 
-        if (best != null) Reserve(best);
+        Reserve(best);
         return best;
     }
 
