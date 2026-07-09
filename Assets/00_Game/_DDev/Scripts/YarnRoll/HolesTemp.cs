@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using DG.Tweening;
+using EventDispatcher;
 using UnityEngine;
 
 public class HolesTemp : MonoBehaviour
@@ -7,19 +9,28 @@ public class HolesTemp : MonoBehaviour
 
     public void InitInstance() => Instance = this;
 
-    [SerializeField] private List<Transform> holes;
+    [SerializeField] private List<HoleTemp> holes;
     [SerializeField] private YarnRoll yarnRollPrefab;
     [SerializeField] private float duration = 2f;
+
+    [Header("Drill Booster")]
+    [SerializeField] private Drill drill;
+    [SerializeField] private int initialActiveHoleCount = 5;
+    [SerializeField] private float shiftDuration = 0.3f;
+    [SerializeField] private float waveDelay = 0.06f;
+    [SerializeField] private float scaleInDuration = 0.3f;
 
     public float Duration => duration;
 
     private YarnRoll[] occupants;
+    private int activeHoleCount;
 
     public bool IsFull
     {
         get
         {
-            foreach (var o in occupants) if (o == null) return false;
+            for (int i = 0; i < activeHoleCount; i++)
+                if (occupants[i] == null) return false;
             return true;
         }
     }
@@ -27,6 +38,49 @@ public class HolesTemp : MonoBehaviour
     public void Init()
     {
         occupants = new YarnRoll[holes != null ? holes.Count : 0];
+        activeHoleCount = Mathf.Min(initialActiveHoleCount, occupants.Length);
+
+        this.RegisterListener(EventID.BOOSTER_USE_REQUEST, OnUseRequest);
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
+        this.RemoveListener(EventID.BOOSTER_USE_REQUEST, OnUseRequest);
+    }
+
+    private void OnUseRequest(object param)
+    {
+        if ((BoosterType)param != BoosterType.Booster0) return;
+        ActivateExtraHole();
+    }
+
+    public void ActivateExtraHole()
+    {
+        if (activeHoleCount >= holes.Count) return;
+        if (drill == null) return;
+
+        float spacing = holes[1].transform.position.x - holes[0].transform.position.x;
+        Vector3 shift = new Vector3(-spacing / 2f, 0f, 0f);
+
+        HoleTemp lastHole = holes[initialActiveHoleCount - 1];
+        HoleTemp extraHole = holes[initialActiveHoleCount];
+        float targetX = lastHole.transform.position.x + spacing / 2f;
+
+        drill.MoveIn(targetX, () =>
+        {
+            for (int i = 0; i < initialActiveHoleCount; i++)
+                holes[i].ShiftWave(shift, shiftDuration, i * waveDelay);
+
+            Vector3 extraPos = extraHole.transform.position;
+            extraPos.x = targetX;
+            extraHole.transform.position = extraPos;
+
+            float waveTotal = shiftDuration + (initialActiveHoleCount - 1) * waveDelay;
+            DOVirtual.DelayedCall(waveTotal, () => drill.StartDrilling(() => extraHole.ScaleIn(scaleInDuration)));
+        });
+
+        activeHoleCount = holes.Count;
     }
 
     public bool TrySpawn(InteractableObject target)
@@ -36,8 +90,8 @@ public class HolesTemp : MonoBehaviour
         int idx = FindEmptySlot();
         if (idx < 0) return false;
 
-        Transform hole = holes[idx];
-        YarnRoll yr = Instantiate(yarnRollPrefab, hole.position, hole.rotation, hole);
+        Transform anchor = holes[idx].Anchor;
+        YarnRoll yr = Instantiate(yarnRollPrefab, anchor.position, anchor.rotation, anchor);
         yr.Setup(target.GetComponent<Renderer>(), target.ColorKey);
         yr.Play(duration);
 
@@ -49,7 +103,7 @@ public class HolesTemp : MonoBehaviour
 
     private int FindEmptySlot()
     {
-        for (int i = 0; i < occupants.Length; i++)
+        for (int i = 0; i < activeHoleCount; i++)
             if (occupants[i] == null) return i;
         return -1;
     }
@@ -57,8 +111,9 @@ public class HolesTemp : MonoBehaviour
     public Dictionary<string, int> GetParkedColorCounts()
     {
         var result = new Dictionary<string, int>();
-        foreach (var o in occupants)
+        for (int i = 0; i < activeHoleCount; i++)
         {
+            var o = occupants[i];
             if (o == null || string.IsNullOrEmpty(o.ColorKey)) continue;
             result[o.ColorKey] = result.TryGetValue(o.ColorKey, out int c) ? c + 1 : 1;
         }
@@ -68,7 +123,7 @@ public class HolesTemp : MonoBehaviour
     public List<YarnRoll> TakeMatching(string key, int max)
     {
         var result = new List<YarnRoll>();
-        for (int i = 0; i < occupants.Length && result.Count < max; i++)
+        for (int i = 0; i < activeHoleCount && result.Count < max; i++)
         {
             var r = occupants[i];
             if (r == null) continue;

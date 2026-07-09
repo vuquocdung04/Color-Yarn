@@ -305,11 +305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 754017bfbea5e0847a4f92e996436279, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DissolveDecoration
-  owner: {fileID: 0}
-  percent: 0
-  delay: 0
-  startTime: 0
-  isDissolving: 0
 --- !u!1 &85730491
 GameObject:
   m_ObjectHideFlags: 0
@@ -1957,7 +1952,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 290527118}
-  - component: {fileID: 290527120}
+  - component: {fileID: 290527119}
   m_Layer: 5
   m_Name: HoleTemp (2)
   m_TagString: Untagged
@@ -1981,7 +1976,7 @@ Transform:
   - {fileID: 1830352517}
   m_Father: {fileID: 679576605}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &290527120
+--- !u!114 &290527119
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1990,9 +1985,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 290527117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1691460924, guid: c6e0548b115defe4a846c4a1e55d2008, type: 3}
+  m_Script: {fileID: 11500000, guid: 90dc8208d365f8a4d887ffee5736be04, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoleTemp
+  anchor: {fileID: 1830352517}
 --- !u!1 &301819362
 GameObject:
   m_ObjectHideFlags: 0
@@ -7951,11 +7947,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 754017bfbea5e0847a4f92e996436279, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DissolveDecoration
-  owner: {fileID: 0}
-  percent: 0
-  delay: 0
-  startTime: 0
-  isDissolving: 0
 --- !u!1 &458262574
 GameObject:
   m_ObjectHideFlags: 0
@@ -9463,7 +9454,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 589283908}
-  - component: {fileID: 589283910}
+  - component: {fileID: 589283909}
   m_Layer: 5
   m_Name: HoleTemp (1)
   m_TagString: Untagged
@@ -9487,7 +9478,7 @@ Transform:
   - {fileID: 161069347}
   m_Father: {fileID: 679576605}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &589283910
+--- !u!114 &589283909
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9496,9 +9487,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 589283907}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1691460924, guid: c6e0548b115defe4a846c4a1e55d2008, type: 3}
+  m_Script: {fileID: 11500000, guid: 90dc8208d365f8a4d887ffee5736be04, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoleTemp
+  anchor: {fileID: 161069347}
 --- !u!114 &599911463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11243,12 +11235,12 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 987661701}
   m_Father: {fileID: 2025162634}
-  m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &875731156
 GameObject:
   m_ObjectHideFlags: 0
@@ -31955,7 +31947,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1409019365}
-  - component: {fileID: 1409019367}
+  - component: {fileID: 1409019366}
   m_Layer: 5
   m_Name: HoleTemp (3)
   m_TagString: Untagged
@@ -31979,7 +31971,7 @@ Transform:
   - {fileID: 180277604}
   m_Father: {fileID: 679576605}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1409019367
+--- !u!114 &1409019366
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -31988,9 +31980,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1409019364}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1691460924, guid: c6e0548b115defe4a846c4a1e55d2008, type: 3}
+  m_Script: {fileID: 11500000, guid: 90dc8208d365f8a4d887ffee5736be04, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoleTemp
+  anchor: {fileID: 180277604}
 --- !u!1 &1414303894
 GameObject:
   m_ObjectHideFlags: 0
@@ -34395,7 +34388,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1416068289}
-  - component: {fileID: 1416068291}
+  - component: {fileID: 1416068290}
   m_Layer: 5
   m_Name: HoleTemp (4)
   m_TagString: Untagged
@@ -34419,7 +34412,7 @@ Transform:
   - {fileID: 1087584738}
   m_Father: {fileID: 679576605}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1416068291
+--- !u!114 &1416068290
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -34428,9 +34421,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1416068288}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1691460924, guid: c6e0548b115defe4a846c4a1e55d2008, type: 3}
+  m_Script: {fileID: 11500000, guid: 90dc8208d365f8a4d887ffee5736be04, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoleTemp
+  anchor: {fileID: 1087584738}
 --- !u!1 &1419327647
 GameObject:
   m_ObjectHideFlags: 0
@@ -34596,7 +34590,7 @@ GameObject:
   - component: {fileID: 1440776038}
   m_Layer: 5
   m_Name: CanvasMain
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35004,6 +34998,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1482406698}
+  - component: {fileID: 1482406700}
   - component: {fileID: 1482406699}
   m_Layer: 5
   m_Name: HoleTemp (5)
@@ -35125,6 +35120,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1482406700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482406697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90dc8208d365f8a4d887ffee5736be04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoleTemp
+  anchor: {fileID: 1657720263}
 --- !u!1 &1483942570
 GameObject:
   m_ObjectHideFlags: 0
@@ -35781,8 +35789,8 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1514412917}
   m_Enabled: 1
-  m_SortingLayerID: 178439135
-  m_SortingLayer: 2
+  m_SortingLayerID: 469351437
+  m_SortingLayer: 3
   m_SortingOrder: 20
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
@@ -52458,8 +52466,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1939823530}
-  - component: {fileID: 1939823532}
   - component: {fileID: 1939823531}
+  - component: {fileID: 1939823532}
   m_Layer: 5
   m_Name: HoleTemp
   m_TagString: Untagged
@@ -52589,9 +52597,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1939823529}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1691460924, guid: c6e0548b115defe4a846c4a1e55d2008, type: 3}
+  m_Script: {fileID: 11500000, guid: 90dc8208d365f8a4d887ffee5736be04, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoleTemp
+  anchor: {fileID: 343470898}
 --- !u!1 &1940402951
 GameObject:
   m_ObjectHideFlags: 0
@@ -53149,8 +53158,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 469351437
+  m_SortingLayer: 3
   m_SortingOrder: -1
   m_MaskInteraction: 0
   m_RenderMode: 0
@@ -55578,7 +55587,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2025162634}
   - component: {fileID: 2025162636}
-  - component: {fileID: 2025162635}
   m_Layer: 5
   m_Name: Drill
   m_TagString: Untagged
@@ -55596,35 +55604,13 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 870042346}
   - {fileID: 1514412918}
   m_Father: {fileID: 2066942791}
-  m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
---- !u!95 &2025162635
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2025162633}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 73ee3dac9b6cd1a4cbabace26c168df9, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2025162636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55634,9 +55620,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2025162633}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 622594744, guid: c6e0548b115defe4a846c4a1e55d2008, type: 3}
+  m_Script: {fileID: 11500000, guid: 8dfc6adea10decc4999fef12c6698cc6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::Drill
+  particle: {fileID: 1514412921}
+  holdDuration: 0.2
+  moveDuration: 0.3
+  duration: 0.7
 --- !u!1 &2027003373
 GameObject:
   m_ObjectHideFlags: 0
@@ -58443,13 +58433,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HolesTemp
   holes:
-  - {fileID: 343470898}
-  - {fileID: 161069347}
-  - {fileID: 1830352517}
-  - {fileID: 180277604}
-  - {fileID: 1087584738}
+  - {fileID: 1939823532}
+  - {fileID: 589283909}
+  - {fileID: 290527119}
+  - {fileID: 1409019366}
+  - {fileID: 1416068290}
+  - {fileID: 1482406700}
   yarnRollPrefab: {fileID: 1509516457}
   duration: 1
+  drill: {fileID: 2025162636}
+  initialActiveHoleCount: 5
+  shiftDuration: 0.3
+  waveDelay: 0.06
+  scaleInDuration: 0.3
 --- !u!1 &2070741455
 GameObject:
   m_ObjectHideFlags: 0
@@ -59457,8 +59453,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 469351437
+  m_SortingLayer: 3
   m_SortingOrder: 1
   m_MaskInteraction: 0
   m_RenderMode: 0
@@ -64224,11 +64220,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 754017bfbea5e0847a4f92e996436279, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DissolveDecoration
-  owner: {fileID: 0}
-  percent: 0
-  delay: 0
-  startTime: 0
-  isDissolving: 0
 --- !u!1 &2124169857
 GameObject:
   m_ObjectHideFlags: 0
