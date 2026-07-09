@@ -2,19 +2,11 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public enum LevelDifficulty
-{
-    Easy,
-    Hard
-}
 
 [System.Serializable]
 public class DataLevel
 {
     public string levelName;
-
-    public LevelDifficulty difficulty;
-
     public float minZoomCamera;
     public float maxZoomCamera;
     public int requiredLen;

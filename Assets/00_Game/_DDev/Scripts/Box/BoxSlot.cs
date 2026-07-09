@@ -19,6 +19,7 @@ public class BoxSlot : MonoBehaviour
     [SerializeField] private ParticleSystem particleSystem;
 
     private readonly List<YarnRoll> spawnedRolls = new();
+    private readonly List<YarnRoll> reservedRolls = new();
     private int currentYarnRoll;
     private bool hasNextColor;
 
@@ -50,7 +51,8 @@ public class BoxSlot : MonoBehaviour
         isLocked = false;
         SetColor(key);
         if (lockObject != null) lockObject.SetActive(false);
-        PullFromHoles();
+        ReserveFromHoles();
+        PlaceReservedRolls();
     }
 
     public void SetSprites(Sprite box, Sprite cover)
@@ -73,6 +75,23 @@ public class BoxSlot : MonoBehaviour
 
     private string NextColorKey() => GameAlgorithm.Instance.PickNextColor();
 
+    private void AdvanceToNextColor()
+    {
+        string next = NextColorKey();
+        hasNextColor = !string.IsNullOrEmpty(next);
+        if (hasNextColor)
+        {
+            colorKey = next;
+            ReserveFromHoles();
+        }
+    }
+
+    private void ReserveFromHoles()
+    {
+        var rolls = HolesTemp.Instance.TakeMatching(colorKey, MaxCapacity);
+        reservedRolls.AddRange(rolls);
+    }
+
     public void Spawn(InteractableObject target, YarnRoll prefab, float duration)
     {
         if (currentYarnRoll >= MaxCapacity || currentYarnRoll >= slots.Count) return;
@@ -87,9 +106,7 @@ public class BoxSlot : MonoBehaviour
 
         if (currentYarnRoll >= MaxCapacity)
         {
-            string next = NextColorKey();
-            hasNextColor = !string.IsNullOrEmpty(next);
-            if (hasNextColor) colorKey = next;
+            AdvanceToNextColor();
             yr.Finished += OnLastRollFinished;
         }
     }
@@ -143,18 +160,17 @@ public class BoxSlot : MonoBehaviour
 
         if (token.IsCancellationRequested) return;
 
-        PullFromHoles();
+        PlaceReservedRolls();
     }
 
-    private void PullFromHoles()
+    private void PlaceReservedRolls()
     {
-        int empty = MaxCapacity - currentYarnRoll;
-        if (empty <= 0) return;
-
-        var rolls = HolesTemp.Instance.TakeMatching(colorKey, empty);
-        foreach (var r in rolls)
+        while (reservedRolls.Count > 0 && currentYarnRoll < MaxCapacity && currentYarnRoll < slots.Count)
         {
-            if (r == null || currentYarnRoll >= slots.Count) continue;
+            YarnRoll r = reservedRolls[0];
+            reservedRolls.RemoveAt(0);
+            if (r == null) continue;
+
             Transform slot = slots[currentYarnRoll];
             r.transform.SetParent(slot);
             r.transform.localPosition = Vector3.zero;
@@ -166,9 +182,7 @@ public class BoxSlot : MonoBehaviour
 
         if (currentYarnRoll >= MaxCapacity)
         {
-            string next = NextColorKey();
-            hasNextColor = !string.IsNullOrEmpty(next);
-            if (hasNextColor) colorKey = next;
+            AdvanceToNextColor();
             CloseAndResetAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
     }
