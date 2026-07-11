@@ -15,6 +15,8 @@ public class GamePlayController : Singleton<GamePlayController>
     public ColorRepo colorRepo;
     public BoxCreator boxCreator;
     public GameAlgorithm gameAlgorithm;
+    public AweSomeBox aweSomeBox;
+    public LevelController levelController;
 
     protected override void OnAwake()
     {
@@ -49,10 +51,13 @@ public class GamePlayController : Singleton<GamePlayController>
         colorRepo.InitInstance();
         boxCreator.InitInstance();
         gameAlgorithm.InitInstance();
+        aweSomeBox.InitInstance();
+        levelController.InitInstance();
     }
 
     private void InitManagers()
     {
+        levelController.Init();
         gameScene.Init();
         handAnimation.Init();
         inputController.Init();
@@ -61,5 +66,6 @@ public class GamePlayController : Singleton<GamePlayController>
         colorRepo.Init();
         boxCreator.Init();
         gameAlgorithm.Init();
+        aweSomeBox.Init();
     }
 }

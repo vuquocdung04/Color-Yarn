@@ -25,4 +25,6 @@ public class DataLevel
 public class LevelDatabase : ScriptableObject
 {
     [SerializeField] private List<DataLevel> levels;
+
+    public List<DataLevel> Levels => levels;
 }

@@ -14,16 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelDatabase
   levels:
   - levelName: level_1
-    difficulty: 0
-    minZoomCamera: 0
-    maxZoomCamera: 0
-    requiredLen: 0
-    levelPrefab: {fileID: 0}
+    minZoomCamera: 3
+    maxZoomCamera: 6
+    requiredLen: 15
+    boxDifficulty: 0
+    yarnDepthSpread: 0
+    levelPrefab: {fileID: 7846591595006166598, guid: 827f0d71d2c6de040b2936ec6a7ada7b, type: 3}
     levelSprite: {fileID: 0}
   - levelName: 
-    difficulty: 0
     minZoomCamera: 0
     maxZoomCamera: 0
     requiredLen: 0
+    boxDifficulty: 0
+    yarnDepthSpread: 0
     levelPrefab: {fileID: 0}
     levelSprite: {fileID: 0}

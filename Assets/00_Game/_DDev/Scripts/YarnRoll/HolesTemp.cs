@@ -20,6 +20,9 @@ public class HolesTemp : MonoBehaviour
     [SerializeField] private float waveDelay = 0.06f;
     [SerializeField] private float scaleInDuration = 0.3f;
 
+    [Header("Bloom Booster")]
+    [SerializeField] private Bloom bloom;
+
     public float Duration => duration;
 
     private YarnRoll[] occupants;
@@ -32,6 +35,16 @@ public class HolesTemp : MonoBehaviour
             for (int i = 0; i < activeHoleCount; i++)
                 if (occupants[i] == null) return false;
             return true;
+        }
+    }
+
+    public bool HasAnyOccupant
+    {
+        get
+        {
+            for (int i = 0; i < activeHoleCount; i++)
+                if (occupants[i] != null) return true;
+            return false;
         }
     }
 
@@ -51,8 +64,9 @@ public class HolesTemp : MonoBehaviour
 
     private void OnUseRequest(object param)
     {
-        if ((BoosterType)param != BoosterType.Booster0) return;
-        ActivateExtraHole();
+        var type = (BoosterType)param;
+        if (type == BoosterType.Booster0) ActivateExtraHole();
+        else if (type == BoosterType.Booster2 && HasAnyOccupant) bloom.Activate();
     }
 
     public void ActivateExtraHole()
@@ -97,8 +111,20 @@ public class HolesTemp : MonoBehaviour
 
         occupants[idx] = yr;
 
-        GameFlow.Instance?.CheckLose();
+        if (IsFull)
+        {
+            InputController.Instance.SetWaitingMode();
+            if (!BoxCreator.Instance.HasAnyBoxClosing)
+                GameFlow.Instance?.TriggerLose();
+        }
+
         return true;
+    }
+
+    public void RecheckLose()
+    {
+        if (IsFull) GameFlow.Instance?.TriggerLose();
+        else InputController.Instance.RestoreNormalMode();
     }
 
     private int FindEmptySlot()
@@ -132,6 +158,18 @@ public class HolesTemp : MonoBehaviour
                 result.Add(r);
                 occupants[i] = null;
             }
+        }
+        return result;
+    }
+
+    public List<YarnRoll> ClearAll()
+    {
+        var result = new List<YarnRoll>();
+        for (int i = 0; i < activeHoleCount; i++)
+        {
+            if (occupants[i] == null) continue;
+            result.Add(occupants[i]);
+            occupants[i] = null;
         }
         return result;
     }

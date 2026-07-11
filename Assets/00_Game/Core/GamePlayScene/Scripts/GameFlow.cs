@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using EventDispatcher;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -97,14 +98,19 @@ public partial class GameFlow : MonoBehaviour
             ChangeState(GameState.Playing);
     }
 
-    void OnLevelComplete(object _) => ChangeState(GameState.Win);
+    void OnLevelComplete(object _)
+    {
+        ShowWinAfterDelay().Forget();
+    }
+
+    private async UniTaskVoid ShowWinAfterDelay()
+    {
+        await UniTask.Delay(1000);
+        ChangeState(GameState.Win);
+    }
+
     public void TriggerLose() => ChangeState(GameState.Lose);
 
-    public void CheckLose()
-    {
-        if (HolesTemp.Instance.IsFull)
-            TriggerLose();
-    }
     public void EnterBooster() => ChangeState(GameState.BoosterActive);
     public void ExitBooster() => ChangeState(GameState.Playing);
     public void EnterTutorial() => ChangeState(GameState.Tutorial);

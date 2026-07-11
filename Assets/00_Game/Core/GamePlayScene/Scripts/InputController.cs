@@ -58,6 +58,7 @@ public class InputController : MonoBehaviour
 
     public void SetBooster0Mode() => SetMode(_booster0Mode);
     public void SetBooster2Mode() => SetMode(_booster2Mode);
+    public void SetWaitingMode() => SetMode(_disabledMode);
     public void RestoreNormalMode() => SetMode(_normalMode);
 
     private void Update()

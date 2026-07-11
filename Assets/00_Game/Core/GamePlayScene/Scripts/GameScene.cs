@@ -26,6 +26,7 @@ public class GameScene : MonoBehaviour
     {
         boosterController.Init();
         topBar.Init();
+        topBar.SetRequiredYarn(LevelController.Instance.CurrentYarnObj.TotalLen);
     }
 
     public static void EnableDarkPanel(bool state)

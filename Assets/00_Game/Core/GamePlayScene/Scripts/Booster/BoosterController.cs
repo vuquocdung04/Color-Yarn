@@ -61,6 +61,12 @@ public partial class BoosterController : MonoBehaviour
         var item = FindItem(type);
         if (item == null) return;
 
+        if (type == BoosterType.Booster2 && !HolesTemp.Instance.HasAnyOccupant)
+        {
+            ToastManager.Instance.ShowToast("No yarn to sweep!");
+            return;
+        }
+
         CheckAndClearTutorialPhase1(type, item);
 
         if (_active != null)

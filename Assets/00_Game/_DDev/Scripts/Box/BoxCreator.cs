@@ -26,19 +26,22 @@ public class BoxCreator : MonoBehaviour
     public float BoxDipDuration => boxDipDuration;
     public float BoxHoldDuration => boxHoldDuration;
 
+    public bool HasAnyBoxClosing => boxSlots.Exists(b => b.IsClosing);
+
     public void Init()
     {
     }
 
     public void SetInitialColors()
     {
-        var rootColors = YarnObj.Instance.GetRootColorKeys();
+        var yarnObj = LevelController.Instance.CurrentYarnObj;
+        var rootColors = yarnObj.GetRootColorKeys();
         var used = new HashSet<string>();
 
         for (int i = 0; i < boxSlots.Count && i < 2; i++)
         {
             string key = FindUnused(rootColors, used);
-            if (key == null) key = FindUnused(YarnObj.Instance.TotalByColor.Keys, used);
+            if (key == null) key = FindUnused(yarnObj.TotalByColor.Keys, used);
 
             if (key == null) continue;
             used.Add(key);

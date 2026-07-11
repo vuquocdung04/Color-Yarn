@@ -7,13 +7,15 @@ public class GameAlgorithm : MonoBehaviour
 
     public void InitInstance() => Instance = this;
 
-    [SerializeField, Range(0f, 1f)] private float boxDifficulty = 0.5f;
+    private float boxDifficulty = 0.5f;
 
     private readonly Dictionary<string, int> remainingByColor = new();
 
     public void Init()
     {
     }
+
+    public void SetDifficulty(float difficulty) => boxDifficulty = difficulty;
 
     public void RegisterTotals(IReadOnlyDictionary<string, int> totals)
     {
@@ -31,7 +33,7 @@ public class GameAlgorithm : MonoBehaviour
 
     public string PickNextColor()
     {
-        var layersByColor = YarnObj.Instance.GetLayersByColor();
+        var layersByColor = LevelController.Instance.CurrentYarnObj.GetLayersByColor();
         var parkedByColor = HolesTemp.Instance.GetParkedColorCounts();
 
         var candidates = new List<string>(remainingByColor.Keys);

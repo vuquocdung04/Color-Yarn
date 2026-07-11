@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class YarnObj : MonoBehaviour
 {
-    public static YarnObj Instance { get; private set; }
-
     [SerializeField] private Transform root;
-    [SerializeField] private int requiredYarn = 20;
-    [SerializeField, Range(0f, 10f)] private float yarnDepthSpread = 0f;
+
+    private float yarnDepthSpread;
 
     [Header("Grow")]
     [SerializeField] private float growDuration = 0.35f;
@@ -25,11 +23,9 @@ public class YarnObj : MonoBehaviour
     public int CurrentLen { get; private set; }
     public IReadOnlyDictionary<string, int> TotalByColor => totalByColor;
 
-    private void Start() => Init();
-
-    private void Init()
+    public void Init(int requiredYarn, float yarnDepthSpread)
     {
-        Instance = this;
+        this.yarnDepthSpread = yarnDepthSpread;
         interactableObjects = new List<InteractableObject>(GetComponentsInChildren<InteractableObject>());
         GenerateChildRuntime(requiredYarn);
     }
