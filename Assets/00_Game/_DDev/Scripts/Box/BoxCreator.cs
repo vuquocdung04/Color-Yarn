@@ -57,6 +57,8 @@ public class BoxCreator : MonoBehaviour
         return null;
     }
 
+    public bool TryInstantFill(BoxSlot box) => box.TryInstantFill(yarnRollPrefab);
+
     public bool TrySpawn(InteractableObject target)
     {
         string key = target.ColorKey;

@@ -30,6 +30,10 @@ public class Drill : MonoBehaviour
 
         if (particle != null) particle.Play();
 
-        DOVirtual.DelayedCall(duration, () => gameObject.SetActive(false));
+        DOVirtual.DelayedCall(duration, () =>
+        {
+            gameObject.SetActive(false);
+            BoosterController.Instance.OnBoosterActionSuccess();
+        });
     }
 }

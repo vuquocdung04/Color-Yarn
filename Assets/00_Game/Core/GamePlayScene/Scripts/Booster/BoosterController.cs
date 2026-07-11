@@ -85,7 +85,7 @@ public partial class BoosterController : MonoBehaviour
                 break;
 
             case BoosterType.Booster1:
-                OnBoosterActionSuccess();
+                InputController.Instance.SetBooster1Mode();
                 break;
 
             case BoosterType.Booster2:

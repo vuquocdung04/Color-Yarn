@@ -55,6 +55,8 @@ public partial class YarnRoll : MonoBehaviour
         running = true;
     }
 
+    public void ShowCompleted() => UpdateLine(1f);
+
     public void SetLineMaterial(Material m)
     {
         if (line != null) line.material = m;

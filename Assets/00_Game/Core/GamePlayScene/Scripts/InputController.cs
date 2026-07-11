@@ -12,6 +12,7 @@ public class InputController : MonoBehaviour
     private InputMode _currentMode;
     private InputMode _normalMode;
     private InputMode _booster0Mode;
+    private InputMode _booster1Mode;
     private InputMode _booster2Mode;
     private InputMode _disabledMode;
 
@@ -22,6 +23,7 @@ public class InputController : MonoBehaviour
 
         _normalMode = new NormalInputMode();
         _booster0Mode = new Booster0InputMode();
+        _booster1Mode = new Booster1InputMode();
         _booster2Mode = new Booster2InputMode();
         _disabledMode = new DisabledInputMode();
 
@@ -57,6 +59,7 @@ public class InputController : MonoBehaviour
     }
 
     public void SetBooster0Mode() => SetMode(_booster0Mode);
+    public void SetBooster1Mode() => SetMode(_booster1Mode);
     public void SetBooster2Mode() => SetMode(_booster2Mode);
     public void SetWaitingMode() => SetMode(_disabledMode);
     public void RestoreNormalMode() => SetMode(_normalMode);

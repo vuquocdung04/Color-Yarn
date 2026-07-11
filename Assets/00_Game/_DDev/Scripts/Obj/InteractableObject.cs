@@ -118,6 +118,26 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
         Destroy(gameObject);
     }
 
+    public void InstantConsume()
+    {
+        GameObject coreGo = core;
+
+        Owner?.RemoveLen(this);
+
+        if (coreGo != null)
+        {
+            Owner?.AddLen(coreGo.GetComponent<InteractableObject>());
+            coreGo.transform.SetParent(Root, true);
+
+            foreach (var obj in coreGo.GetComponentsInChildren<InteractableObject>())
+                if (obj != null) obj.DecrementLayer();
+
+            _ = coreGo.transform.DOScale(savedScale, growDuration).SetEase(growEase);
+        }
+
+        Destroy(gameObject);
+    }
+
     public void ResetDissolve()
     {
         Init();

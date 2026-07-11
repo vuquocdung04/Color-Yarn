@@ -180,6 +180,25 @@ public class YarnObj : MonoBehaviour
         dict[key] = dict.TryGetValue(key, out int c) ? c + 1 : 1;
     }
 
+    public int ConsumeRandomByColor(string colorKey, int count)
+    {
+        var matches = new List<InteractableObject>();
+        foreach (var obj in GetComponentsInChildren<InteractableObject>())
+            if (obj != null && obj.ColorKey == colorKey && obj.Layer == 1) matches.Add(obj);
+
+        for (int i = matches.Count - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
+            (matches[i], matches[j]) = (matches[j], matches[i]);
+        }
+
+        int take = Mathf.Min(count, matches.Count);
+        for (int i = 0; i < take; i++)
+            matches[i].InstantConsume();
+
+        return take;
+    }
+
     public void AddLen(InteractableObject obj)
     {
         if (obj != null) interactableObjects.Add(obj);

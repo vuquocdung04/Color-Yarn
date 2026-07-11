@@ -25,6 +25,7 @@ public class BoxSlot : MonoBehaviour
     private bool hasNextColor;
 
     public bool IsClosing { get; private set; }
+    public bool IsLocked => isLocked;
 
     public string ColorKey => colorKey;
     public bool CanAccept(string key) => !isLocked && colorKey == key && currentYarnRoll < MaxCapacity;
@@ -121,6 +122,35 @@ public class BoxSlot : MonoBehaviour
             AdvanceToNextColor();
             yr.Finished += OnLastRollFinished;
         }
+    }
+
+    public bool TryInstantFill(YarnRoll prefab)
+    {
+        if (isLocked) return false;
+
+        int needed = MaxCapacity - currentYarnRoll;
+        if (needed <= 0) return false;
+
+        int taken = LevelController.Instance.CurrentYarnObj.ConsumeRandomByColor(colorKey, needed);
+
+        for (int i = 0; i < taken && currentYarnRoll < slots.Count; i++)
+        {
+            Transform slot = slots[currentYarnRoll];
+            YarnRoll yr = Instantiate(prefab, slot.position, slot.rotation, slot);
+            yr.Setup(null, colorKey);
+            yr.ShowCompleted();
+
+            spawnedRolls.Add(yr);
+            currentYarnRoll++;
+        }
+
+        if (currentYarnRoll >= MaxCapacity)
+        {
+            AdvanceToNextColor();
+            CloseAndResetAsync(this.GetCancellationTokenOnDestroy()).Forget();
+        }
+
+        return true;
     }
 
     private void OnLastRollFinished()
