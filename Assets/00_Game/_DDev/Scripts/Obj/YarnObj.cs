@@ -20,7 +20,6 @@ public class YarnObj : MonoBehaviour
     public Ease GrowEase => growEase;
 
     public int TotalLen { get; private set; }
-    public int CurrentLen { get; private set; }
     public IReadOnlyDictionary<string, int> TotalByColor => totalByColor;
 
     public void Init(int requiredYarn, float yarnDepthSpread)
@@ -157,23 +156,6 @@ public class YarnObj : MonoBehaviour
         return result;
     }
 
-    public Dictionary<string, int> GetReachableColorCounts()
-    {
-        var result = new Dictionary<string, int>();
-        foreach (var obj in interactableObjects)
-        {
-            if (obj == null) continue;
-            AddColor(result, obj.ColorKey);
-
-            if (obj.HasCore)
-            {
-                var childObj = obj.Core.GetComponent<InteractableObject>();
-                if (childObj != null) AddColor(result, childObj.ColorKey);
-            }
-        }
-        return result;
-    }
-
     private static void AddColor(Dictionary<string, int> dict, string key)
     {
         if (string.IsNullOrEmpty(key)) return;
@@ -207,6 +189,5 @@ public class YarnObj : MonoBehaviour
     public void RemoveLen(InteractableObject obj)
     {
         interactableObjects.Remove(obj);
-        CurrentLen++;
     }
 }

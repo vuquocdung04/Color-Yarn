@@ -1,5 +1,4 @@
 using UnityEngine;
-using Sirenix.OdinInspector;
 
 public partial class InteractableObject
 {
@@ -10,11 +9,6 @@ public partial class InteractableObject
     private GameObject core;
     private bool seeThrough;
 
-    public GameObject Core => core;
-    public int  TotalCube => totalCube;
-    public bool HasCore   => core != null;
-
-    [Button("Build Core", ButtonSizes.Large), GUIColor(0.4f, 0.8f, 1f)]
     public void BuildCore()
     {
         ClearCore();

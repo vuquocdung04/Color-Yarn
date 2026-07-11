@@ -1,5 +1,4 @@
 using UnityEngine;
-using Sirenix.OdinInspector;
 
 public partial class YarnRoll : MonoBehaviour
 {
@@ -21,7 +20,6 @@ public partial class YarnRoll : MonoBehaviour
     [SerializeField, Range(0.05f, 0.6f)] private float reachEnd = 0.35f;
     [SerializeField, Range(0.6f, 0.97f)] private float pullStart = 0.85f;
 
-    // B set luc runtime qua Setup (khong keo tay), chi dung de raycast bam soi
     private Transform bObject;
     private Renderer  bRenderer;
 
@@ -30,7 +28,6 @@ public partial class YarnRoll : MonoBehaviour
 
     public string ColorKey { get; private set; }
 
-    // ================= PUBLIC API =================
     public void Setup(Renderer targetB, string colorKey)
     {
         bRenderer = targetB;
@@ -57,11 +54,6 @@ public partial class YarnRoll : MonoBehaviour
 
     public void ShowCompleted() => UpdateLine(1f);
 
-    public void SetLineMaterial(Material m)
-    {
-        if (line != null) line.material = m;
-    }
-
     public void SetColor(Color c)
     {
         if (line != null)
@@ -84,7 +76,6 @@ public partial class YarnRoll : MonoBehaviour
 
     public event System.Action Finished;
 
-    // ================= LOOP =================
     void Awake() => UpdateLine(0f);
 
     void Update()
@@ -147,7 +138,6 @@ public partial class YarnRoll : MonoBehaviour
 
     Vector3 GetPointOnBound(float t)
     {
-        // B da bi destroy -> giu diem cuoi cung, khong nhay ve aTop
         if (bRenderer == null)
             return _hasLastB ? _lastBPoint : (aTop != null ? aTop.position : transform.position);
 
@@ -164,12 +154,10 @@ public partial class YarnRoll : MonoBehaviour
         Vector3 origin = axisP + dir * maxR;
 
         Vector3 result;
-        // ban tia tu ngoai vao truc -> be mat ngoai cung cua B
         if (RaycastSurface(origin, -dir, maxR, out Vector3 surf, out Vector3 nrm))
-            result = surf - nrm * inset; // inset > 0: lun vao trong chut
+            result = surf - nrm * inset;
         else
         {
-            // fallback: chu vi AABB neu tia truot
             Vector3 xz = PerimeterPoint(u, bnd.min.x, bnd.max.x, bnd.min.z, bnd.max.z);
             result = new Vector3(xz.x, y, xz.z);
         }
@@ -214,25 +202,4 @@ public partial class YarnRoll : MonoBehaviour
             default: return new Vector3(minX, 0, Mathf.Lerp(maxZ, minZ, f));
         }
     }
-
-    // ================= EDITOR TEST =================
-    [Button("Play Wrap", ButtonSizes.Large), GUIColor(0.4f, 1f, 0.5f)]
-    void Btn_Play()
-    {
-        elapsed = 0f;
-        running = true;
-    }
-
-    [Button("Reset"), GUIColor(1f, 0.8f, 0.4f)]
-    void Btn_Reset()
-    {
-        running = false;
-        elapsed = 0f;
-        UpdateLine(0f);
-    }
-
-    [PropertyRange(0f, 1f), OnValueChanged(nameof(Scrub)), ShowInInspector]
-    private float scrub = 0f;
-
-    void Scrub() => UpdateLine(scrub);
 }

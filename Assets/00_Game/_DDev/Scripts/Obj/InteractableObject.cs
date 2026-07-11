@@ -79,7 +79,6 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
     public void OnHoldStart() => SetSeeThrough(true);
     public void OnHoldEnd()   => SetSeeThrough(false);
 
-    // Ca chuoi tu chay: tach loi -> dissolve minh -> huy minh -> loi phinh
     private async UniTaskVoid DissolveSequence(CancellationToken token)
     {
         IsBusy = true;
@@ -88,7 +87,6 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
 
         Owner?.RemoveLen(this);
 
-        // 1) tach loi ra Root, giu nguyen world position/scale
         if (coreGo != null)
         {
             Owner?.AddLen(coreGo.GetComponent<InteractableObject>());
@@ -98,7 +96,6 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
                 if (obj != null) obj.DecrementLayer();
         }
 
-        // 2) dissolve vo minh (chung duration voi YarnRoll qua HolesTemp)
         Init();
         float dur = HolesTemp.Instance != null ? HolesTemp.Instance.Duration : duration;
         float t = 0f;
@@ -110,11 +107,9 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
         }
         _mat.SetFloat(_dissolveAmountPropId, 1f);
 
-        // 3) loi phinh ve 1 ngay tai cho (loi cung la InteractableObject, tu co nest cua no)
         if (coreGo != null)
             _ = coreGo.transform.DOScale(savedScale, growDuration).SetEase(growEase);
 
-        // 4) huy vo
         Destroy(gameObject);
     }
 
@@ -136,14 +131,5 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
         }
 
         Destroy(gameObject);
-    }
-
-    public void ResetDissolve()
-    {
-        Init();
-        IsBusy = false;
-        if (_mat.HasProperty(_dissolveAmountPropId))
-            _mat.SetFloat(_dissolveAmountPropId, 0f);
-        gameObject.SetActive(true);
     }
 }
