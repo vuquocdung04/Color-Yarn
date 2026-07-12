@@ -105,11 +105,13 @@ public class HolesTemp : MonoBehaviour
         if (idx < 0) return false;
 
         Transform anchor = holes[idx].Anchor;
-        YarnRoll yr = Instantiate(yarnRollPrefab, anchor.position, anchor.rotation, anchor);
+        YarnRoll yr = Instantiate(yarnRollPrefab);
         yr.Setup(target.GetComponent<Renderer>(), target.ColorKey);
         yr.Play(duration);
+        yr.PlaceInSlot(anchor);
 
         occupants[idx] = yr;
+        holes[idx].SetOccupied(true);
 
         if (IsFull)
         {
@@ -157,6 +159,7 @@ public class HolesTemp : MonoBehaviour
             {
                 result.Add(r);
                 occupants[i] = null;
+                holes[i].SetOccupied(false);
             }
         }
         return result;
@@ -170,6 +173,7 @@ public class HolesTemp : MonoBehaviour
             if (occupants[i] == null) continue;
             result.Add(occupants[i]);
             occupants[i] = null;
+            holes[i].SetOccupied(false);
         }
         return result;
     }

@@ -10427,7 +10427,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0ea3225a7adff24a98e11cfe232b7cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelController
-  cam: {fileID: 1513039822}
   scrollZoomSpeed: 0.4
   zoomSlider: {fileID: 1415477888}
   rotationSpeed: 0.75
@@ -10908,6 +10907,8 @@ MonoBehaviour:
   isLocked: 1
   lockObject: {fileID: 134871815}
   doneFX: {fileID: 0}
+  bounceScaleDown: 0.9
+  bounceDuration: 0.06
 --- !u!1 &845956073
 GameObject:
   m_ObjectHideFlags: 0
@@ -11620,6 +11621,8 @@ MonoBehaviour:
   isLocked: 0
   lockObject: {fileID: 1451315221}
   doneFX: {fileID: 0}
+  bounceScaleDown: 0.9
+  bounceDuration: 0.06
 --- !u!1 &909273263
 GameObject:
   m_ObjectHideFlags: 0
@@ -36112,6 +36115,9 @@ MonoBehaviour:
   subdivisions: 24
   reachEnd: 0.35
   pullStart: 0.85
+  dropStartY: 0.6
+  dropDuration: 0.2
+  dropWobbleAngle: 10
 --- !u!1 &1513039820
 GameObject:
   m_ObjectHideFlags: 0
@@ -51857,6 +51863,8 @@ MonoBehaviour:
   isLocked: 1
   lockObject: {fileID: 2078830140}
   doneFX: {fileID: 0}
+  bounceScaleDown: 0.9
+  bounceDuration: 0.06
 --- !u!1 &1795792789
 GameObject:
   m_ObjectHideFlags: 0
@@ -52521,7 +52529,9 @@ MonoBehaviour:
   spriteCoverRenderer: {fileID: 1488297588}
   isLocked: 0
   lockObject: {fileID: 845956073}
-  doneFX: {fileID: 0}
+  doneFX: {fileID: 1752761686}
+  bounceScaleDown: 0.95
+  bounceDuration: 0.1
 --- !u!1 &1902673588
 GameObject:
   m_ObjectHideFlags: 0

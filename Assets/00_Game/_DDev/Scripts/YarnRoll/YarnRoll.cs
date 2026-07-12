@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public partial class YarnRoll : MonoBehaviour
@@ -19,6 +20,11 @@ public partial class YarnRoll : MonoBehaviour
     private float duration = 2f;
     [SerializeField, Range(0.05f, 0.6f)] private float reachEnd = 0.35f;
     [SerializeField, Range(0.6f, 0.97f)] private float pullStart = 0.85f;
+
+    [Header("Drop")]
+    [SerializeField] private float dropStartY = 0.6f;
+    [SerializeField] private float dropDuration = 0.2f;
+    [SerializeField] private float dropWobbleAngle = 7f;
 
     private Transform bObject;
     private Renderer  bRenderer;
@@ -53,6 +59,39 @@ public partial class YarnRoll : MonoBehaviour
     }
 
     public void ShowCompleted() => UpdateLine(1f);
+
+    private System.Action pendingDropCallback;
+
+    public void PlaceInSlot(Transform slot, System.Action onDropComplete = null)
+    {
+        transform.SetParent(slot);
+        transform.localPosition = new Vector3(0f, dropStartY, 0f);
+        transform.localRotation = Quaternion.identity;
+        transform.localScale = Vector3.one;
+
+        if (running)
+        {
+            pendingDropCallback = onDropComplete;
+            Finished += OnReadyToDrop;
+        }
+        else
+        {
+            PlayDropAnimation(onDropComplete);
+        }
+    }
+
+    private void OnReadyToDrop()
+    {
+        Finished -= OnReadyToDrop;
+        PlayDropAnimation(pendingDropCallback);
+        pendingDropCallback = null;
+    }
+
+    private void PlayDropAnimation(System.Action onComplete)
+    {
+        transform.DOLocalMoveY(0f, dropDuration).OnComplete(() => onComplete?.Invoke());
+        transform.DOPunchRotation(new Vector3(0f, 0f, dropWobbleAngle), dropDuration);
+    }
 
     public void SetColor(Color c)
     {

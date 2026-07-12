@@ -24,6 +24,8 @@ public class BoxSlot : MonoBehaviour
     private int currentYarnRoll;
     private bool hasNextColor;
 
+    private SpriteRenderer[] slotPlaceholders;
+
     public bool IsClosing { get; private set; }
     public bool IsLocked => isLocked;
 
@@ -34,6 +36,29 @@ public class BoxSlot : MonoBehaviour
     {
         if (spriteCoverRenderer != null) spriteCoverRenderer.gameObject.SetActive(false);
         if (lockObject != null) lockObject.SetActive(isLocked);
+
+        slotPlaceholders = new SpriteRenderer[slots.Count];
+        for (int i = 0; i < slots.Count; i++)
+            slotPlaceholders[i] = slots[i].GetComponentInChildren<SpriteRenderer>();
+    }
+
+    private void HideSlotPlaceholder(int index)
+    {
+        if (index >= 0 && index < slotPlaceholders.Length && slotPlaceholders[index] != null)
+            slotPlaceholders[index].gameObject.SetActive(false);
+    }
+
+    private void ShowAllSlotPlaceholders()
+    {
+        foreach (var sr in slotPlaceholders)
+            if (sr != null) sr.gameObject.SetActive(true);
+    }
+
+    private void PlayBounce()
+    {
+        Sequence seq = DOTween.Sequence();
+        seq.Append(transform.DOScale(0.95f, 0.1f).SetEase(Ease.InOutQuad));
+        seq.Append(transform.DOScale(1f, 0.1f).SetEase(Ease.InOutQuad));
     }
 
     public void OnTapped()
@@ -110,9 +135,11 @@ public class BoxSlot : MonoBehaviour
         if (currentYarnRoll >= MaxCapacity || currentYarnRoll >= slots.Count) return;
 
         Transform slot = slots[currentYarnRoll];
-        YarnRoll yr = Instantiate(prefab, slot.position, slot.rotation, slot);
+        YarnRoll yr = Instantiate(prefab);
         yr.Setup(target.GetComponent<Renderer>(), target.ColorKey);
         yr.Play(duration);
+        yr.PlaceInSlot(slot, PlayBounce);
+        HideSlotPlaceholder(currentYarnRoll);
 
         spawnedRolls.Add(yr);
         currentYarnRoll++;
@@ -136,9 +163,11 @@ public class BoxSlot : MonoBehaviour
         for (int i = 0; i < taken && currentYarnRoll < slots.Count; i++)
         {
             Transform slot = slots[currentYarnRoll];
-            YarnRoll yr = Instantiate(prefab, slot.position, slot.rotation, slot);
+            YarnRoll yr = Instantiate(prefab);
             yr.Setup(null, colorKey);
             yr.ShowCompleted();
+            yr.PlaceInSlot(slot, PlayBounce);
+            HideSlotPlaceholder(currentYarnRoll);
 
             spawnedRolls.Add(yr);
             currentYarnRoll++;
@@ -196,6 +225,7 @@ public class BoxSlot : MonoBehaviour
             spawnedRolls.Clear();
 
             currentYarnRoll = 0;
+            ShowAllSlotPlaceholders();
             if (spriteCoverRenderer != null) spriteCoverRenderer.gameObject.SetActive(false);
 
             ApplySprites();
@@ -225,10 +255,8 @@ public class BoxSlot : MonoBehaviour
             if (r == null) continue;
 
             Transform slot = slots[currentYarnRoll];
-            r.transform.SetParent(slot);
-            r.transform.localPosition = Vector3.zero;
-            r.transform.localRotation = Quaternion.identity;
-            r.transform.localScale = Vector3.one;
+            r.PlaceInSlot(slot, PlayBounce);
+            HideSlotPlaceholder(currentYarnRoll);
             spawnedRolls.Add(r);
             currentYarnRoll++;
         }

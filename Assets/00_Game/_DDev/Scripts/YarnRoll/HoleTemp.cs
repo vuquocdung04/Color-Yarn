@@ -5,7 +5,19 @@ public class HoleTemp : MonoBehaviour
 {
     [SerializeField] private Transform anchor;
 
+    private SpriteRenderer placeholder;
+
     public Transform Anchor => anchor != null ? anchor : transform;
+
+    private void Awake()
+    {
+        placeholder = GetComponentInChildren<SpriteRenderer>();
+    }
+
+    public void SetOccupied(bool occupied)
+    {
+        if (placeholder != null) placeholder.gameObject.SetActive(!occupied);
+    }
 
     public void ShiftWave(Vector3 offset, float duration, float delay)
     {
