@@ -5,15 +5,16 @@ using UnityEngine.UI;
 public partial class LevelController
 {
     [Header("Zoom")]
-    [SerializeField] private Camera cam;
     [SerializeField] private float scrollZoomSpeed = 0.01f;
     [SerializeField] private Slider zoomSlider;
 
     [Header("Rotate")]
     [SerializeField] private float rotationSpeed = 0.2f;
+    private Camera cam;
 
     private void InitCameraControls()
     {
+        cam = GamePlayController.Instance.cameraGameplay;
         if (zoomSlider != null) zoomSlider.onValueChanged.AddListener(OnZoomSliderChanged);
     }
 
