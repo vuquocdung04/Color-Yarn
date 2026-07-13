@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-public class BoxCreator : MonoBehaviour
+public class BoxCreator : MonoBehaviour, IIntroStep
 {
     public static BoxCreator Instance { get; private set; }
 
@@ -59,17 +59,18 @@ public class BoxCreator : MonoBehaviour
         return null;
     }
 
-    public void PrepareIntro(float offsetX)
+    public void Prepare(GameIntroConfig config)
     {
         for (int i = 0; i < boxSlots.Count; i++)
         {
             bool isLeft = i < boxSlots.Count / 2;
-            boxSlots[i].PrepareIntro(isLeft ? -offsetX : offsetX);
+            boxSlots[i].PrepareIntro(isLeft ? -config.box.offsetX : config.box.offsetX);
         }
     }
 
-    public async UniTask PlayIntro(float moveDuration, float waveDelay)
+    public async UniTask Play(GameIntroConfig config)
     {
+        float moveDuration = config.box.moveDuration;
         int innerLeft = boxSlots.Count / 2 - 1;
         int innerRight = boxSlots.Count / 2;
 
@@ -77,7 +78,7 @@ public class BoxCreator : MonoBehaviour
             if (i == innerLeft || i == innerRight)
                 boxSlots[i].PlayIntroMove(moveDuration);
 
-        await UniTask.Delay((int)(waveDelay * 1000));
+        await UniTask.Delay((int)(config.box.waveDelay * 1000));
 
         for (int i = 0; i < boxSlots.Count; i++)
             if (i != innerLeft && i != innerRight)

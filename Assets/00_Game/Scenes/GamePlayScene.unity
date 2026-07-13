@@ -8073,8 +8073,8 @@ RectTransform:
   - {fileID: 1470369805}
   m_Father: {fileID: 1440776041}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8373,7 +8373,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1182.9384, y: 2560}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &482042480
 MonoBehaviour:
@@ -11827,7 +11827,7 @@ MonoBehaviour:
   spriteCoverRenderer: {fileID: 1835686016}
   isLocked: 0
   lockObject: {fileID: 1451315221}
-  doneFX: {fileID: 0}
+  doneFX: {fileID: 2061002107}
 --- !u!1 &909273263
 GameObject:
   m_ObjectHideFlags: 0
@@ -20621,25 +20621,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5995d84221b29d45919f53f68c1635f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameIntro
-  boxOffsetX: 3
-  boxMoveDuration: 0.4
-  boxWaveDelay: 0.12
-  holeScaleDuration: 0.3
-  holeWaveDelay: 0.05
-  yarnRotateY: 720
-  yarnSpinDuration: 1
-  yarnTiltX: -10
-  yarnTiltDuration: 0.3
-  yarnZoomPercent: 0.3
-  yarnRequiredGO: {fileID: 1470369804}
-  yarnRequiredPanel: {fileID: 1255606680}
-  yarnRequiredImage: {fileID: 1227631245}
-  txtYarnRequired: {fileID: 1368760824}
-  yarnCountDuration: 0.6
-  yarnHoldDuration: 0.3
-  yarnFlyDuration: 0.5
-  yarnFlyArcRatio: 0.3
-  yarnInfoMoveDuration: 0.4
+  config: {fileID: 11400000, guid: aa15ae96cc3b1cf4b940a5ffd09a0d58, type: 2}
+  introSteps:
+  - {fileID: 785182345}
+  - {fileID: 1470369806}
+  - {fileID: 542122482}
+  - {fileID: 2066942797}
 --- !u!1 &1132151530
 GameObject:
   m_ObjectHideFlags: 0
@@ -36076,6 +36063,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1470369805}
+  - component: {fileID: 1470369806}
   m_Layer: 5
   m_Name: IntroRequired
   m_TagString: Untagged
@@ -36102,8 +36090,23 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1182.9384, y: 2560}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1470369806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470369804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 623411cb01694ec4da0e146e65fd90b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::YarnRequiredPopupUI
+  panel: {fileID: 1255606680}
+  image: {fileID: 1227631245}
+  txtYarnRequired: {fileID: 1368760824}
 --- !u!1 &1476176045
 GameObject:
   m_ObjectHideFlags: 0
@@ -52990,15 +52993,15 @@ MonoBehaviour:
   configs:
   - type: 0
     levelUnlock: 1
-    quantity: 2
+    quantity: 0
     tutorialDone: 0
   - type: 1
     levelUnlock: 1
-    quantity: 2
+    quantity: 0
     tutorialDone: 0
   - type: 2
     levelUnlock: 1
-    quantity: 3
+    quantity: 0
     tutorialDone: 0
   currentLevel: 1
 --- !u!225 &1860653576
@@ -66179,8 +66182,8 @@ LineRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -800062009
-  m_SortingLayer: 1
+  m_SortingLayerID: 469351437
+  m_SortingLayer: 2
   m_SortingOrder: 3
   m_MaskInteraction: 0
   m_Positions:

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public partial class LevelController : MonoBehaviour
+public partial class LevelController : MonoBehaviour, IIntroStep
 {
     public static LevelController Instance { get; private set; }
 

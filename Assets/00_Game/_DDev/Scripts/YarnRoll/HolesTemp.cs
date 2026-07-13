@@ -4,7 +4,7 @@ using DG.Tweening;
 using EventDispatcher;
 using UnityEngine;
 
-public class HolesTemp : MonoBehaviour
+public class HolesTemp : MonoBehaviour, IIntroStep
 {
     public static HolesTemp Instance { get; private set; }
 
@@ -70,14 +70,17 @@ public class HolesTemp : MonoBehaviour
         else if (type == BoosterType.Booster2 && HasAnyOccupant) bloom.Activate();
     }
 
-    public void PrepareIntro()
+    public void Prepare(GameIntroConfig config)
     {
         for (int i = 0; i < activeHoleCount; i++)
             holes[i].PrepareIntro();
     }
 
-    public async UniTask PlayIntro(float scaleDuration, float waveDelay)
+    public async UniTask Play(GameIntroConfig config)
     {
+        float scaleDuration = config.hole.scaleDuration;
+        float waveDelay = config.hole.waveDelay;
+
         for (int i = 0; i < activeHoleCount; i++)
         {
             int index = i;

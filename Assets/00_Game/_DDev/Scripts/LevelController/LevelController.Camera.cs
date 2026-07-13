@@ -64,7 +64,7 @@ public partial class LevelController
         }, target, duration);
     }
 
-    public void PrepareYarnIntro()
+    public void Prepare(GameIntroConfig config)
     {
         if (CurrentYarnObj != null)
             CurrentYarnObj.transform.rotation = Quaternion.identity;
@@ -76,12 +76,12 @@ public partial class LevelController
         }
     }
 
-    public async UniTask PlayYarnIntro(float rotateY, float spinDuration, float tiltX, float tiltDuration, float zoomPercent)
+    public async UniTask Play(GameIntroConfig config)
     {
-        await CurrentYarnObj.SpinIntro(rotateY, spinDuration);
+        await CurrentYarnObj.SpinIntro(config.yarn.rotateY, config.yarn.spinDuration);
 
-        PlayIntroZoom(zoomPercent, tiltDuration);
-        await CurrentYarnObj.TiltIntro(tiltX, tiltDuration);
+        PlayIntroZoom(config.yarn.zoomPercent, config.yarn.tiltDuration);
+        await CurrentYarnObj.TiltIntro(config.yarn.tiltX, config.yarn.tiltDuration);
     }
 
     private void HandleRotate()
