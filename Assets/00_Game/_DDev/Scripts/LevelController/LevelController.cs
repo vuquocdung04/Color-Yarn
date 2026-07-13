@@ -37,4 +37,6 @@ public partial class LevelController : MonoBehaviour
 
         return go;
     }
+
+    public DataLevel GetLevelData(int levelNum) => levelDatabase.Levels[levelNum - 1];
 }

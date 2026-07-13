@@ -13,6 +13,7 @@ public class DataLevel
 
     [Range(0f, 1f)] public float boxDifficulty;
     [Range(0f, 10f)] public float yarnDepthSpread;
+    public bool isHard;
 
     [HorizontalGroup("Preview"), PreviewField(70), HideLabel]
     public GameObject levelPrefab;

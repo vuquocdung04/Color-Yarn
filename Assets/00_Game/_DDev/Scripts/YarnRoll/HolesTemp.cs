@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using EventDispatcher;
 using UnityEngine;
@@ -67,6 +68,24 @@ public class HolesTemp : MonoBehaviour
         var type = (BoosterType)param;
         if (type == BoosterType.Booster0) ActivateExtraHole();
         else if (type == BoosterType.Booster2 && HasAnyOccupant) bloom.Activate();
+    }
+
+    public void PrepareIntro()
+    {
+        for (int i = 0; i < activeHoleCount; i++)
+            holes[i].PrepareIntro();
+    }
+
+    public async UniTask PlayIntro(float scaleDuration, float waveDelay)
+    {
+        for (int i = 0; i < activeHoleCount; i++)
+        {
+            int index = i;
+            DOVirtual.DelayedCall(index * waveDelay, () => holes[index].ScaleIn(scaleDuration));
+        }
+
+        float total = (activeHoleCount - 1) * waveDelay + scaleDuration;
+        await UniTask.Delay((int)(total * 1000));
     }
 
     public void ActivateExtraHole()

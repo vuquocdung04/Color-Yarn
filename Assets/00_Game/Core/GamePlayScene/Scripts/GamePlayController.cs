@@ -17,6 +17,7 @@ public class GamePlayController : Singleton<GamePlayController>
     public GameAlgorithm gameAlgorithm;
     public AweSomeBox aweSomeBox;
     public LevelController levelController;
+    public GameIntro gameIntro;
 
     protected override void OnAwake()
     {
@@ -34,6 +35,7 @@ public class GamePlayController : Singleton<GamePlayController>
 
         await UniTask.WaitForEndOfFrame(this);
         boxCreator.SetInitialColors();
+        await gameIntro.PlayIntro();
         await UniTask.Delay(500);
         if (FXManager.Instance)
             FXManager.Instance.isNextSceneReady = true;
@@ -53,6 +55,7 @@ public class GamePlayController : Singleton<GamePlayController>
         gameAlgorithm.InitInstance();
         aweSomeBox.InitInstance();
         levelController.InitInstance();
+        gameIntro.InitInstance();
     }
 
     private void InitManagers()
@@ -67,5 +70,7 @@ public class GamePlayController : Singleton<GamePlayController>
         boxCreator.Init();
         gameAlgorithm.Init();
         aweSomeBox.Init();
+
+        gameIntro.Init();
     }
 }

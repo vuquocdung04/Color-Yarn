@@ -19,13 +19,42 @@ MonoBehaviour:
     requiredLen: 15
     boxDifficulty: 0
     yarnDepthSpread: 0
+    isHard: 0
     levelPrefab: {fileID: 7846591595006166598, guid: 827f0d71d2c6de040b2936ec6a7ada7b, type: 3}
-    levelSprite: {fileID: 0}
-  - levelName: 
+    levelSprite: {fileID: -108229437, guid: a762f3b985c82d64596884f4a155dbdd, type: 3}
+  - levelName: level_2
     minZoomCamera: 0
     maxZoomCamera: 0
     requiredLen: 0
     boxDifficulty: 0
     yarnDepthSpread: 0
+    isHard: 0
     levelPrefab: {fileID: 0}
-    levelSprite: {fileID: 0}
+    levelSprite: {fileID: 1197447510, guid: a762f3b985c82d64596884f4a155dbdd, type: 3}
+  - levelName: level_3
+    minZoomCamera: 0
+    maxZoomCamera: 0
+    requiredLen: 0
+    boxDifficulty: 0
+    yarnDepthSpread: 0
+    isHard: 0
+    levelPrefab: {fileID: 0}
+    levelSprite: {fileID: 181507522, guid: a762f3b985c82d64596884f4a155dbdd, type: 3}
+  - levelName: level_4
+    minZoomCamera: 0
+    maxZoomCamera: 0
+    requiredLen: 0
+    boxDifficulty: 0
+    yarnDepthSpread: 0
+    isHard: 0
+    levelPrefab: {fileID: 0}
+    levelSprite: {fileID: 1438382477, guid: a762f3b985c82d64596884f4a155dbdd, type: 3}
+  - levelName: level_5
+    minZoomCamera: 0
+    maxZoomCamera: 0
+    requiredLen: 0
+    boxDifficulty: 0
+    yarnDepthSpread: 0
+    isHard: 1
+    levelPrefab: {fileID: 0}
+    levelSprite: {fileID: -1994875492, guid: a762f3b985c82d64596884f4a155dbdd, type: 3}

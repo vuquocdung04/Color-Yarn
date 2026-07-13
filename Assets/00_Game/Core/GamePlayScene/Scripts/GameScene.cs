@@ -22,11 +22,22 @@ public class GameScene : MonoBehaviour
     [Header("Top Bar")]
     public TopBar topBar;
 
+    [Header("Yarn Required")]
+    public YarnRequiredUI yarnRequiredUI;
+
+    [Header("Coin")]
+    public CoinLayoutUI coinLayout;
+
     public void Init()
     {
         boosterController.Init();
         topBar.Init();
-        topBar.SetRequiredYarn(LevelController.Instance.CurrentYarnObj.TotalLen);
+
+        yarnRequiredUI.Init();
+        yarnRequiredUI.SetRequiredYarn(LevelController.Instance.CurrentYarnObj.TotalLen);
+        yarnRequiredUI.gameObject.SetActive(false);
+
+        coinLayout.Init();
     }
 
     public static void EnableDarkPanel(bool state)
@@ -51,6 +62,6 @@ public class GameScene : MonoBehaviour
         }
     }
 
-    public static Transform GetCoinBar() => Instance.topBar.GetCoinBar();
+    public static Transform GetCoinBar() => Instance.coinLayout.GetCoinBar();
     public static Transform GetPopupHolder() => Instance.popupHolder;
 }

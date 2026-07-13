@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -179,6 +180,19 @@ public class YarnObj : MonoBehaviour
             matches[i].InstantConsume();
 
         return take;
+    }
+
+    public async UniTask SpinIntro(float rotateY, float spinDuration)
+    {
+        await transform.DORotate(new Vector3(0f, rotateY, 0f), spinDuration, RotateMode.FastBeyond360)
+            .SetEase(Ease.OutQuad)
+            .AsyncWaitForCompletion();
+    }
+
+    public async UniTask TiltIntro(float tiltX, float tiltDuration)
+    {
+        await transform.DOLocalRotate(new Vector3(tiltX, 0f, 0f), tiltDuration)
+            .AsyncWaitForCompletion();
     }
 
     public void AddLen(InteractableObject obj)

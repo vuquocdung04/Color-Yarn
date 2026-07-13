@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 
 public class BoxCreator : MonoBehaviour
@@ -55,6 +57,33 @@ public class BoxCreator : MonoBehaviour
         foreach (var c in candidates)
             if (!used.Contains(c)) return c;
         return null;
+    }
+
+    public void PrepareIntro(float offsetX)
+    {
+        for (int i = 0; i < boxSlots.Count; i++)
+        {
+            bool isLeft = i < boxSlots.Count / 2;
+            boxSlots[i].PrepareIntro(isLeft ? -offsetX : offsetX);
+        }
+    }
+
+    public async UniTask PlayIntro(float moveDuration, float waveDelay)
+    {
+        int innerLeft = boxSlots.Count / 2 - 1;
+        int innerRight = boxSlots.Count / 2;
+
+        for (int i = 0; i < boxSlots.Count; i++)
+            if (i == innerLeft || i == innerRight)
+                boxSlots[i].PlayIntroMove(moveDuration);
+
+        await UniTask.Delay((int)(waveDelay * 1000));
+
+        for (int i = 0; i < boxSlots.Count; i++)
+            if (i != innerLeft && i != innerRight)
+                boxSlots[i].PlayIntroMove(moveDuration);
+
+        await UniTask.Delay((int)(moveDuration * 1000));
     }
 
     public bool TryInstantFill(BoxSlot box) => box.TryInstantFill(yarnRollPrefab);

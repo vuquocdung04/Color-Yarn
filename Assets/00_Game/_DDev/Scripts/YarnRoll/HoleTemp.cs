@@ -30,4 +30,9 @@ public class HoleTemp : MonoBehaviour
         transform.localScale = Vector3.zero;
         transform.DOScale(1f, duration);
     }
+
+    public void PrepareIntro()
+    {
+        transform.localScale = Vector3.zero;
+    }
 }

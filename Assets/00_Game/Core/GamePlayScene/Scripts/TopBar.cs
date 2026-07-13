@@ -1,4 +1,6 @@
-using EventDispatcher;
+using System.Collections.Generic;
+using DG.Tweening;
+using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,14 +12,13 @@ public class TopBar : MonoBehaviour
     public void InitInstance() => Instance = this;
 
     public TextMeshProUGUI txtLevelDisplay;
-    public TextMeshProUGUI txtYarnProgress;
+    [SerializeField] private CanvasGroup canvasGroup;
+
+    [Header("Level Nodes")]
+    [SerializeField] private List<LevelNodeUI> levelNodes;
 
     [Header("Button")]
     public Button btnSetting;
-    public Button btnCoin;
-
-    private int currentYarn;
-    private int requiredYarn;
 
     public void Init()
     {
@@ -26,42 +27,44 @@ public class TopBar : MonoBehaviour
             _ = SettingGameBox.Setup(GameScene.GetPopupHolder(), box => box.Show());
         });
 
-        btnCoin.OnClicked(delegate
-        {
-            _ = ShopBox.Setup(GameScene.GetPopupHolder(), box => box.Show());
-        });
-
         txtLevelDisplay.text = $"Level {UseProfile.Level.Value}";
+        SetupLevelNodes();
 
-        this.RegisterListener(EventID.YARN_COLLECTED, OnYarnCollected);
+        canvasGroup.SetCanvasState(false, 0f);
+    }
+
+    [Button("Auto Wire Level Nodes")]
+    private void AutoWireLevelNodes()
+    {
+        levelNodes = new List<LevelNodeUI>(GetComponentsInChildren<LevelNodeUI>());
+        foreach (var node in levelNodes)
+            node.AutoAssignRefs();
+    }
+
+    private void SetupLevelNodes()
+    {
+        int currentLevel = UseProfile.Level.Value;
+        int zoneStart = (currentLevel - 1) / levelNodes.Count * levelNodes.Count + 1;
+
+        for (int i = 0; i < levelNodes.Count; i++)
+        {
+            int levelNum = zoneStart + i;
+            DataLevel data = LevelController.Instance.GetLevelData(levelNum);
+
+            levelNodes[i].SetIcon(data.levelSprite);
+            levelNodes[i].SetHard(data.isHard);
+            levelNodes[i].SetCurrent(levelNum == currentLevel);
+        }
     }
 
     private void OnDestroy()
     {
         if (Instance == this) Instance = null;
-        this.RemoveListener(EventID.YARN_COLLECTED, OnYarnCollected);
     }
 
-    public void SetRequiredYarn(int total)
+    public void Intro(float duration = 0.3f)
     {
-        requiredYarn = total;
-        currentYarn = 0;
-        UpdateYarnProgressText();
+        canvasGroup.SetCanvasState(true);
+        canvasGroup.DOFade(1f, duration);
     }
-
-    private void OnYarnCollected(object param)
-    {
-        currentYarn += 3;
-        UpdateYarnProgressText();
-
-        if (currentYarn >= requiredYarn)
-            this.PostEvent(EventID.LEVEL_COMPLETE);
-    }
-
-    private void UpdateYarnProgressText()
-    {
-        if (txtYarnProgress != null) txtYarnProgress.text = $"{currentYarn}/{requiredYarn}";
-    }
-
-    public Transform GetCoinBar() => btnCoin.transform;
 }

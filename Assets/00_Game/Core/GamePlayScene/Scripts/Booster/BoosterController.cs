@@ -1,3 +1,4 @@
+using DG.Tweening;
 using EventDispatcher;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ public partial class BoosterController : MonoBehaviour
     public static BoosterController Instance { get; private set; }
 
     public void InitInstance() => Instance = this;
+
+    [SerializeField] private CanvasGroup canvasGroup;
 
     private BoosterItem _active;
 
@@ -22,6 +25,14 @@ public partial class BoosterController : MonoBehaviour
         this.RegisterListener(EventID.BOOSTER_DEACTIVATE_REQUEST, OnDeactivateRequest);
         this.RegisterListener(EventID.BOOSTER_BUY_REQUEST, OnBuyRequest);
         GameFlow.Instance.OnStateEntered += OnGameStateChanged;
+
+        canvasGroup.SetCanvasState(false, 0f);
+    }
+
+    public void Intro(float duration = 0.3f)
+    {
+        canvasGroup.SetCanvasState(true);
+        canvasGroup.DOFade(1f, duration);
     }
 
     private void OnDestroy()

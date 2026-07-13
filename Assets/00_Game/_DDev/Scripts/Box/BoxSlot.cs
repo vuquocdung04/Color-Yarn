@@ -25,6 +25,7 @@ public class BoxSlot : MonoBehaviour
     private bool hasNextColor;
 
     private SpriteRenderer[] slotPlaceholders;
+    private Vector3 introRestPosition;
 
     public bool IsClosing { get; private set; }
     public bool IsLocked => isLocked;
@@ -59,6 +60,17 @@ public class BoxSlot : MonoBehaviour
         Sequence seq = DOTween.Sequence();
         seq.Append(transform.DOScale(0.95f, 0.1f).SetEase(Ease.InOutQuad));
         seq.Append(transform.DOScale(1f, 0.1f).SetEase(Ease.InOutQuad));
+    }
+
+    public void PrepareIntro(float offsetX)
+    {
+        introRestPosition = transform.position;
+        transform.position = introRestPosition + new Vector3(offsetX, 0f, 0f);
+    }
+
+    public void PlayIntroMove(float duration)
+    {
+        transform.DOMove(introRestPosition, duration).SetEase(Ease.OutCubic);
     }
 
     public void OnTapped()
