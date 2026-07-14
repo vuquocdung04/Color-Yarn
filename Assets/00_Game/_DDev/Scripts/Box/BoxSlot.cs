@@ -76,11 +76,10 @@ public class BoxSlot : MonoBehaviour
     public void OnTapped()
     {
         if (!isLocked) return;
-        Debug.Log($"[BoxSlot] tapped locked box {name} - popup here later");
-        Unlock();
+        _ = AddBox.Setup(GameScene.GetPopupHolder(), box => box.SetupAndShow(this));
     }
 
-    private void Unlock()
+    public void Unlock()
     {
         string key = GameAlgorithm.Instance.PickRescueColor();
         if (string.IsNullOrEmpty(key))

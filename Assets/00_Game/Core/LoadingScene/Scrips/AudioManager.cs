@@ -51,6 +51,7 @@ public class AudioManager : MonoBehaviour
     }
     public void PlaySfx(string key)
     {
+        if (Instance == null) return;
         if (string.IsNullOrEmpty(key)) return;
         string lowerKey = key.ToLower();
 
@@ -68,6 +69,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySfx(AudioClip clip, float pitch = 1f)
     {
+        if (Instance == null) return;
         if (clip == null) return;
         PlayClipInternal(clip.name.ToLower(), clip, pitch, currentSfxVolume);
     }
@@ -100,6 +102,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMusic(string key)
     {
+        if (Instance == null) return;
         if (string.IsNullOrEmpty(key)) return;
 
         if (!audioLookup.TryGetValue(key.ToLower(), out var config))

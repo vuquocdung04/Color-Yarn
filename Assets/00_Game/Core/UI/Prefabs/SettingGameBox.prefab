@@ -800,14 +800,7 @@ MonoBehaviour:
   btnReturnHome: {fileID: 4974112576923362601}
   btnRestart: {fileID: 8129996964958743844}
   btnCheat: {fileID: 7743861001206555826}
-  btnSound: {fileID: 8139625346654879271}
-  btnMusic: {fileID: 2080618894893974601}
-  btnVib: {fileID: 8143278733755675553}
-  imgSound: {fileID: 4801900776547719673}
-  imgMusic: {fileID: 2049423644351470785}
-  imgVib: {fileID: 1895329309360729667}
-  sprOn: {fileID: 408407138, guid: d2a177a80fd6542458db876e7d98a3fc, type: 3}
-  sprOff: {fileID: -721163460, guid: d2a177a80fd6542458db876e7d98a3fc, type: 3}
+  settings: {fileID: 1001612073247166434}
 --- !u!1 &2688093267052837013
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,7 +1027,7 @@ GameObject:
   - component: {fileID: 8116974678266643532}
   - component: {fileID: 5221893120519419804}
   m_Layer: 5
-  m_Name: txtSoung
+  m_Name: txtSound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1425,6 +1418,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7361583155890901508}
+  - component: {fileID: 5849022261891035097}
   m_Layer: 5
   m_Name: Music
   m_TagString: Untagged
@@ -1454,6 +1448,22 @@ RectTransform:
   m_AnchoredPosition: {x: 445.23996, y: -274.02698}
   m_SizeDelta: {x: 890.4799, y: 200.8748}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5849022261891035097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5540819747665590528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19528836b78f0d94aa67389a5d032a8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteSwapToggleView
+  button: {fileID: 2080618894893974601}
+  icon: {fileID: 2049423644351470785}
+  sprOn: {fileID: 408407138, guid: d2a177a80fd6542458db876e7d98a3fc, type: 3}
+  sprOff: {fileID: -721163460, guid: d2a177a80fd6542458db876e7d98a3fc, type: 3}
 --- !u!1 &5572194590458080010
 GameObject:
   m_ObjectHideFlags: 0
@@ -1712,6 +1722,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 612779864564384075}
+  - component: {fileID: 7829967751777420152}
   m_Layer: 5
   m_Name: Sound
   m_TagString: Untagged
@@ -1741,6 +1752,22 @@ RectTransform:
   m_AnchoredPosition: {x: 445.23996, y: -100.4374}
   m_SizeDelta: {x: 890.4799, y: 200.8748}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7829967751777420152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6862982814027228769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19528836b78f0d94aa67389a5d032a8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteSwapToggleView
+  button: {fileID: 8139625346654879271}
+  icon: {fileID: 4801900776547719673}
+  sprOn: {fileID: 408407138, guid: d2a177a80fd6542458db876e7d98a3fc, type: 3}
+  sprOff: {fileID: -721163460, guid: d2a177a80fd6542458db876e7d98a3fc, type: 3}
 --- !u!1 &7034879044517932681
 GameObject:
   m_ObjectHideFlags: 0
@@ -2084,8 +2111,9 @@ GameObject:
   - component: {fileID: 7831751517750916326}
   - component: {fileID: 2651787545470678832}
   - component: {fileID: 1796150274778889879}
+  - component: {fileID: 1001612073247166434}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ToggleGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2151,6 +2179,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.9
+--- !u!114 &1001612073247166434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7540035387847421518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf9e1ee2f0251748b5c4ea55c05e3e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SettingsToggleGroup
+  soundView: {fileID: 7829967751777420152}
+  musicView: {fileID: 5849022261891035097}
+  vibView: {fileID: 6540513392982828196}
 --- !u!1 &7738862888738869874
 GameObject:
   m_ObjectHideFlags: 0
@@ -2160,6 +2203,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7690060802681928156}
+  - component: {fileID: 6540513392982828196}
   m_Layer: 5
   m_Name: Vib
   m_TagString: Untagged
@@ -2189,6 +2233,22 @@ RectTransform:
   m_AnchoredPosition: {x: 445.23996, y: -447.61655}
   m_SizeDelta: {x: 890.4799, y: 200.8748}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6540513392982828196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7738862888738869874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19528836b78f0d94aa67389a5d032a8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteSwapToggleView
+  button: {fileID: 8143278733755675553}
+  icon: {fileID: 1895329309360729667}
+  sprOn: {fileID: 408407138, guid: d2a177a80fd6542458db876e7d98a3fc, type: 3}
+  sprOff: {fileID: -721163460, guid: d2a177a80fd6542458db876e7d98a3fc, type: 3}
 --- !u!1 &8790230812086001664
 GameObject:
   m_ObjectHideFlags: 0
