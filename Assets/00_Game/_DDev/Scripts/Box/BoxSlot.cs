@@ -128,7 +128,6 @@ public class BoxSlot : MonoBehaviour
         if (hasNextColor)
         {
             colorKey = next;
-            ReserveFromHoles();
         }
     }
 
