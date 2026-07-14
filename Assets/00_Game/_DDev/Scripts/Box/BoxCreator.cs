@@ -30,6 +30,15 @@ public class BoxCreator : MonoBehaviour, IIntroStep
 
     public bool HasAnyBoxClosing => boxSlots.Exists(b => b.IsClosing);
 
+    public int CountLocked()
+    {
+        int count = 0;
+        foreach (var b in boxSlots) if (b.IsLocked) count++;
+        return count;
+    }
+
+    public BoxSlot GetFirstLocked() => boxSlots.Find(b => b.IsLocked);
+
     public void Init()
     {
     }

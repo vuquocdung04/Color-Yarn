@@ -7,10 +7,9 @@ public class Bloom : MonoBehaviour
     [SerializeField] private SkeletonAnimation skeletonAnimation;
     [SerializeField] private string animationName = "Brush2";
 
-    public void Activate()
+    public void Activate(System.Action onComplete = null)
     {
         var rolls = HolesTemp.Instance.ClearAll();
-        Debug.LogError("ewqewq");
         gameObject.SetActive(true);
         skeletonAnimation.AnimationState.SetAnimation(0, animationName, false);
         skeletonAnimation.AnimationState.Complete += OnBrushComplete;
@@ -19,7 +18,7 @@ public class Bloom : MonoBehaviour
         {
             skeletonAnimation.AnimationState.Complete -= OnBrushComplete;
             gameObject.SetActive(false);
-            AweSomeBox.Instance.Store(rolls, () => BoosterController.Instance.OnBoosterActionSuccess());
+            AweSomeBox.Instance.Store(rolls, () => onComplete?.Invoke());
         }
     }
 }

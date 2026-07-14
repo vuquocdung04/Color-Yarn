@@ -79,9 +79,12 @@ public class BoxSlot : MonoBehaviour
         _ = AddBox.Setup(GameScene.GetPopupHolder(), box => box.SetupAndShow(this));
     }
 
-    public void Unlock()
+    public void Unlock() => UnlockWith(GameAlgorithm.Instance.PickRescueColor(), false);
+
+    public void Unlock(string key) => UnlockWith(key, true);
+
+    private void UnlockWith(string key, bool holesFirst)
     {
-        string key = GameAlgorithm.Instance.PickRescueColor();
         if (string.IsNullOrEmpty(key))
         {
             Debug.LogError($"[BoxSlot] {name} unlock nhung khong con mau nao de chon");
@@ -91,7 +94,8 @@ public class BoxSlot : MonoBehaviour
         isLocked = false;
         SetColor(key);
         if (lockObject != null) lockObject.SetActive(false);
-        ReserveFromHoles();
+        if (holesFirst) ReserveFromHolesFirst();
+        else ReserveFromHoles();
         PlaceReservedRolls();
     }
 
@@ -139,6 +143,18 @@ public class BoxSlot : MonoBehaviour
         needed -= rolls.Count;
         if (needed > 0)
             reservedRolls.AddRange(HolesTemp.Instance.TakeMatching(colorKey, needed));
+    }
+
+    private void ReserveFromHolesFirst()
+    {
+        int needed = MaxCapacity - reservedRolls.Count;
+        if (needed <= 0) return;
+
+        reservedRolls.AddRange(HolesTemp.Instance.TakeMatching(colorKey, needed));
+
+        needed = MaxCapacity - reservedRolls.Count;
+        if (needed > 0)
+            reservedRolls.AddRange(AweSomeBox.Instance.TakeMatching(colorKey, needed));
     }
 
     public void Spawn(InteractableObject target, YarnRoll prefab, float duration)

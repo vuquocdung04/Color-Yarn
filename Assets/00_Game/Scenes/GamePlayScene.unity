@@ -28502,6 +28502,7 @@ Transform:
   - {fileID: 667111710}
   - {fileID: 785182344}
   - {fileID: 1108875961}
+  - {fileID: 1978323682}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1316276019
@@ -28530,6 +28531,7 @@ MonoBehaviour:
   aweSomeBox: {fileID: 1795792791}
   levelController: {fileID: 785182345}
   gameIntro: {fileID: 1108875962}
+  keepPlayingController: {fileID: 1978323683}
 --- !u!114 &1316276020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53201,6 +53203,53 @@ Transform:
   - {fileID: 160705488}
   m_Father: {fileID: 982749201}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
+--- !u!1 &1978323681
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1978323682}
+  - component: {fileID: 1978323683}
+  m_Layer: 0
+  m_Name: KeepPlaying
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1978323682
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1978323681}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1316276018}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1978323683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1978323681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cb6e5e97742b1342a8d28d5434a9e65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KeepPlayingController
+  sprAddBox: {fileID: 21300000, guid: 399fd74ec0797be46a3e45c05fe7c5a2, type: 3}
+  sprClean: {fileID: 1235635762, guid: f15b52daa0131a94fa5288a6395cd0f5, type: 3}
+  prices: f401000084030000dc050000
 --- !u!1 &1995030511
 GameObject:
   m_ObjectHideFlags: 0

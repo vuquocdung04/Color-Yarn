@@ -18,6 +18,7 @@ public class GamePlayController : Singleton<GamePlayController>
     public AweSomeBox aweSomeBox;
     public LevelController levelController;
     public GameIntro gameIntro;
+    public KeepPlayingController keepPlayingController;
 
     protected override void OnAwake()
     {
@@ -56,6 +57,7 @@ public class GamePlayController : Singleton<GamePlayController>
         aweSomeBox.InitInstance();
         levelController.InitInstance();
         gameIntro.InitInstance();
+        keepPlayingController.InitInstance();
     }
 
     private void InitManagers()
@@ -70,6 +72,7 @@ public class GamePlayController : Singleton<GamePlayController>
         boxCreator.Init();
         gameAlgorithm.Init();
         aweSomeBox.Init();
+        keepPlayingController.Init();
 
         gameIntro.Init();
     }

@@ -67,7 +67,8 @@ public class HolesTemp : MonoBehaviour, IIntroStep
     {
         var type = (BoosterType)param;
         if (type == BoosterType.Booster0) ActivateExtraHole();
-        else if (type == BoosterType.Booster2 && HasAnyOccupant) bloom.Activate();
+        else if (type == BoosterType.Booster2 && HasAnyOccupant)
+            bloom.Activate(() => BoosterController.Instance.OnBoosterActionSuccess());
     }
 
     public void Prepare(GameIntroConfig config)
@@ -130,7 +131,6 @@ public class HolesTemp : MonoBehaviour, IIntroStep
         YarnRoll yr = Instantiate(yarnRollPrefab);
         yr.Setup(target.GetComponent<Renderer>(), target.ColorKey);
         yr.Play(duration);
-        yr.PlaceInSlot(anchor);
 
         occupants[idx] = yr;
         holes[idx].SetOccupied(true);
@@ -138,8 +138,15 @@ public class HolesTemp : MonoBehaviour, IIntroStep
         if (IsFull)
         {
             InputController.Instance.SetWaitingMode();
-            if (!BoxCreator.Instance.HasAnyBoxClosing)
-                GameFlow.Instance?.TriggerLose();
+            yr.PlaceInSlot(anchor, () =>
+            {
+                if (IsFull && !BoxCreator.Instance.HasAnyBoxClosing)
+                    KeepPlayingController.Instance.OnLoseCondition();
+            });
+        }
+        else
+        {
+            yr.PlaceInSlot(anchor);
         }
 
         return true;
@@ -147,9 +154,20 @@ public class HolesTemp : MonoBehaviour, IIntroStep
 
     public void RecheckLose()
     {
-        if (IsFull) GameFlow.Instance?.TriggerLose();
+        if (IsFull) KeepPlayingController.Instance.OnLoseCondition();
         else InputController.Instance.RestoreNormalMode();
     }
+
+    public string GetDominantColor()
+    {
+        string best = null;
+        int max = 0;
+        foreach (var kv in GetParkedColorCounts())
+            if (kv.Value > max) { max = kv.Value; best = kv.Key; }
+        return best;
+    }
+
+    public void CleanToAweSome(System.Action onDone = null) => bloom.Activate(onDone);
 
     private int FindEmptySlot()
     {
