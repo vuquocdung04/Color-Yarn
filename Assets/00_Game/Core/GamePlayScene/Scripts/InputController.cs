@@ -7,6 +7,11 @@ public class InputController : MonoBehaviour
 
     public void InitInstance() => Instance = this;
 
+    [SerializeField] private float holdDuration = 0.5f;
+    [SerializeField] private Material transparentMat;
+
+    public Material TransparentMat => transparentMat;
+
     private Camera cam;
     private Camera camUI;
     private InputMode _currentMode;
@@ -15,6 +20,14 @@ public class InputController : MonoBehaviour
     private InputMode _booster1Mode;
     private InputMode _booster2Mode;
     private InputMode _disabledMode;
+
+    private RaycastHit _pressedHit;
+    private bool _pressed3D;
+    private bool _holding;
+    private float _holdTimer;
+
+    public bool CanInteract =>
+        GameFlow.Instance != null && GameFlow.Instance.CurrentState == GameState.Playing;
 
     public void Init()
     {
@@ -28,27 +41,11 @@ public class InputController : MonoBehaviour
         _disabledMode = new DisabledInputMode();
 
         SetMode(_normalMode);
-
-        GameFlow.Instance.OnStateEntered += OnGameStateChanged;
     }
 
     private void OnDestroy()
     {
         if (Instance == this) Instance = null;
-        GameFlow.Instance.OnStateEntered -= OnGameStateChanged;
-    }
-
-    private void OnGameStateChanged(GameState newState)
-    {
-        bool shouldDisable = newState == GameState.Win ||
-                            newState == GameState.Lose ||
-                            newState == GameState.Paused ||
-                            newState == GameState.Tutorial;
-
-        if (shouldDisable)
-            SetMode(_disabledMode);
-        else
-            SetMode(_normalMode);
     }
 
     public void SetMode(InputMode newMode)
@@ -67,25 +64,78 @@ public class InputController : MonoBehaviour
     private void Update()
     {
         if (Pointer.current == null) return;
-        if (!Pointer.current.press.wasPressedThisFrame) return;
 
-        HandleClick();
+        if (!CanInteract)
+        {
+            CancelHold();
+            return;
+        }
+
+        if (Pointer.current.press.wasPressedThisFrame)
+            BeginPress();
+        else if (_pressed3D)
+            TrackPress();
     }
 
-    private void HandleClick()
+    private void BeginPress()
     {
         Vector2 screenPos = Pointer.current.position.ReadValue();
-        Ray ray = cam.ScreenPointToRay(screenPos);
 
+        Ray ray = cam.ScreenPointToRay(screenPos);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            _currentMode.HandleClick(hit);
+            _pressedHit = hit;
+            _pressed3D = true;
+            _holding = false;
+            _holdTimer = 0f;
             return;
         }
 
         Ray rayUI = camUI.ScreenPointToRay(screenPos);
         RaycastHit2D hit2D = Physics2D.Raycast(rayUI.origin, rayUI.direction);
         if (hit2D.collider != null)
-            _currentMode.HandleClick2D(hit2D);
+            _currentMode.OnClick2D(hit2D);
+    }
+
+    private void TrackPress()
+    {
+        if (_pressedHit.collider == null)
+        {
+            ResetPress();
+            return;
+        }
+
+        if (Pointer.current.press.wasReleasedThisFrame)
+        {
+            if (_holding) _currentMode.OnHoldEnd(_pressedHit);
+            else _currentMode.OnTap3D(_pressedHit);
+            ResetPress();
+            return;
+        }
+
+        if (!_holding)
+        {
+            _holdTimer += Time.deltaTime;
+            if (_holdTimer >= holdDuration)
+            {
+                _holding = true;
+                _currentMode.OnHoldStart(_pressedHit);
+            }
+        }
+    }
+
+    private void CancelHold()
+    {
+        if (_pressed3D && _holding && _pressedHit.collider != null)
+            _currentMode.OnHoldEnd(_pressedHit);
+        ResetPress();
+    }
+
+    private void ResetPress()
+    {
+        _pressed3D = false;
+        _holding = false;
+        _holdTimer = 0f;
+        _pressedHit = default;
     }
 }

@@ -54,7 +54,7 @@ public partial class InteractableObject
         Init();
         if (on)
         {
-            var mat = ObjectInteractionManager.Instance != null ? ObjectInteractionManager.Instance.transparentMat : null;
+            var mat = InputController.Instance != null ? InputController.Instance.TransparentMat : null;
             if (mat != null) _renderer.material = mat;
         }
         else

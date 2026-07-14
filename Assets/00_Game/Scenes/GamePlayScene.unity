@@ -2199,7 +2199,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 49.480164, y: -717.5312}
+  m_AnchoredPosition: {x: 49.480225, y: -717.5312}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &301952520
@@ -11993,7 +11993,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -139.56659, y: -69.910034}
+  m_AnchoredPosition: {x: -139.56665, y: -69.91016}
   m_SizeDelta: {x: 221.15, y: 62.18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &963171531
@@ -29276,7 +29276,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 826169406}
-  - {fileID: 2094206008}
   - {fileID: 667111710}
   - {fileID: 785182344}
   - {fileID: 1108875961}
@@ -29332,6 +29331,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5b2901681615ce4f882072805546ca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputController
+  holdDuration: 0.5
+  transparentMat: {fileID: 2100000, guid: 2be008670bb217f48bdcf59a3a1bbd3f, type: 2}
 --- !u!114 &1316276022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60674,53 +60675,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2085686344}
   m_CullTransparentMesh: 1
---- !u!1 &2094206007
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2094206008}
-  - component: {fileID: 2094206009}
-  m_Layer: 0
-  m_Name: ObjectInteraction
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2094206008
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2094206007}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1316276018}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2094206009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2094206007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 762f1b85bb0021a4ba61b9ba8122d3ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ObjectInteractionManager
-  cam: {fileID: 1513039822}
-  holdDuration: 0.2
-  transparentMat: {fileID: 2100000, guid: 2be008670bb217f48bdcf59a3a1bbd3f, type: 2}
 --- !u!1 &2098644597
 GameObject:
   m_ObjectHideFlags: 0
