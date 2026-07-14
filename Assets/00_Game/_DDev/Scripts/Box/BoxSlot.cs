@@ -29,9 +29,7 @@ public class BoxSlot : MonoBehaviour
 
     public bool IsClosing { get; private set; }
     public bool IsLocked => isLocked;
-
-    public string ColorKey => colorKey;
-    public bool CanAccept(string key) => !isLocked && colorKey == key && currentYarnRoll < MaxCapacity;
+    public bool CanAccept(string key) => !isLocked && !IsClosing && colorKey == key && currentYarnRoll < MaxCapacity;
 
     private void Awake()
     {
@@ -81,7 +79,11 @@ public class BoxSlot : MonoBehaviour
 
     public void Unlock() => UnlockWith(GameAlgorithm.Instance.PickRescueColor(), false);
 
-    public void Unlock(string key) => UnlockWith(key, true);
+    public void Unlock(string key)
+    {
+        GameAlgorithm.Instance.Reserve(key);
+        UnlockWith(key, true);
+    }
 
     private void UnlockWith(string key, bool holesFirst)
     {
@@ -179,7 +181,7 @@ public class BoxSlot : MonoBehaviour
 
     public bool TryInstantFill(YarnRoll prefab)
     {
-        if (isLocked) return false;
+        if (isLocked || IsClosing) return false;
 
         int needed = MaxCapacity - currentYarnRoll;
         if (needed <= 0) return false;
