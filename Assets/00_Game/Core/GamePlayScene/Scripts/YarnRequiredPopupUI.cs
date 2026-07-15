@@ -50,7 +50,7 @@ public class YarnRequiredPopupUI : MonoBehaviour, IIntroStep
         Vector3 perpendicular = new Vector3(-dir.y, dir.x, 0f).normalized;
         Vector3 arcPoint = (start + end) / 2f + perpendicular * (dir.magnitude * settings.flyArcRatio);
 
-        imgRect.DOSizeDelta(iconRect.sizeDelta, settings.flyDuration);
+        _ = imgRect.DOSizeDelta(iconRect.sizeDelta, settings.flyDuration);
         await imgRect.DOPath(new[] { arcPoint, end }, settings.flyDuration, PathType.CatmullRom)
             .SetEase(Ease.InOutSine)
             .AsyncWaitForCompletion();

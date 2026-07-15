@@ -88,7 +88,7 @@ public class HolesTemp : MonoBehaviour, IIntroStep
         for (int i = 0; i < activeHoleCount; i++)
         {
             int index = i;
-            DOVirtual.DelayedCall(index * waveDelay, () => holes[index].ScaleIn(scaleDuration));
+            _ = DOVirtual.DelayedCall(index * waveDelay, () => holes[index].ScaleIn(scaleDuration));
         }
 
         float total = (activeHoleCount - 1) * waveDelay + scaleDuration;

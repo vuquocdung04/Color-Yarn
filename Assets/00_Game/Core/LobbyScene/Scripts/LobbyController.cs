@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 public class LobbyController : Singleton<LobbyController>
 {
     public LobbyScene lobbyScene;
+    public Camera mainCamera;
     [Header("UI Layers")]
     public Transform botCanvas;
     public Transform topCanvas;

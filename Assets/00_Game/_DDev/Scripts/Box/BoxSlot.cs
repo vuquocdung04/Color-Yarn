@@ -264,9 +264,9 @@ public class BoxSlot : MonoBehaviour
             float targetY = hasNextColor ? boxRestPos.y + BoxCreator.Instance.BoxHopOffset : boxRestPos.y;
 
             Sequence boxSeq = DOTween.Sequence();
-            boxSeq.Append(transform.DOMoveY(boxRestPos.y - BoxCreator.Instance.BoxDipOffset, BoxCreator.Instance.BoxDipDuration).SetEase(Ease.InOutQuad));
-            boxSeq.AppendInterval(BoxCreator.Instance.BoxHoldDuration);
-            boxSeq.Append(transform.DOMoveY(targetY, duration).SetEase(Ease.InOutQuad));
+            _ = boxSeq.Append(transform.DOMoveY(boxRestPos.y - BoxCreator.Instance.BoxDipOffset, BoxCreator.Instance.BoxDipDuration).SetEase(Ease.InOutQuad));
+            _ = boxSeq.AppendInterval(BoxCreator.Instance.BoxHoldDuration);
+            _ = boxSeq.Append(transform.DOMoveY(targetY, duration).SetEase(Ease.InOutQuad));
 
             await boxSeq.AsyncWaitForCompletion();
 

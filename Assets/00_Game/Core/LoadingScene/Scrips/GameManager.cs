@@ -39,7 +39,7 @@ public class GameManager : Singleton<GameManager>
         await loadingBox.CloseAsync(loadingFadeOutDuration);
 
         //Init final
-        fxManager.LoadSceneWithIrisWipe(SceneName.GAME_PLAY, isSkipOutPhase);
+        fxManager.LoadScene(SceneName.GAME_PLAY, isSkipOutPhase);
     }
 
     private void InitInstance()

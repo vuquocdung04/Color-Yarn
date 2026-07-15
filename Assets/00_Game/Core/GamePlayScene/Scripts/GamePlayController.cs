@@ -36,11 +36,11 @@ public class GamePlayController : Singleton<GamePlayController>
 
         await UniTask.WaitForEndOfFrame(this);
         boxCreator.SetInitialColors();
-        await gameIntro.PlayIntro();
         await UniTask.Delay(500);
         if (FXManager.Instance)
             FXManager.Instance.isNextSceneReady = true;
         await UniTask.Delay(500);
+        await gameIntro.PlayIntro();
         gameFlow.RequestResume();
     }
 
