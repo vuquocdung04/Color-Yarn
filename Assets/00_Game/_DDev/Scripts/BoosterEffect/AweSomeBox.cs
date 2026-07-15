@@ -49,6 +49,17 @@ public class AweSomeBox : MonoBehaviour
         UpdateVisual();
     }
 
+    public Dictionary<string, int> GetStoredColorCounts()
+    {
+        var result = new Dictionary<string, int>();
+        foreach (var r in stored)
+        {
+            if (r == null || string.IsNullOrEmpty(r.ColorKey)) continue;
+            result[r.ColorKey] = result.TryGetValue(r.ColorKey, out int c) ? c + 1 : 1;
+        }
+        return result;
+    }
+
     public List<YarnRoll> TakeMatching(string key, int max)
     {
         var result = new List<YarnRoll>();

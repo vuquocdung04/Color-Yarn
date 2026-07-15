@@ -1,8 +1,9 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CoinLayoutUI : MonoBehaviour
+public class CoinLayoutUI : MonoBehaviour, IIntroStep
 {
     [SerializeField] private Button btnCoin;
     [SerializeField] private CanvasGroup canvasGroup;
@@ -13,14 +14,15 @@ public class CoinLayoutUI : MonoBehaviour
         {
             _ = ShopBox.Setup(GameScene.GetPopupHolder(), box => box.Show());
         });
-
-        canvasGroup.SetCanvasState(false, 0f);
     }
 
-    public void Intro(float duration = 0.3f)
+    public void Prepare(GameIntroConfig config) => canvasGroup.SetCanvasState(false, 0f);
+
+    public UniTask Play(GameIntroConfig config)
     {
         canvasGroup.SetCanvasState(true);
-        canvasGroup.DOFade(1f, duration);
+        canvasGroup.DOFade(1f, config.reveal.duration);
+        return UniTask.CompletedTask;
     }
 
     public Transform GetCoinBar() => btnCoin.transform;

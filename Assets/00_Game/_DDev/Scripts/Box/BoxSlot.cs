@@ -4,17 +4,21 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using EventDispatcher;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BoxSlot : MonoBehaviour
 {
     private const int MaxCapacity = 3;
+
+    private enum BoxState { Locked, Available, Closing, BoosterActive }
 
     [SerializeField] private string colorKey;
     [SerializeField] private List<Transform> slots;
     [SerializeField] private SpriteRenderer spriteBoxRenderer;
     [SerializeField] private SpriteRenderer spriteCoverRenderer;
 
-    [SerializeField] private bool isLocked;
+    [FormerlySerializedAs("isLocked")]
+    [SerializeField] private bool startLocked;
     [SerializeField] private GameObject lockObject;
 
     [SerializeField] private ParticleSystem doneFX;
@@ -28,16 +32,22 @@ public class BoxSlot : MonoBehaviour
     private SpriteRenderer[] slotPlaceholders;
     private Vector3 introRestPosition;
 
-    public bool IsClosing { get; private set; }
-    public bool IsBoosterAnimating { get; private set; }
-    public bool IsBusy => IsClosing || IsBoosterAnimating;
-    public bool IsLocked => isLocked;
-    public bool CanAccept(string key) => !isLocked && !IsBusy && colorKey == key && currentYarnRoll < MaxCapacity;
+    private BoxState state;
+
+    public bool IsLocked => state == BoxState.Locked;
+    public bool IsBusy => state == BoxState.Closing || state == BoxState.BoosterActive;
+    public bool CanAccept(string key) => state == BoxState.Available && colorKey == key && currentYarnRoll < MaxCapacity;
+
+    private void SetState(BoxState next)
+    {
+        state = next;
+        if (lockObject != null) lockObject.SetActive(next == BoxState.Locked);
+    }
 
     private void Awake()
     {
         if (spriteCoverRenderer != null) spriteCoverRenderer.gameObject.SetActive(false);
-        if (lockObject != null) lockObject.SetActive(isLocked);
+        SetState(startLocked ? BoxState.Locked : BoxState.Available);
 
         slotPlaceholders = new SpriteRenderer[slots.Count];
         for (int i = 0; i < slots.Count; i++)
@@ -76,31 +86,22 @@ public class BoxSlot : MonoBehaviour
 
     public void OnTapped()
     {
-        if (!isLocked) return;
+        if (!IsLocked) return;
         _ = AddBox.Setup(GameScene.GetPopupHolder(), box => box.SetupAndShow(this));
     }
 
-    public void Unlock() => UnlockWith(GameAlgorithm.Instance.PickRescueColor(), false);
-
-    public void Unlock(string key)
+    public void Unlock()
     {
-        GameAlgorithm.Instance.Reserve(key);
-        UnlockWith(key, true);
-    }
-
-    private void UnlockWith(string key, bool holesFirst)
-    {
+        string key = GameAlgorithm.Instance.PickRescueColor();
         if (string.IsNullOrEmpty(key))
         {
             Debug.LogError($"[BoxSlot] {name} unlock nhung khong con mau nao de chon");
             return;
         }
 
-        isLocked = false;
+        SetState(BoxState.Available);
         SetColor(key);
-        if (lockObject != null) lockObject.SetActive(false);
-        if (holesFirst) ReserveFromHolesFirst();
-        else ReserveFromHoles();
+        ReserveFromHolesFirst();
         PlaceReservedRolls();
     }
 
@@ -184,15 +185,21 @@ public class BoxSlot : MonoBehaviour
 
     public void Booster1Fill(YarnRoll prefab)
     {
-        IsBoosterAnimating = true;
+        SetState(BoxState.BoosterActive);
         bool filled = false;
         magnet.Activate(
             onSuck: () => filled = FillInstant(prefab),
             onDone: () =>
             {
-                IsBoosterAnimating = false;
-                if (filled) CloseLid();
-                else HolesTemp.Instance.RecheckLose();
+                if (filled)
+                {
+                    CloseLid();
+                }
+                else
+                {
+                    SetState(BoxState.Available);
+                    HolesTemp.Instance.RecheckLose();
+                }
             });
     }
 
@@ -234,7 +241,7 @@ public class BoxSlot : MonoBehaviour
 
     private async UniTaskVoid CloseAndResetAsync(CancellationToken token)
     {
-        IsClosing = true;
+        SetState(BoxState.Closing);
         try
         {
             float duration = BoxCreator.Instance.BoxAnimDuration;
@@ -284,7 +291,7 @@ public class BoxSlot : MonoBehaviour
         }
         finally
         {
-            IsClosing = false;
+            SetState(BoxState.Available);
             HolesTemp.Instance.RecheckLose();
         }
     }

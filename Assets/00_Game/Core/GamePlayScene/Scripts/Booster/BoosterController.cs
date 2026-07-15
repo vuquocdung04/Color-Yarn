@@ -1,8 +1,9 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using EventDispatcher;
 using UnityEngine;
 
-public partial class BoosterController : MonoBehaviour
+public partial class BoosterController : MonoBehaviour, IIntroStep
 {
     public static BoosterController Instance { get; private set; }
 
@@ -25,14 +26,15 @@ public partial class BoosterController : MonoBehaviour
         this.RegisterListener(EventID.BOOSTER_DEACTIVATE_REQUEST, OnDeactivateRequest);
         this.RegisterListener(EventID.BOOSTER_BUY_REQUEST, OnBuyRequest);
         GameFlow.Instance.OnStateEntered += OnGameStateChanged;
-
-        canvasGroup.SetCanvasState(false, 0f);
     }
 
-    public void Intro(float duration = 0.3f)
+    public void Prepare(GameIntroConfig config) => canvasGroup.SetCanvasState(false, 0f);
+
+    public UniTask Play(GameIntroConfig config)
     {
         canvasGroup.SetCanvasState(true);
-        canvasGroup.DOFade(1f, duration);
+        canvasGroup.DOFade(1f, config.reveal.duration);
+        return UniTask.CompletedTask;
     }
 
     private void OnDestroy()

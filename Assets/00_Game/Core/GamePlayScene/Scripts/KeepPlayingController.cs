@@ -62,8 +62,7 @@ public class KeepPlayingController : MonoBehaviour
         }
         else
         {
-            string color = HolesTemp.Instance.GetDominantColor();
-            BoxCreator.Instance.GetFirstLocked()?.Unlock(color);
+            BoxCreator.Instance.GetFirstLocked()?.Unlock();
         }
 
         KeepPlayingBox.Instance.Close();

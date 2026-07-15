@@ -23,6 +23,7 @@ public class YarnRequiredPopupUI : MonoBehaviour, IIntroStep
         image.rectTransform.position = imageOriginalPos;
         image.rectTransform.sizeDelta = imageOriginalSize;
 
+        GameScene.Instance.yarnRequiredUI.PrepareIntro();
         gameObject.SetActive(false);
     }
 

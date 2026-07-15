@@ -35,7 +35,6 @@ public class GameScene : MonoBehaviour
 
         yarnRequiredUI.Init();
         yarnRequiredUI.SetRequiredYarn(LevelController.Instance.CurrentYarnObj.TotalLen);
-        yarnRequiredUI.gameObject.SetActive(false);
 
         coinLayout.Init();
     }

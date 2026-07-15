@@ -11,21 +11,22 @@ public class GameIntro : MonoBehaviour
 
     [SerializeField] private GameIntroConfig config;
     [SerializeField] private List<MonoBehaviour> introSteps;
+    [SerializeField] private bool playIntro = true;
 
     public void Init()
     {
+        if (!playIntro) return;
+
         foreach (var step in introSteps)
             ((IIntroStep)step).Prepare(config);
     }
 
     public async UniTask PlayIntro()
     {
+        if (!playIntro) return;
+
         foreach (var step in introSteps)
             await ((IIntroStep)step).Play(config);
-
-        BoosterController.Instance.Intro(config.reveal.duration);
-        TopBar.Instance.Intro(config.reveal.duration);
-        GameScene.Instance.coinLayout.Intro(config.reveal.duration);
     }
 
     [Button("Test All Intro")]

@@ -26,6 +26,9 @@ public class HolesTemp : MonoBehaviour, IIntroStep
 
     public float Duration => duration;
 
+    public float FirstActiveHoleX => holes[0].transform.position.x;
+    public float LastActiveHoleX => holes[activeHoleCount - 1].transform.position.x;
+
     private YarnRoll[] occupants;
     private int activeHoleCount;
 
@@ -156,15 +159,6 @@ public class HolesTemp : MonoBehaviour, IIntroStep
     {
         if (IsFull) KeepPlayingController.Instance.OnLoseCondition();
         else InputController.Instance.RestoreNormalMode();
-    }
-
-    public string GetDominantColor()
-    {
-        string best = null;
-        int max = 0;
-        foreach (var kv in GetParkedColorCounts())
-            if (kv.Value > max) { max = kv.Value; best = kv.Key; }
-        return best;
     }
 
     public void CleanToAweSome(System.Action onDone = null) => bloom.Activate(onDone);

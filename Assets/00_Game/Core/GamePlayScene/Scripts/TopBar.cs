@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TopBar : MonoBehaviour
+public class TopBar : MonoBehaviour, IIntroStep
 {
     public static TopBar Instance { get; private set; }
 
@@ -29,9 +30,9 @@ public class TopBar : MonoBehaviour
 
         txtLevelDisplay.text = $"Level {UseProfile.Level.Value}";
         SetupLevelNodes();
-
-        canvasGroup.SetCanvasState(false, 0f);
     }
+
+    public void Prepare(GameIntroConfig config) => canvasGroup.SetCanvasState(false, 0f);
 
     [Button("Auto Wire Level Nodes")]
     private void AutoWireLevelNodes()
@@ -62,9 +63,10 @@ public class TopBar : MonoBehaviour
         if (Instance == this) Instance = null;
     }
 
-    public void Intro(float duration = 0.3f)
+    public UniTask Play(GameIntroConfig config)
     {
         canvasGroup.SetCanvasState(true);
-        canvasGroup.DOFade(1f, duration);
+        canvasGroup.DOFade(1f, config.reveal.duration);
+        return UniTask.CompletedTask;
     }
 }

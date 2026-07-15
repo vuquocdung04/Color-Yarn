@@ -95,23 +95,9 @@ public class GameAlgorithm : MonoBehaviour
 
     public string PickRescueColor()
     {
-        var parked = HolesTemp.Instance.GetParkedColorCounts();
-        var candidates = new List<string>(parked.Keys);
-        Shuffle(candidates);
-
-        string best = null;
-        int bestCount = 0;
-        foreach (var color in candidates)
-        {
-            if (!remainingByColor.TryGetValue(color, out int remaining) || remaining < 3) continue;
-
-            int count = parked[color];
-            if (count > bestCount)
-            {
-                bestCount = count;
-                best = color;
-            }
-        }
+        string best = PickMostAvailable(HolesTemp.Instance.GetParkedColorCounts());
+        if (best == null)
+            best = PickMostAvailable(AweSomeBox.Instance.GetStoredColorCounts());
 
         if (best != null)
         {
@@ -120,6 +106,22 @@ public class GameAlgorithm : MonoBehaviour
         }
 
         return PickNextColor();
+    }
+
+    private string PickMostAvailable(Dictionary<string, int> counts)
+    {
+        string best = null;
+        int bestCount = 0;
+        foreach (var kv in counts)
+        {
+            if (!remainingByColor.TryGetValue(kv.Key, out int remaining) || remaining < 3) continue;
+            if (kv.Value > bestCount)
+            {
+                bestCount = kv.Value;
+                best = kv.Key;
+            }
+        }
+        return best;
     }
 
     private static void Shuffle(List<string> list)

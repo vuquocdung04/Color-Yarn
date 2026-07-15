@@ -19,9 +19,14 @@ public class YarnRequiredUI : MonoBehaviour
     public void Init()
     {
         originalPosition = info.localPosition;
-        info.localPosition = originalPosition + new Vector3(-150f, 0f, 0f);
 
         this.RegisterListener(EventID.YARN_COLLECTED, OnYarnCollected);
+    }
+
+    public void PrepareIntro()
+    {
+        info.localPosition = originalPosition + new Vector3(-150f, 0f, 0f);
+        gameObject.SetActive(false);
     }
 
     private void OnDestroy()
