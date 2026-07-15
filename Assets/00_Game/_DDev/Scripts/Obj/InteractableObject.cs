@@ -116,18 +116,37 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
     public void InstantConsume()
     {
         GameObject coreGo = core;
+        var parentObj = transform.parent != null ? transform.parent.GetComponent<InteractableObject>() : null;
 
-        Owner?.RemoveLen(this);
-
-        if (coreGo != null)
+        if (parentObj == null)
         {
-            Owner?.AddLen(coreGo.GetComponent<InteractableObject>());
-            coreGo.transform.SetParent(Root, true);
+            Owner?.RemoveLen(this);
 
-            foreach (var obj in coreGo.GetComponentsInChildren<InteractableObject>())
-                if (obj != null) obj.DecrementLayer();
+            if (coreGo != null)
+            {
+                Owner?.AddLen(coreGo.GetComponent<InteractableObject>());
+                coreGo.transform.SetParent(Root, true);
 
-            _ = coreGo.transform.DOScale(savedScale, growDuration).SetEase(growEase);
+                foreach (var obj in coreGo.GetComponentsInChildren<InteractableObject>())
+                    if (obj != null) obj.DecrementLayer();
+
+                _ = coreGo.transform.DOScale(savedScale, growDuration).SetEase(growEase);
+            }
+        }
+        else
+        {
+            if (coreGo != null)
+            {
+                coreGo.transform.SetParent(parentObj.transform, false);
+                coreGo.transform.localPosition = Vector3.zero;
+                coreGo.transform.localRotation = Quaternion.identity;
+                coreGo.transform.localScale = Vector3.one * scaleRatio;
+
+                foreach (var obj in coreGo.GetComponentsInChildren<InteractableObject>())
+                    if (obj != null) obj.DecrementLayer();
+            }
+
+            parentObj.core = coreGo;
         }
 
         Destroy(gameObject);

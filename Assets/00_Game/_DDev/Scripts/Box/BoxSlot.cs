@@ -18,6 +18,7 @@ public class BoxSlot : MonoBehaviour
     [SerializeField] private GameObject lockObject;
 
     [SerializeField] private ParticleSystem doneFX;
+    [SerializeField] private Magnet magnet;
 
     private readonly List<YarnRoll> spawnedRolls = new();
     private readonly List<YarnRoll> reservedRolls = new();
@@ -28,8 +29,10 @@ public class BoxSlot : MonoBehaviour
     private Vector3 introRestPosition;
 
     public bool IsClosing { get; private set; }
+    public bool IsBoosterAnimating { get; private set; }
+    public bool IsBusy => IsClosing || IsBoosterAnimating;
     public bool IsLocked => isLocked;
-    public bool CanAccept(string key) => !isLocked && !IsClosing && colorKey == key && currentYarnRoll < MaxCapacity;
+    public bool CanAccept(string key) => !isLocked && !IsBusy && colorKey == key && currentYarnRoll < MaxCapacity;
 
     private void Awake()
     {
@@ -179,10 +182,22 @@ public class BoxSlot : MonoBehaviour
         }
     }
 
-    public bool TryInstantFill(YarnRoll prefab)
+    public void Booster1Fill(YarnRoll prefab)
     {
-        if (isLocked || IsClosing) return false;
+        IsBoosterAnimating = true;
+        bool filled = false;
+        magnet.Activate(
+            onSuck: () => filled = FillInstant(prefab),
+            onDone: () =>
+            {
+                IsBoosterAnimating = false;
+                if (filled) CloseLid();
+                else HolesTemp.Instance.RecheckLose();
+            });
+    }
 
+    private bool FillInstant(YarnRoll prefab)
+    {
         int needed = MaxCapacity - currentYarnRoll;
         if (needed <= 0) return false;
 
@@ -204,11 +219,13 @@ public class BoxSlot : MonoBehaviour
         if (currentYarnRoll >= MaxCapacity)
         {
             AdvanceToNextColor();
-            CloseAndResetAsync(this.GetCancellationTokenOnDestroy()).Forget();
+            return true;
         }
 
-        return true;
+        return false;
     }
+
+    public void CloseLid() => CloseAndResetAsync(this.GetCancellationTokenOnDestroy()).Forget();
 
     private void OnLastRollFinished()
     {

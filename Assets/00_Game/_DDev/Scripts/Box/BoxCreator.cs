@@ -28,7 +28,7 @@ public class BoxCreator : MonoBehaviour, IIntroStep
     public float BoxDipDuration => boxDipDuration;
     public float BoxHoldDuration => boxHoldDuration;
 
-    public bool HasAnyBoxClosing => boxSlots.Exists(b => b.IsClosing);
+    public bool HasAnyBoxBusy => boxSlots.Exists(b => b.IsBusy);
 
     public int CountLocked()
     {
@@ -96,7 +96,7 @@ public class BoxCreator : MonoBehaviour, IIntroStep
         await UniTask.Delay((int)(moveDuration * 1000));
     }
 
-    public bool TryInstantFill(BoxSlot box) => box.TryInstantFill(yarnRollPrefab);
+    public void Booster1Fill(BoxSlot box) => box.Booster1Fill(yarnRollPrefab);
 
     public bool TrySpawn(InteractableObject target)
     {

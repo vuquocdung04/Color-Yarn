@@ -5,9 +5,9 @@ public class Booster1InputMode : InputMode
     public override void OnClick2D(RaycastHit2D hit)
     {
         var box = hit.collider.GetComponentInParent<BoxSlot>();
-        if (box == null || box.IsLocked) return;
+        if (box == null || box.IsLocked || box.IsBusy) return;
 
-        if (BoxCreator.Instance.TryInstantFill(box))
-            BoosterController.Instance.OnBoosterActionSuccess();
+        BoxCreator.Instance.Booster1Fill(box);
+        BoosterController.Instance.OnBoosterActionSuccess();
     }
 }

@@ -167,7 +167,7 @@ public class YarnObj : MonoBehaviour
     {
         var matches = new List<InteractableObject>();
         foreach (var obj in GetComponentsInChildren<InteractableObject>())
-            if (obj != null && obj.ColorKey == colorKey && obj.Layer == 1) matches.Add(obj);
+            if (obj != null && obj.ColorKey == colorKey && !obj.IsBusy) matches.Add(obj);
 
         for (int i = matches.Count - 1; i > 0; i--)
         {

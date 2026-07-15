@@ -140,7 +140,7 @@ public class HolesTemp : MonoBehaviour, IIntroStep
             InputController.Instance.SetWaitingMode();
             yr.PlaceInSlot(anchor, () =>
             {
-                if (IsFull && !BoxCreator.Instance.HasAnyBoxClosing)
+                if (IsFull && !BoxCreator.Instance.HasAnyBoxBusy)
                     KeepPlayingController.Instance.OnLoseCondition();
             });
         }
