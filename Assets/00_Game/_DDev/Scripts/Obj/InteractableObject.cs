@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -6,6 +7,8 @@ using UnityEngine;
 [RequireComponent(typeof(Renderer))]
 public partial class InteractableObject : MonoBehaviour, IInteractable
 {
+    public event Action<float> OnDissolveStart;
+
     private float duration = 0.5f;
     private float growDuration;
     private Ease  growEase;
@@ -98,6 +101,7 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
 
         Init();
         float dur = HolesTemp.Instance != null ? HolesTemp.Instance.Duration : duration;
+        OnDissolveStart?.Invoke(dur);
         float t = 0f;
         while (t < dur)
         {

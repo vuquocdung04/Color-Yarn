@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1809079799343511755}
   - component: {fileID: 986424899066703083}
   - component: {fileID: 7638180897997167269}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_03_decor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6217643115420036769}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 1383168470727290188}
   - component: {fileID: 4713066074174890457}
   - component: {fileID: 2418904487186069411}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_20_decor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,7 +231,8 @@ GameObject:
   - component: {fileID: 8604749158616017657}
   - component: {fileID: 4174521808739947012}
   - component: {fileID: 824755209059568651}
-  m_Layer: 0
+  - component: {fileID: 9043024995983650866}
+  m_Layer: 7
   m_Name: MelonCream_11_decor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -310,6 +311,26 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &9043024995983650866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649816005792419456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60da34676c5504b4ba92b90eafd42800, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Decor
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 128
+  impulseSpeed: 1.5
+  gravity: 9.81
+  friction: 5
+  radius: 0.05
+  lifeTime: 4
 --- !u!1 &1380251801144883588
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,7 +344,7 @@ GameObject:
   - component: {fileID: 3067682571588250669}
   - component: {fileID: 2595137187713408666}
   - component: {fileID: 8607747170968750965}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -458,7 +479,7 @@ GameObject:
   - component: {fileID: 8132035323982254499}
   - component: {fileID: 4429215748277651679}
   - component: {fileID: 3135561948666045728}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -588,7 +609,7 @@ GameObject:
   - component: {fileID: 8877432503903270623}
   - component: {fileID: 1762053704939934716}
   - component: {fileID: 3029663114548036317}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -715,7 +736,7 @@ GameObject:
   - component: {fileID: 2617535262435319543}
   - component: {fileID: 7719707476980317759}
   - component: {fileID: 1254509115180006936}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_14_decor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -804,7 +825,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6710974543829510539}
   - component: {fileID: 2907189325107143659}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -858,7 +879,7 @@ GameObject:
   - component: {fileID: 5239342351139836852}
   - component: {fileID: 488725916990771647}
   - component: {fileID: 3855526334289241585}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_06_decor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -948,7 +969,7 @@ GameObject:
   - component: {fileID: 7570214692462597856}
   - component: {fileID: 7119361530353412784}
   - component: {fileID: 1993814700355779691}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_19_decor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1040,7 +1061,7 @@ GameObject:
   - component: {fileID: 3996656435361201763}
   - component: {fileID: 8585070367445768422}
   - component: {fileID: 8642064636834047943}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1169,7 +1190,7 @@ GameObject:
   - component: {fileID: 3323166270447504142}
   - component: {fileID: 5572361891655544811}
   - component: {fileID: 3809999505387890419}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1296,7 +1317,7 @@ GameObject:
   - component: {fileID: 112481261629161748}
   - component: {fileID: 4273265592522711737}
   - component: {fileID: 1489906417929258398}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_18_decor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1386,7 +1407,7 @@ GameObject:
   - component: {fileID: 4579809620547281889}
   - component: {fileID: 1586544894189636433}
   - component: {fileID: 3396265390794827598}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_08_decor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1478,7 +1499,7 @@ GameObject:
   - component: {fileID: 1502465171971631164}
   - component: {fileID: 1600214351314134811}
   - component: {fileID: 4336103237250675546}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1605,7 +1626,7 @@ GameObject:
   - component: {fileID: 3826269466275680392}
   - component: {fileID: 2131432584486546823}
   - component: {fileID: 8465826367103642445}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_10_decor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1697,7 +1718,7 @@ GameObject:
   - component: {fileID: 7868754498058366563}
   - component: {fileID: 3368795894414610980}
   - component: {fileID: 1860415524989097727}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_09
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1826,7 +1847,7 @@ GameObject:
   - component: {fileID: 3705026476549513960}
   - component: {fileID: 5389251008635298709}
   - component: {fileID: 4845415768867767445}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_05_decor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1918,7 +1939,7 @@ GameObject:
   - component: {fileID: 8462525966778679820}
   - component: {fileID: 5843154029719509170}
   - component: {fileID: 5162282174506269203}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2045,7 +2066,7 @@ GameObject:
   - component: {fileID: 4468337595773228418}
   - component: {fileID: 8477735471584801223}
   - component: {fileID: 4101058120910887483}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_17_decor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2135,7 +2156,7 @@ GameObject:
   - component: {fileID: 6495464525628027329}
   - component: {fileID: 3113509076230263588}
   - component: {fileID: 4847793037537298437}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_04_decor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2225,7 +2246,7 @@ GameObject:
   - component: {fileID: 5781687209134667194}
   - component: {fileID: 4849008637890834110}
   - component: {fileID: 841688421323307522}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_15_decor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2314,7 +2335,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3184850037273242997}
   - component: {fileID: 6316765454664388275}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Level_0001_WaterMelonPop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2351,8 +2372,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::YarnObj
   root: {fileID: 6217643115420036769}
-  requiredYarn: 18
-  yarnDepthSpread: 0
   growDuration: 0.35
   growEase: 27
 --- !u!1 &9098611869874302818
@@ -2368,7 +2387,7 @@ GameObject:
   - component: {fileID: 789912008678347981}
   - component: {fileID: 7255264915757229035}
   - component: {fileID: 1114686936168358914}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MelonCream_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
