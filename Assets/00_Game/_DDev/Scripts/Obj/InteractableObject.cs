@@ -76,6 +76,7 @@ public partial class InteractableObject : MonoBehaviour, IInteractable
     {
         if (IsBusy) return;
         if (BoxCreator.Instance == null || !BoxCreator.Instance.TrySpawn(this)) return;
+        AudioManager.Instance.PlaySfx("Yarn");
         DissolveSequence(this.GetCancellationTokenOnDestroy()).Forget();
     }
 

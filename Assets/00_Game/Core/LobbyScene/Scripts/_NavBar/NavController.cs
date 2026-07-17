@@ -1,15 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NavController : MonoBehaviour
 {
     public static NavController Instance { get; private set; }
-    [SerializeField] private Sprite sprSelected;
+
+    [SerializeField] private RectTransform selector;
+    [SerializeField] private float selectorMoveDuration = 0.25f;
+
     public List<NavButton> navButtons;
-    private Vector2 sizeSelected;
-    private Vector2 sizeUnselected;
     private NavButton currentNavSelected;
 
     public void Init()
@@ -34,53 +37,64 @@ public class NavController : MonoBehaviour
         await UniTask.WaitForEndOfFrame(this);
         InitNavButtonStateWith(ENavType.Lobby);
     }
-    private void InitSize()
-    {
-        int countNavBar = navButtons.Count;
-        float totalWidth = GetComponent<RectTransform>().rect.width;
-        float widthSelected = totalWidth * 0.45f;
-
-        float height = 250;
-        sizeSelected = new Vector2(widthSelected, height);
-        if (countNavBar > 1)
-        {
-            float remainingPercent = 1.0f - 0.45f;
-            float widthUnselected = totalWidth * remainingPercent / (countNavBar - 1);
-            sizeUnselected = new Vector2(widthUnselected, height);
-        }
-    }
     public void NavigateTo(ENavType type)
     {
         var target = navButtons.Find(n => n.navType == type);
         if (target == null || target == currentNavSelected) return;
         UpdateNavButtonState(target);
     }
+    private void InitSize()
+    {
+        int count = navButtons.Count;
+        if (count == 0) return;
+
+        float totalWidth = GetComponent<RectTransform>().rect.width;
+        float height = 250f;
+        int middle = count / 2;
+
+        for (int i = 0; i < count; i++)
+        {
+            float percent = i == middle ? 0.34f : 0.33f;
+            navButtons[i].SetSize(new Vector2(totalWidth * percent, height));
+        }
+    }
     private void InitNavButtonStateWith(ENavType type)
     {
         InitSize();
-        foreach (var t in navButtons)
-        {
-            if (t.navType == type)
-            {
-                currentNavSelected = t;
-                t.HandleSelected(true, sprSelected, sizeSelected, sizeUnselected);
-            }
-            else
-            {
-                t.HandleSelected(false, sprSelected, sizeSelected, sizeUnselected);
-            }
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
 
-        }
+        foreach (var t in navButtons)
+            t.HandleSelected(t.navType == type);
+
+        currentNavSelected = navButtons.Find(n => n.navType == type);
+        MoveSelectorTo(currentNavSelected, true);
     }
     private void UpdateNavButtonState(NavButton navButton)
     {
         foreach (var t in navButtons)
         {
-            t.HandleSelected(false, sprSelected, sizeSelected, sizeUnselected);
+            t.HandleSelected(false);
         }
         HandleScreenSliding(navButton);
         currentNavSelected = navButton;
-        navButton.HandleSelected(true, sprSelected, sizeSelected, sizeUnselected);
+        navButton.HandleSelected(true);
+        MoveSelectorTo(navButton, false);
+    }
+    private void MoveSelectorTo(NavButton button, bool instant)
+    {
+        if (selector == null || button == null) return;
+
+        float targetX = button.IconWorldX;
+        if (instant)
+        {
+            Vector3 pos = selector.position;
+            pos.x = targetX;
+            selector.position = pos;
+        }
+        else
+        {
+            selector.DOMoveX(targetX, selectorMoveDuration).SetEase(Ease.OutCubic);
+        }
     }
     private void HandleScreenSliding(NavButton clicked)
     {

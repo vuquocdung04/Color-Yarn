@@ -94,7 +94,11 @@ public partial class YarnRoll : MonoBehaviour
 
     private void PlayDropAnimation(System.Action onComplete)
     {
-        transform.DOLocalMoveY(0f, dropDuration).OnComplete(() => onComplete?.Invoke());
+        transform.DOLocalMoveY(0f, dropDuration).OnComplete(() =>
+        {
+            AudioManager.Instance.PlaySfx("Place");
+            onComplete?.Invoke();
+        });
         transform.DOPunchRotation(new Vector3(0f, 0f, dropWobbleAngle), dropDuration);
     }
 

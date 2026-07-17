@@ -23,6 +23,8 @@ public class Bloom : MonoBehaviour
 
         skeletonAnimation.AnimationState.SetAnimation(0, animationName, false);
 
+        AudioManager.Instance.PlaySfx("Bloom");
+
         DOTween.Sequence()
             .AppendInterval(holdStartDuration)
             .AppendCallback(() => particle.Play())

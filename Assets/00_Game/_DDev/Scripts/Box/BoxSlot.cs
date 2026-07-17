@@ -99,6 +99,8 @@ public class BoxSlot : MonoBehaviour
             return;
         }
 
+        AudioManager.Instance.PlaySfx("UnlockBox");
+
         SetState(BoxState.Available);
         SetColor(key);
         ReserveFromHolesFirst();
@@ -253,6 +255,8 @@ public class BoxSlot : MonoBehaviour
                 Vector3 coverRestPos = coverT.position;
                 coverT.position = coverRestPos + Vector3.up * BoxCreator.Instance.CoverUpOffset;
                 spriteCoverRenderer.gameObject.SetActive(true);
+
+                AudioManager.Instance.PlaySfx("BoxClose");
 
                 await coverT.DOMove(coverRestPos, duration).SetEase(Ease.Linear).AsyncWaitForCompletion();
 

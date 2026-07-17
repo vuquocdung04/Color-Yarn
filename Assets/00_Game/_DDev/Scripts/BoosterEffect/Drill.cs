@@ -25,6 +25,8 @@ public class Drill : MonoBehaviour
     {
         onDrillStart?.Invoke();
 
+        AudioManager.Instance.PlaySfx("Drill");
+
         transform.DORotate(new Vector3(0f, -35f, 0f), duration);
         transform.DOScale(1.15f, duration * 0.5f).SetLoops(2, LoopType.Yoyo);
 

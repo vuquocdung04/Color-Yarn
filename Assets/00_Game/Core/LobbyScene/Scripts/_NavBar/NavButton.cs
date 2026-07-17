@@ -9,21 +9,22 @@ public class NavButton : MonoBehaviour
     [Space(5)] [SerializeField] private Button btnMain;
 
     [SerializeField] RectTransform icon;
-    
-    [SerializeField] private Sprite sprUnSelected;
-    [SerializeField] private Image imgMain;
     [SerializeField] private RectTransform rectMain;
+
+    public float IconWorldX => icon.position.x;
 
     public void Init()
     {
         UIUtils.FitToTargetHeight(icon.GetComponent<Image>(), 200f);
     }
 
-    public void HandleSelected(bool isSelected, Sprite sprSelected, Vector2 targetSize, Vector2 defaultSize)
+    public void SetSize(Vector2 size)
     {
-        rectMain.sizeDelta = isSelected ? targetSize : defaultSize;
-        imgMain.SetSprite(isSelected ? sprSelected : sprUnSelected);
-        
+        rectMain.sizeDelta = size;
+    }
+
+    public void HandleSelected(bool isSelected)
+    {
         if (isSelected)
         {
             icon.DOScale(Vector3.one * 1.3f, 0.15f);
@@ -47,7 +48,6 @@ public class NavButton : MonoBehaviour
         rectMain = GetComponent<RectTransform>();
         btnMain = GetComponent<Button>();
         icon = transform.GetComponentInChildren<RectTransform>();
-        imgMain = GetComponent<Image>();
     }
 }
 
