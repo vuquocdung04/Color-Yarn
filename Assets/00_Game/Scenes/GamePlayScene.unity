@@ -12323,8 +12323,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelController
   scrollZoomSpeed: 0.4
+  pinchZoomSpeed: 0.2
   zoomSlider: {fileID: 1415477888}
   rotationSpeed: 0.75
+  touchRotationSpeed: 0.2
   levelDatabase: {fileID: 11400000, guid: 672c7705b88c2d847b9732141a542a36, type: 2}
   currentLevel: 5
 --- !u!1 &802955805

@@ -196,30 +196,45 @@ public partial class YarnRoll : MonoBehaviour
     Vector3 _lastBPoint;
     bool    _hasLastB;
 
+    static Bounds GetLocalBounds(Renderer r)
+    {
+        if (r.TryGetComponent(out MeshFilter mf) && mf.sharedMesh != null)
+            return mf.sharedMesh.bounds;
+
+        if (r is SkinnedMeshRenderer smr)
+            return smr.localBounds;
+
+        return r.bounds;
+    }
+
     Vector3 GetPointOnBound(float t)
     {
-        if (bRenderer == null)
+        if (bRenderer == null || bObject == null)
             return _hasLastB ? _lastBPoint : (aTop != null ? aTop.position : transform.position);
 
-        Bounds bnd = bRenderer.bounds;
+        Bounds bnd = GetLocalBounds(bRenderer);
         Vector3 center = bnd.center;
         float y = Mathf.Lerp(bnd.max.y, bnd.min.y, t);
 
         float u   = (t * turns) % 1f;
         float ang = u * Mathf.PI * 2f;
-        Vector3 dir = new Vector3(Mathf.Cos(ang), 0f, Mathf.Sin(ang));
+        Vector3 localDir = new Vector3(Mathf.Cos(ang), 0f, Mathf.Sin(ang));
 
         float maxR = Mathf.Max(bnd.extents.x, bnd.extents.z) * 2f + 0.01f;
-        Vector3 axisP  = new Vector3(center.x, y, center.z);
-        Vector3 origin = axisP + dir * maxR;
+        Vector3 localAxisP = new Vector3(center.x, y, center.z);
+        Vector3 localOrigin = localAxisP + localDir * maxR;
+
+        Vector3 worldOrigin = bObject.TransformPoint(localOrigin);
+        Vector3 worldDir = bObject.TransformDirection(-localDir).normalized;
+        float worldMaxR = maxR * Mathf.Max(bObject.lossyScale.x, Mathf.Max(bObject.lossyScale.y, bObject.lossyScale.z));
 
         Vector3 result;
-        if (RaycastSurface(origin, -dir, maxR, out Vector3 surf, out Vector3 nrm))
+        if (RaycastSurface(worldOrigin, worldDir, worldMaxR, out Vector3 surf, out Vector3 nrm))
             result = surf - nrm * inset;
         else
         {
             Vector3 xz = PerimeterPoint(u, bnd.min.x, bnd.max.x, bnd.min.z, bnd.max.z);
-            result = new Vector3(xz.x, y, xz.z);
+            result = bObject.TransformPoint(new Vector3(xz.x, y, xz.z));
         }
 
         _lastBPoint = result;

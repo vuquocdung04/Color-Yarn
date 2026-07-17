@@ -2,16 +2,19 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.UI;
 
 public partial class LevelController
 {
     [Header("Zoom")]
     [SerializeField] private float scrollZoomSpeed = 0.01f;
+    [SerializeField] private float pinchZoomSpeed = 0.01f;
     [SerializeField] private Slider zoomSlider;
 
     [Header("Rotate")]
     [SerializeField] private float rotationSpeed = 0.2f;
+    [SerializeField] private float touchRotationSpeed = 0.05f;
 
     private float CurrentZoomScale => CurrentLevelGO != null ? CurrentLevelGO.transform.localScale.x : 1f;
 
@@ -72,9 +75,51 @@ public partial class LevelController
         HandleRotate();
     }
 
+    private static int GetActiveTouches(TouchControl[] buffer)
+    {
+        if (Touchscreen.current == null) return 0;
+
+        int count = 0;
+        foreach (var touch in Touchscreen.current.touches)
+        {
+            if (!touch.press.isPressed) continue;
+            if (count < buffer.Length) buffer[count] = touch;
+            count++;
+        }
+        return count;
+    }
+
+    private readonly TouchControl[] touchBuffer = new TouchControl[2];
+
     private void HandleZoom()
     {
-        if (Mouse.current == null || CurrentLevelGO == null) return;
+        if (CurrentLevelGO == null) return;
+
+        int touchCount = GetActiveTouches(touchBuffer);
+        if (touchCount >= 2)
+        {
+            Vector2 pos0 = touchBuffer[0].position.ReadValue();
+            Vector2 pos1 = touchBuffer[1].position.ReadValue();
+            Vector2 prevPos0 = pos0 - touchBuffer[0].delta.ReadValue();
+            Vector2 prevPos1 = pos1 - touchBuffer[1].delta.ReadValue();
+
+            float currentDist = Vector2.Distance(pos0, pos1);
+            float prevDist = Vector2.Distance(prevPos0, prevPos1);
+            float pinchDelta = currentDist - prevDist;
+
+            if (pinchDelta != 0f)
+            {
+                float scale = Mathf.Clamp(
+                    CurrentZoomScale + pinchDelta * pinchZoomSpeed,
+                    MinZoomScale, MaxZoomScale);
+
+                ApplyZoom(scale);
+                SyncZoomSlider(scale);
+            }
+            return;
+        }
+
+        if (Mouse.current == null) return;
 
         float scrollValue = Mouse.current.scroll.ReadValue().y;
         if (scrollValue != 0)
@@ -121,10 +166,18 @@ public partial class LevelController
     {
         if (CurrentLevelGO == null) return;
 
-        if (Pointer.current != null && Pointer.current.press.isPressed)
+        int touchCount = GetActiveTouches(touchBuffer);
+        if (touchCount >= 1)
         {
-            Vector2 delta = Pointer.current.delta.ReadValue();
+            Vector2 delta = touchBuffer[0].delta.ReadValue();
+            CurrentLevelGO.transform.Rotate(Vector3.up, -delta.x * touchRotationSpeed, Space.World);
+            CurrentLevelGO.transform.Rotate(Vector3.right, delta.y * touchRotationSpeed, Space.World);
+            return;
+        }
 
+        if (Mouse.current != null && Mouse.current.press.isPressed)
+        {
+            Vector2 delta = Mouse.current.delta.ReadValue();
             CurrentLevelGO.transform.Rotate(Vector3.up, -delta.x * rotationSpeed, Space.World);
             CurrentLevelGO.transform.Rotate(Vector3.right, delta.y * rotationSpeed, Space.World);
         }
