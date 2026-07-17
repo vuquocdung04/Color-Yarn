@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 [System.Serializable]
 public class DataLevel
 {
     public string levelName;
-    public float minZoomCamera;
-    public float maxZoomCamera;
+    [FormerlySerializedAs("minZoomCamera")] public float minZoomScale = 0.6f;
+    [FormerlySerializedAs("maxZoomCamera")] public float maxZoomScale = 2f;
     public int requiredLen;
 
     [Range(0f, 1f)] public float boxDifficulty;

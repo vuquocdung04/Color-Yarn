@@ -20,9 +20,9 @@ public class NormalInputMode : InputMode
             interactable.OnHoldEnd();
     }
 
-    public override void OnClick2D(RaycastHit2D hit)
+    public override void OnClick2D(Collider2D collider)
     {
-        var box = hit.collider.GetComponentInParent<BoxSlot>();
+        var box = collider.GetComponentInParent<BoxSlot>();
         if (box != null) box.OnTapped();
     }
 }

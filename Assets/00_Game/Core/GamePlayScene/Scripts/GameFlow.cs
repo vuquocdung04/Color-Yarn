@@ -36,6 +36,7 @@ public partial class GameFlow : MonoBehaviour
         this.RegisterListener(EventID.LEVEL_COMPLETE, OnLevelComplete);
         this.RegisterListener(EventID.POPUP_OPENED, OnPopupOpened);
         this.RegisterListener(EventID.POPUP_CLOSED, OnPopupClosed);
+        this.RegisterListener(EventID.GAME_INTRO_COMPLETE, OnGameIntroComplete);
     }
     private void OnDestroy()
     {
@@ -46,6 +47,7 @@ public partial class GameFlow : MonoBehaviour
         this.RemoveListener(EventID.LEVEL_COMPLETE, OnLevelComplete);
         this.RemoveListener(EventID.POPUP_OPENED, OnPopupOpened);
         this.RemoveListener(EventID.POPUP_CLOSED, OnPopupClosed);
+        this.RemoveListener(EventID.GAME_INTRO_COMPLETE, OnGameIntroComplete);
     }
 
     public bool ChangeState(GameState next)
@@ -85,6 +87,7 @@ public partial class GameFlow : MonoBehaviour
     }
     private void OnPopupOpened(object _) => RequestPause();
     private void OnPopupClosed(object _) => RequestResume();
+    private void OnGameIntroComplete(object _) => RequestResume();
     public void RequestPause()
     {
         pauseRequest++;

@@ -12,8 +12,8 @@ public partial class LevelController : MonoBehaviour, IIntroStep
 
     public YarnObj CurrentYarnObj { get; private set; }
     public GameObject CurrentLevelGO { get; private set; }
-    public float MinZoomCamera { get; private set; }
-    public float MaxZoomCamera { get; private set; }
+    public float MinZoomScale { get; private set; }
+    public float MaxZoomScale { get; private set; }
 
     public void Init()
     {
@@ -32,8 +32,8 @@ public partial class LevelController : MonoBehaviour, IIntroStep
         GameAlgorithm.Instance.SetDifficulty(data.boxDifficulty);
 
         CurrentLevelGO = go;
-        MinZoomCamera = data.minZoomCamera;
-        MaxZoomCamera = data.maxZoomCamera;
+        MinZoomScale = data.minZoomScale;
+        MaxZoomScale = data.maxZoomScale;
 
         return go;
     }

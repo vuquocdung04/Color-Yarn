@@ -18,15 +18,6 @@ public partial class FXManager
         RunAsync(sceneName, Pick(), skipOutPhase).Forget();
     }
 
-    public void PrepareWipeClosed()
-    {
-        var t = Pick();
-        if (t == null) return;
-
-        t.SetCamera(GetSceneCamera());
-        t.CoverInstant();
-    }
-
     private ISceneTransition Pick()
     {
         foreach (var t in transitions)

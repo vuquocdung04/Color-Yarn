@@ -13,7 +13,6 @@ public class InputController : MonoBehaviour
     public Material TransparentMat => transparentMat;
 
     private Camera cam;
-    private Camera camUI;
     private InputMode _currentMode;
     private InputMode _normalMode;
     private InputMode _booster0Mode;
@@ -26,13 +25,11 @@ public class InputController : MonoBehaviour
     private bool _holding;
     private float _holdTimer;
 
-    public bool CanInteract =>
-        GameFlow.Instance != null && GameFlow.Instance.CurrentState == GameState.Playing;
+    public bool CanInteract { get; private set; }
 
     public void Init()
     {
         cam = GamePlayController.Instance.cameraGameplay;
-        camUI = GamePlayController.Instance.cameraUI;
 
         _normalMode = new NormalInputMode();
         _booster0Mode = new Booster0InputMode();
@@ -41,11 +38,34 @@ public class InputController : MonoBehaviour
         _disabledMode = new DisabledInputMode();
 
         SetMode(_normalMode);
+
+        if (GameFlow.Instance != null)
+        {
+            CanInteract = GameFlow.Instance.CurrentState == GameState.Playing;
+            GameFlow.Instance.OnStateEntered += HandleGameStateEntered;
+            GameFlow.Instance.OnStateExited += HandleGameStateExited;
+        }
+    }
+
+    private void HandleGameStateEntered(GameState state)
+    {
+        if (state == GameState.Playing) CanInteract = true;
+    }
+
+    private void HandleGameStateExited(GameState state)
+    {
+        if (state == GameState.Playing) CanInteract = false;
     }
 
     private void OnDestroy()
     {
         if (Instance == this) Instance = null;
+
+        if (GameFlow.Instance != null)
+        {
+            GameFlow.Instance.OnStateEntered -= HandleGameStateEntered;
+            GameFlow.Instance.OnStateExited -= HandleGameStateExited;
+        }
     }
 
     public void SetMode(InputMode newMode)
@@ -91,10 +111,9 @@ public class InputController : MonoBehaviour
             return;
         }
 
-        Ray rayUI = camUI.ScreenPointToRay(screenPos);
-        RaycastHit2D hit2D = Physics2D.Raycast(rayUI.origin, rayUI.direction);
+        RaycastHit2D hit2D = Physics2D.GetRayIntersection(ray);
         if (hit2D.collider != null)
-            _currentMode.OnClick2D(hit2D);
+            _currentMode.OnClick2D(hit2D.collider);
     }
 
     private void TrackPress()

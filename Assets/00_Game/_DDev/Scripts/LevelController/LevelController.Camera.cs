@@ -12,55 +12,91 @@ public partial class LevelController
 
     [Header("Rotate")]
     [SerializeField] private float rotationSpeed = 0.2f;
-    private Camera cam;
+
+    private float CurrentZoomScale => CurrentLevelGO != null ? CurrentLevelGO.transform.localScale.x : 1f;
 
     private void InitCameraControls()
     {
-        cam = GamePlayController.Instance.cameraGameplay;
         if (zoomSlider != null) zoomSlider.onValueChanged.AddListener(OnZoomSliderChanged);
+
+        if (GameFlow.Instance != null)
+        {
+            CanInteract = GameFlow.Instance.CurrentState == GameState.Playing;
+            GameFlow.Instance.OnStateEntered += HandleGameStateEntered;
+            GameFlow.Instance.OnStateExited += HandleGameStateExited;
+        }
+    }
+
+    private void HandleGameStateEntered(GameState state)
+    {
+        if (state == GameState.Playing) CanInteract = true;
+    }
+
+    private void HandleGameStateExited(GameState state)
+    {
+        if (state == GameState.Playing) CanInteract = false;
+    }
+
+    private void OnDestroy()
+    {
+        if (GameFlow.Instance != null)
+        {
+            GameFlow.Instance.OnStateEntered -= HandleGameStateEntered;
+            GameFlow.Instance.OnStateExited -= HandleGameStateExited;
+        }
+    }
+
+    private void ApplyZoom(float scale)
+    {
+        if (CurrentLevelGO == null) return;
+        CurrentLevelGO.transform.localScale = Vector3.one * scale;
+    }
+
+    private void SyncZoomSlider(float scale)
+    {
+        if (zoomSlider != null)
+            zoomSlider.SetValueWithoutNotify(Mathf.InverseLerp(MinZoomScale, MaxZoomScale, scale));
     }
 
     private void OnZoomSliderChanged(float value)
     {
-        if (cam == null) return;
-        cam.orthographicSize = Mathf.Lerp(MaxZoomCamera, MinZoomCamera, value);
+        ApplyZoom(Mathf.Lerp(MinZoomScale, MaxZoomScale, value));
     }
+
+    private bool CanInteract { get; set; }
 
     private void Update()
     {
+        if (!CanInteract) return;
         HandleZoom();
         HandleRotate();
     }
 
     private void HandleZoom()
     {
-        if (Mouse.current == null || cam == null) return;
+        if (Mouse.current == null || CurrentLevelGO == null) return;
 
         float scrollValue = Mouse.current.scroll.ReadValue().y;
         if (scrollValue != 0)
         {
-            cam.orthographicSize = Mathf.Clamp(
-                cam.orthographicSize - scrollValue * scrollZoomSpeed,
-                MinZoomCamera, MaxZoomCamera);
+            float scale = Mathf.Clamp(
+                CurrentZoomScale + scrollValue * scrollZoomSpeed,
+                MinZoomScale, MaxZoomScale);
 
-            if (zoomSlider != null)
-            {
-                float normalized = Mathf.InverseLerp(MaxZoomCamera, MinZoomCamera, cam.orthographicSize);
-                zoomSlider.SetValueWithoutNotify(normalized);
-            }
+            ApplyZoom(scale);
+            SyncZoomSlider(scale);
         }
     }
 
     public void PlayIntroZoom(float percent, float duration)
     {
-        if (cam == null) return;
+        if (CurrentLevelGO == null) return;
 
-        float target = Mathf.Lerp(MaxZoomCamera, MinZoomCamera, percent);
-        DOTween.To(() => cam.orthographicSize, v =>
+        float target = Mathf.Lerp(MinZoomScale, MaxZoomScale, percent);
+        DOTween.To(() => CurrentZoomScale, v =>
         {
-            cam.orthographicSize = v;
-            if (zoomSlider != null)
-                zoomSlider.SetValueWithoutNotify(Mathf.InverseLerp(MaxZoomCamera, MinZoomCamera, v));
+            ApplyZoom(v);
+            SyncZoomSlider(v);
         }, target, duration);
     }
 
@@ -69,11 +105,8 @@ public partial class LevelController
         if (CurrentYarnObj != null)
             CurrentYarnObj.transform.rotation = Quaternion.identity;
 
-        if (cam != null)
-        {
-            cam.orthographicSize = MaxZoomCamera;
-            if (zoomSlider != null) zoomSlider.SetValueWithoutNotify(0f);
-        }
+        ApplyZoom(MinZoomScale);
+        if (zoomSlider != null) zoomSlider.SetValueWithoutNotify(0f);
     }
 
     public async UniTask Play(GameIntroConfig config)

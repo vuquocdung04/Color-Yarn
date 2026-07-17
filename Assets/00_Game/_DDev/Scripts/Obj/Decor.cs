@@ -27,6 +27,12 @@ public class Decor : MonoBehaviour
         radius = (e.x + e.y + e.z) / 3f;
     }
 
+    private void OnDestroy()
+    {
+        if (parentShell != null)
+            parentShell.OnDissolveStart -= HandleDissolveStart;
+    }
+
     private void HandleDissolveStart(float dur)
     {
         parentShell.OnDissolveStart -= HandleDissolveStart;

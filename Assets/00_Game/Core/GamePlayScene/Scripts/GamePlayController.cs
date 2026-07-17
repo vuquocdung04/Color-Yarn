@@ -41,7 +41,7 @@ public class GamePlayController : Singleton<GamePlayController>
             FXManager.Instance.isNextSceneReady = true;
         await UniTask.Delay(500);
         await gameIntro.PlayIntro();
-        gameFlow.RequestResume();
+        this.PostEvent(EventID.GAME_INTRO_COMPLETE);
     }
 
     private void InitInstance()

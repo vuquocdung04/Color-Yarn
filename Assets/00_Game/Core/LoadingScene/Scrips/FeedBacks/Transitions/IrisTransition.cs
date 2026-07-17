@@ -25,14 +25,12 @@ public class IrisTransition : MonoBehaviour, ISceneTransition
 
     private void Awake()
     {
-        if (wipeCanvas.gameObject.activeInHierarchy)
-            wipeCanvas.gameObject.SetActive(false);
+        wipeCanvas.enabled = false;
     }
 
     public void SetCamera(Camera cam)
     {
-        if (!wipeCanvas.gameObject.activeSelf)
-            wipeCanvas.gameObject.SetActive(true);
+        wipeCanvas.enabled = true;
         if (cam != null)
             wipeCanvas.worldCamera = cam;
     }
@@ -49,7 +47,7 @@ public class IrisTransition : MonoBehaviour, ISceneTransition
     {
         SetState(1f, 0f);
         await Mat.DOFloat(1.2f, "_Radius", durationIn).ToUniTask();
-        wipeCanvas.gameObject.SetActive(false);
+        wipeCanvas.enabled = false;
     }
 
     private void SetState(float isInvert, float radius)

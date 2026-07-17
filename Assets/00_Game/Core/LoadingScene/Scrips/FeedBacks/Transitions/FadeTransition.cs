@@ -15,28 +15,27 @@ public class FadeTransition : MonoBehaviour, ISceneTransition
     private void Awake()
     {
         SetAlpha(0f);
-        if (wipeCanvas.gameObject.activeInHierarchy)
-            wipeCanvas.gameObject.SetActive(false);
+        wipeCanvas.enabled = false;
     }
 
     public void SetCamera(Camera cam) { }
 
     public async UniTask CoverAsync()
     {
-        wipeCanvas.gameObject.SetActive(true);
+        wipeCanvas.enabled = true;
         await image.DOFade(1f, durationOut).ToUniTask();
     }
 
     public void CoverInstant()
     {
-        wipeCanvas.gameObject.SetActive(true);
+        wipeCanvas.enabled = true;
         SetAlpha(1f);
     }
 
     public async UniTask RevealAsync()
     {
         await image.DOFade(0f, durationIn).ToUniTask();
-        wipeCanvas.gameObject.SetActive(false);
+        wipeCanvas.enabled = false;
     }
 
     private void SetAlpha(float a)

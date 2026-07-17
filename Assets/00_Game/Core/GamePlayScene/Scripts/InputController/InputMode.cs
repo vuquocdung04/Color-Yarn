@@ -16,5 +16,5 @@ public abstract class InputMode
     public virtual void OnTap3D(RaycastHit hit) { }
     public virtual void OnHoldStart(RaycastHit hit) { }
     public virtual void OnHoldEnd(RaycastHit hit) { }
-    public virtual void OnClick2D(RaycastHit2D hit) { }
+    public virtual void OnClick2D(Collider2D collider) { }
 }

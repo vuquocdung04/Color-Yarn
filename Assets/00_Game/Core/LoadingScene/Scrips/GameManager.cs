@@ -35,7 +35,6 @@ public class GameManager : Singleton<GameManager>
         InitManagers();
         await load50Task;
         await loadingBox.LoadingAsync(1f, loadingStepDuration);
-        fxManager.PrepareWipeClosed();
         await loadingBox.CloseAsync(loadingFadeOutDuration);
 
         //Init final

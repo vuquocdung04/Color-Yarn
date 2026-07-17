@@ -16,6 +16,11 @@ public partial class YarnRoll : MonoBehaviour
     [SerializeField] private LineRenderer line;
     [SerializeField, Min(2)] private int subdivisions = 24;
 
+    [Header("Line - Wave")]
+    [SerializeField] private float waveAmplitude = 0.05f;
+    [SerializeField] private float waveCount = 2f;
+    [SerializeField] private float waveSpeed = 3f;
+
     [Header("Anim")]
     private float duration = 2f;
     [SerializeField, Range(0.05f, 0.6f)] private float reachEnd = 0.35f;
@@ -163,10 +168,26 @@ public partial class YarnRoll : MonoBehaviour
     {
         if (line == null) return;
         line.positionCount = subdivisions;
+
+        Vector3 dir = to - from;
+        float length = dir.magnitude;
+        Vector3 axis = length > 1e-5f ? dir / length : Vector3.forward;
+        Vector3 perp = Vector3.Cross(axis, Vector3.up);
+        if (perp.sqrMagnitude < 1e-6f) perp = Vector3.Cross(axis, Vector3.right);
+        perp.Normalize();
+
+        float lengthFactor = Mathf.Clamp01(length);
+
         for (int i = 0; i < subdivisions; i++)
         {
             float f = i / (float)(subdivisions - 1);
-            line.SetPosition(i, Vector3.Lerp(from, to, f));
+            Vector3 point = Vector3.Lerp(from, to, f);
+
+            float envelope = Mathf.Sin(Mathf.PI * f);
+            float wave = Mathf.Sin(f * Mathf.PI * 2f * waveCount + Time.time * waveSpeed);
+
+            point += perp * (wave * envelope * waveAmplitude * lengthFactor);
+            line.SetPosition(i, point);
         }
     }
 
