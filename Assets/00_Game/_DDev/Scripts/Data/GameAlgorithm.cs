@@ -35,6 +35,7 @@ public class GameAlgorithm : MonoBehaviour
     {
         var layersByColor = LevelController.Instance.CurrentYarnObj.GetLayersByColor();
         var parkedByColor = HolesTemp.Instance.GetParkedColorCounts();
+        var storedByColor = AweSomeBox.Instance.GetStoredColorCounts();
 
         var candidates = new List<string>(remainingByColor.Keys);
         Shuffle(candidates);
@@ -45,9 +46,9 @@ public class GameAlgorithm : MonoBehaviour
 
         foreach (var color in candidates)
         {
-            if (remainingByColor[color] < 3) continue;
+            if (AvailableCount(color, parkedByColor, storedByColor) < 3) continue;
 
-            int cost = ComputeColorCost(color, layersByColor, parkedByColor);
+            int cost = ComputeColorCost(color, layersByColor, parkedByColor, storedByColor);
             costs[color] = cost;
             if (cost < minCost) minCost = cost;
             if (cost > maxCost) maxCost = cost;
@@ -76,12 +77,23 @@ public class GameAlgorithm : MonoBehaviour
         return best;
     }
 
-    private static int ComputeColorCost(string color, Dictionary<string, List<int>> layersByColor, Dictionary<string, int> parkedByColor)
+    private int AvailableCount(string color, Dictionary<string, int> parkedByColor, Dictionary<string, int> storedByColor)
+    {
+        int ledger = remainingByColor.TryGetValue(color, out int r) ? r : 0;
+        int parked = parkedByColor.TryGetValue(color, out int p) ? p : 0;
+        int stored = storedByColor.TryGetValue(color, out int s) ? s : 0;
+        return Mathf.Max(ledger, parked + stored);
+    }
+
+    private static int ComputeColorCost(string color, Dictionary<string, List<int>> layersByColor, Dictionary<string, int> parkedByColor, Dictionary<string, int> storedByColor)
     {
         var costs = new List<int>();
 
         int parkedCount = parkedByColor.TryGetValue(color, out int p) ? p : 0;
         for (int i = 0; i < parkedCount; i++) costs.Add(0);
+
+        int storedCount = storedByColor.TryGetValue(color, out int s) ? s : 0;
+        for (int i = 0; i < storedCount; i++) costs.Add(0);
 
         if (layersByColor.TryGetValue(color, out var layers))
             costs.AddRange(layers);

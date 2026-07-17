@@ -146,7 +146,7 @@ public class YarnObj : MonoBehaviour
         var result = new Dictionary<string, List<int>>();
         foreach (var obj in GetComponentsInChildren<InteractableObject>())
         {
-            if (obj == null || string.IsNullOrEmpty(obj.ColorKey)) continue;
+            if (obj == null || obj.IsBusy || string.IsNullOrEmpty(obj.ColorKey)) continue;
             if (!result.TryGetValue(obj.ColorKey, out var list))
             {
                 list = new List<int>();

@@ -126,6 +126,8 @@ public partial class YarnRoll : MonoBehaviour
 
     void Awake() => UpdateLine(0f);
 
+    private void OnDestroy() => transform.DOKill();
+
     void Update()
     {
         if (!running) return;

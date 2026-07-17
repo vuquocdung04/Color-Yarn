@@ -52,6 +52,8 @@ public class HolesTemp : MonoBehaviour, IIntroStep
         }
     }
 
+    public bool CanAddHole => holes != null && activeHoleCount < holes.Count;
+
     public void Init()
     {
         occupants = new YarnRoll[holes != null ? holes.Count : 0];
@@ -70,7 +72,7 @@ public class HolesTemp : MonoBehaviour, IIntroStep
     {
         var type = (BoosterType)param;
         if (type == BoosterType.Booster0) ActivateExtraHole();
-        else if (type == BoosterType.Booster2 && HasAnyOccupant)
+        else if (type == BoosterType.Booster2 && HasAnyOccupant && !BoxCreator.Instance.HasAnyBoxBusy)
             bloom.Activate(() => BoosterController.Instance.OnBoosterActionSuccess());
     }
 
@@ -121,6 +123,7 @@ public class HolesTemp : MonoBehaviour, IIntroStep
         });
 
         activeHoleCount = holes.Count;
+        this.PostEvent(EventID.BOOSTER_CONDITION_CHANGED);
     }
 
     public bool TrySpawn(InteractableObject target)
@@ -137,6 +140,7 @@ public class HolesTemp : MonoBehaviour, IIntroStep
 
         occupants[idx] = yr;
         holes[idx].SetOccupied(true);
+        this.PostEvent(EventID.BOOSTER_CONDITION_CHANGED);
 
         if (IsFull)
         {
@@ -196,6 +200,7 @@ public class HolesTemp : MonoBehaviour, IIntroStep
                 holes[i].SetOccupied(false);
             }
         }
+        if (result.Count > 0) this.PostEvent(EventID.BOOSTER_CONDITION_CHANGED);
         return result;
     }
 
@@ -209,6 +214,7 @@ public class HolesTemp : MonoBehaviour, IIntroStep
             occupants[i] = null;
             holes[i].SetOccupied(false);
         }
+        if (result.Count > 0) this.PostEvent(EventID.BOOSTER_CONDITION_CHANGED);
         return result;
     }
 }

@@ -16,6 +16,10 @@ public class BoosterItem : MonoBehaviour
     public Button btnMain;
     public Image iconBooster;
 
+    [SerializeField] private CanvasGroup canvasGroup;
+    private bool _usable = true;
+    private bool _externalUsable = true;
+
     [Header("Containers")]
     [SerializeField] private GameObject unlockedContainer;
     [SerializeField] private GameObject lockedContainer;
@@ -39,6 +43,20 @@ public class BoosterItem : MonoBehaviour
     private void Start() => btnMain.OnClicked(OnButtonClicked);
     public void SetSize(float size) => iconBooster.FitToTargetHeight(size);
 
+    public void SetExternalUsable(bool usable)
+    {
+        _externalUsable = usable;
+        ApplyUsability();
+    }
+
+    private void ApplyUsability()
+    {
+        bool usable = CurrentState != BoosterState.Available || _externalUsable;
+        if (canvasGroup == null || _usable == usable) return;
+        _usable = usable;
+        canvasGroup.SetCanvasState(usable, usable ? 1f : 0.9f);
+    }
+
     public bool ChangeState(BoosterState next, bool force = false)
     {
         if (!force && CurrentState != next
@@ -50,6 +68,7 @@ public class BoosterItem : MonoBehaviour
 
         CurrentState = next;
         ApplyStateUI(next);
+        ApplyUsability();
         return true;
     }
 

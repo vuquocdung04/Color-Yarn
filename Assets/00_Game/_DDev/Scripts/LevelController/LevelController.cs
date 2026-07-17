@@ -14,6 +14,7 @@ public partial class LevelController : MonoBehaviour, IIntroStep
     public GameObject CurrentLevelGO { get; private set; }
     public float MinZoomScale { get; private set; }
     public float MaxZoomScale { get; private set; }
+    public bool IsHard { get; private set; }
 
     public void Init()
     {
@@ -34,6 +35,7 @@ public partial class LevelController : MonoBehaviour, IIntroStep
         CurrentLevelGO = go;
         MinZoomScale = data.minZoomScale;
         MaxZoomScale = data.maxZoomScale;
+        IsHard = data.isHard;
 
         return go;
     }

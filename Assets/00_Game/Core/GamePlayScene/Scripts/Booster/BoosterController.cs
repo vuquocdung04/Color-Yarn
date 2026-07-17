@@ -25,7 +25,10 @@ public partial class BoosterController : MonoBehaviour, IIntroStep
         this.RegisterListener(EventID.BOOSTER_USE_REQUEST, OnUseRequest);
         this.RegisterListener(EventID.BOOSTER_DEACTIVATE_REQUEST, OnDeactivateRequest);
         this.RegisterListener(EventID.BOOSTER_BUY_REQUEST, OnBuyRequest);
+        this.RegisterListener(EventID.BOOSTER_CONDITION_CHANGED, OnConditionChanged);
         GameFlow.Instance.OnStateEntered += OnGameStateChanged;
+
+        RefreshUsable();
     }
 
     public void Prepare(GameIntroConfig config) => canvasGroup.SetCanvasState(false, 0f);
@@ -43,8 +46,29 @@ public partial class BoosterController : MonoBehaviour, IIntroStep
         this.RemoveListener(EventID.BOOSTER_USE_REQUEST, OnUseRequest);
         this.RemoveListener(EventID.BOOSTER_DEACTIVATE_REQUEST, OnDeactivateRequest);
         this.RemoveListener(EventID.BOOSTER_BUY_REQUEST, OnBuyRequest);
+        this.RemoveListener(EventID.BOOSTER_CONDITION_CHANGED, OnConditionChanged);
         if (GameFlow.Instance != null)
             GameFlow.Instance.OnStateEntered -= OnGameStateChanged;
+    }
+
+    private void OnConditionChanged(object _) => RefreshUsable();
+
+    private void RefreshUsable()
+    {
+        if (items == null) return;
+        foreach (var item in items)
+            item.SetExternalUsable(IsUsable(item.Type));
+    }
+
+    private bool IsUsable(BoosterType type)
+    {
+        if (type == BoosterType.Booster0)
+            return HolesTemp.Instance != null && HolesTemp.Instance.CanAddHole;
+
+        if (type == BoosterType.Booster2)
+            return HolesTemp.Instance != null && HolesTemp.Instance.HasAnyOccupant
+                && BoxCreator.Instance != null && !BoxCreator.Instance.HasAnyBoxBusy;
+        return true;
     }
 
     private void OnGameStateChanged(GameState newState)
@@ -74,11 +98,7 @@ public partial class BoosterController : MonoBehaviour, IIntroStep
         var item = FindItem(type);
         if (item == null) return;
 
-        if (type == BoosterType.Booster2 && !HolesTemp.Instance.HasAnyOccupant)
-        {
-            ToastManager.Instance.ShowToast("No yarn to sweep!");
-            return;
-        }
+        if (!IsUsable(type)) return;
 
         CheckAndClearTutorialPhase1(type, item);
 

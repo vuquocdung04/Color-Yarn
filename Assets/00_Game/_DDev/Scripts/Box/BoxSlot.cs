@@ -40,8 +40,10 @@ public class BoxSlot : MonoBehaviour
 
     private void SetState(BoxState next)
     {
+        bool busyChanged = IsBusy != (next == BoxState.Closing || next == BoxState.BoosterActive);
         state = next;
         if (lockObject != null) lockObject.SetActive(next == BoxState.Locked);
+        if (busyChanged) this.PostEvent(EventID.BOOSTER_CONDITION_CHANGED);
     }
 
     private void Awake()
