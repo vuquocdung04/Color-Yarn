@@ -26,7 +26,8 @@ public class LevelHardIntroUI : MonoBehaviour, IIntroStep
         gameObject.SetActive(true);
         image.color = fromColor;
 
-        AudioManager.Instance.PlaySfx("hard_level");
+        if (AudioManager.Instance)
+            AudioManager.Instance.PlaySfx("hard_level");
 
         SetBgAlpha(0f);
         await bg.DOFade(0.95f, bgFadeDuration).AsyncWaitForCompletion();

@@ -13,6 +13,7 @@ public class AweSomeBox : MonoBehaviour
     [SerializeField] private float flyDuration = 0.5f;
     [SerializeField] private float jumpPower = 1f;
     [SerializeField] private GameObject visual;
+    [SerializeField] private Transform storePoint;
 
     [ShowInInspector, ReadOnly]
     public List<YarnRoll> stored = new();
@@ -36,11 +37,13 @@ public class AweSomeBox : MonoBehaviour
             return;
         }
 
+        Vector3 target = storePoint != null ? storePoint.position : transform.position;
+
         int remaining = valid.Count;
         foreach (var r in valid)
         {
             stored.Add(r);
-            r.transform.DOJump(transform.position, jumpPower, 1, flyDuration).OnComplete(() =>
+            r.transform.DOJump(target, jumpPower, 1, flyDuration).OnComplete(() =>
             {
                 r.gameObject.SetActive(false);
                 remaining--;
