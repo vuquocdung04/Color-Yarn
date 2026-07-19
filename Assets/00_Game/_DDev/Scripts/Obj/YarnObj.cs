@@ -115,6 +115,25 @@ public class YarnObj : MonoBehaviour
         }
 
         int idx = 0;
+
+        var presetColors = new List<KeyValuePair<string, int>>(totalByColor);
+        int totalDeficit = 0;
+        foreach (var kv in presetColors)
+            totalDeficit += (3 - kv.Value % 3) % 3;
+
+        if (totalDeficit > children.Count)
+            Debug.LogError($"[YarnObj] thieu core de bu mau be mat tron 3: can {totalDeficit} core nhung chi co {children.Count} (roots={interactableObjects.Count}). Con mau le.");
+
+        foreach (var kv in presetColors)
+        {
+            int need = (3 - kv.Value % 3) % 3;
+            for (int k = 0; k < need && idx < children.Count; k++, idx++)
+            {
+                children[idx].ApplyColor(kv.Key);
+                totalByColor[kv.Key]++;
+            }
+        }
+
         while (idx < children.Count)
         {
             var entry = ColorRepo.Instance.GetRandom();

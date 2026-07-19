@@ -10,6 +10,7 @@ public partial class LevelController : MonoBehaviour, IIntroStep
     [SerializeField] private LevelDatabase levelDatabase;
     [SerializeField] private int currentLevel = 1;
 
+    public int CurrentLevel => currentLevel;
     public YarnObj CurrentYarnObj { get; private set; }
     public GameObject CurrentLevelGO { get; private set; }
     public float MinZoomScale { get; private set; }

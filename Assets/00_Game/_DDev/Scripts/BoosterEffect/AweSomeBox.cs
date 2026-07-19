@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class AweSomeBox : MonoBehaviour
@@ -13,7 +14,8 @@ public class AweSomeBox : MonoBehaviour
     [SerializeField] private float jumpPower = 1f;
     [SerializeField] private GameObject visual;
 
-    private readonly List<YarnRoll> stored = new();
+    [ShowInInspector, ReadOnly]
+    public List<YarnRoll> stored = new();
 
     public void Init()
     {

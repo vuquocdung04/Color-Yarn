@@ -12,6 +12,8 @@ public class TopBar : MonoBehaviour, IIntroStep
 
     public void InitInstance() => Instance = this;
 
+    [SerializeField] private bool isTest;
+
     public TextMeshProUGUI txtLevelDisplay;
     [SerializeField] private CanvasGroup canvasGroup;
 
@@ -44,7 +46,7 @@ public class TopBar : MonoBehaviour, IIntroStep
 
     private void SetupLevelNodes()
     {
-        int currentLevel = UseProfile.Level.Value;
+        int currentLevel = isTest ? LevelController.Instance.CurrentLevel : UseProfile.Level.Value;
         int zoneStart = (currentLevel - 1) / levelNodes.Count * levelNodes.Count + 1;
 
         for (int i = 0; i < levelNodes.Count; i++)
