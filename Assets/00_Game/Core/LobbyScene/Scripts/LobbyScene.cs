@@ -41,9 +41,8 @@ public class LobbyScene : MonoBehaviour
         _ = RankBox.Setup(holder, _ => rankTcs.TrySetResult());
 
         await UniTask.WhenAll(lobbyTcs.Task, shopTcs.Task, rankTcs.Task);
-
+        Debug.LogError("weqweqw");
         FXManager.Instance.isNextSceneReady = true;
-    }
 
-    public void NavigateTo(ENavType type) => navController.NavigateTo(type);
+    }
 }

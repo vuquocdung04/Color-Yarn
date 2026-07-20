@@ -23,21 +23,21 @@ MonoBehaviour:
     levelPrefab: {fileID: 7846591595006166598, guid: 827f0d71d2c6de040b2936ec6a7ada7b, type: 3}
     levelSprite: {fileID: -108229437, guid: a762f3b985c82d64596884f4a155dbdd, type: 3}
   - levelName: level_2
-    minZoomScale: 4.5
-    maxZoomScale: 7
-    requiredLen: 35
+    minZoomScale: 0.75
+    maxZoomScale: 1.25
+    requiredLen: 45
     boxDifficulty: 0
     yarnDepthSpread: 0
     isHard: 0
     levelPrefab: {fileID: 7029921854155924565, guid: 07d2feb5c5b50c84795995057a3b55f5, type: 3}
     levelSprite: {fileID: 1437556532, guid: a762f3b985c82d64596884f4a155dbdd, type: 3}
   - levelName: level_3
-    minZoomScale: 4.5
-    maxZoomScale: 7
+    minZoomScale: 0.75
+    maxZoomScale: 1.25
     requiredLen: 60
     boxDifficulty: 0
     yarnDepthSpread: 0
-    isHard: 0
+    isHard: 1
     levelPrefab: {fileID: 6982938327802373751, guid: 0ca6f1b821b548242b979007d5d8a75a, type: 3}
     levelSprite: {fileID: 2023834146, guid: a762f3b985c82d64596884f4a155dbdd, type: 3}
   - levelName: level_4
@@ -53,8 +53,8 @@ MonoBehaviour:
     minZoomScale: 0.5
     maxZoomScale: 1
     requiredLen: 80
-    boxDifficulty: 0
-    yarnDepthSpread: 0
+    boxDifficulty: 0.235
+    yarnDepthSpread: 3.5
     isHard: 1
     levelPrefab: {fileID: 6297273723360281391, guid: a8e10a17bdc925d48adbf3b20ab8a84c, type: 3}
     levelSprite: {fileID: 1197447510, guid: a762f3b985c82d64596884f4a155dbdd, type: 3}
